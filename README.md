@@ -5,6 +5,8 @@ Team Moshi Moshi · Mukund Singhal (team leader) · Vaibhav Itauriya · Karmanya
 
 > *Pehle try, phir buy.* Brands pay Meesho to put a free sample in a chosen Bharat household's hand, hear back from her within days, and see whether she bought it 90 days later. Sellers pay ₹0. Buyers pay ₹0.
 
+### 🔗 Live prototype: **[vaibhav-itauriya.github.io/moshi-moshi-meesho-dice-3.0](https://vaibhav-itauriya.github.io/moshi-moshi-meesho-dice-3.0/)**
+
 ---
 
 ## The idea in one paragraph
@@ -15,15 +17,15 @@ Brands spend about ₹5,400 Cr a year sampling new products in India and learn a
 
 ## Run it
 
-The prototype is a single, self-contained HTML file with no build step and no dependencies to install.
+**Online:** open the live prototype at https://vaibhav-itauriya.github.io/moshi-moshi-meesho-dice-3.0/. It works best on a laptop or desktop browser, where the side panels show next to the phone.
+
+**Locally:** the prototype is a single, self-contained HTML file with no build step and no dependencies to install.
 
 ```bash
 open Bharat_Trial_Network_App.html
 ```
 
 Or double-click the file. It works offline except for the Google Font (Mulish), which falls back to the system font.
-
-**Host it on GitHub Pages:** rename the file to `index.html`, push it to the repo, then turn on Pages under *Settings → Pages → Deploy from branch*.
 
 ---
 
@@ -105,10 +107,9 @@ The state resets on reload. Use **Reset demo** in the side panel to start over.
 
 | File | What it is |
 |---|---|
-| `Bharat_Trial_Network_App.html` | The four-app phone prototype (main deliverable) |
-| `Bharat_Trial_Network_Prototype_v2.html` | Earlier single-page web version of the prototype |
-| `Moshi_Moshi_Round2_Fully_Editable.pptx` / `Moshi Moshi Round 2 (Editable).pptx` | Editable versions of the Round 2 deck |
-| `README.md` | This file |
+| `Bharat_Trial_Network_App.html` | The Four-App Phone Prototype |
+| `Moshi_Moshi_Round2.pdf` | Round 2 Deck |
+| `README.md` | This File |
 
 ---
 
