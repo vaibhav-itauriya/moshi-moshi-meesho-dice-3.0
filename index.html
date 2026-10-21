@@ -5,20 +5,22 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800;900&display=swap">
 <style>
-/* Layout: a working phone in the middle (home screen + 4 apps), app switcher on the left, deck mapping + live money ledger on the right */
+/* Layout: a working phone in the middle (home screen + 4 apps), app switcher, demo path and live money ledger on the left, deck mapping, the original deck and the solution-overview video on the right */
 :root{
   /* page chrome (theme-aware) */
   --bg:#F1EEF3; --panel:#FFFFFF; --ink:#232031; --sub:#5D5870; --line:#E2DDE8; --accent:#9F2089; --accent-soft:#F7E8F4; --ok:#038D63; --ok-soft:#E3F5EE;
   /* Meesho app palette (the app UI stays light like the real app) */
   --m-primary:#9F2089; --m-logo:#570A57; --m-pink:#F43397; --m-text:#353543; --m-sub:#616173; --m-muted:#8B8BA3; --m-line:#EAEAF2; --m-bg:#F5F5FA; --m-card:#FFFFFF;
   --m-green:#038D63; --m-rate:#23BB75; --m-orange:#E37D1E; --m-red:#D9363E; --m-yellow:#FFC531; --m-tint:#FCEFF8; --m-green-soft:#E6F6EF; --m-orange-soft:#FFF3E5; --m-red-soft:#FDECEC;
-  --valmo:#1E1236; --valmo-2:#2C1E4B; --hq:#262438;
+  --valmo:#1E1236;
+  /* chart + status tokens (validated categorical order: c1 c2 c3 c4) */
+  --c1:#9F2089; --c2:#038D63; --c3:#E37D1E; --c4:#5A3FB0; --cn:#B9B3C3; --track:#EEEAF1; --bad:#C62E36; --bad-soft:#FCEAEA; --warn:#A8560B; --warn-soft:#FFF1E2; --valmo-2:#2C1E4B; --hq:#262438;
   --font:'Mulish','Segoe UI',system-ui,-apple-system,sans-serif;
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#141218; --panel:#1F1C26; --ink:#F0ECF5; --sub:#ABA4BB; --line:#353043; --accent:#E07ACB; --accent-soft:#3A1F37; --ok:#4CC9A0; --ok-soft:#14302A; color-scheme:dark;
+  --bg:#141218; --panel:#1F1C26; --ink:#F0ECF5; --sub:#ABA4BB; --line:#353043; --accent:#E07ACB; --accent-soft:#3A1F37; --ok:#4CC9A0; --ok-soft:#14302A; --c1:#C455B0; --c2:#24A37C; --c3:#C97526; --c4:#8068DE; --cn:#5B5568; --track:#2B2734; --bad:#F07C80; --bad-soft:#3A1C1F; --warn:#F0A75E; --warn-soft:#3A2814; color-scheme:dark;
 }}
-:root[data-theme="dark"]{ --bg:#141218; --panel:#1F1C26; --ink:#F0ECF5; --sub:#ABA4BB; --line:#353043; --accent:#E07ACB; --accent-soft:#3A1F37; --ok:#4CC9A0; --ok-soft:#14302A; color-scheme:dark; }
+:root[data-theme="dark"]{ --bg:#141218; --panel:#1F1C26; --ink:#F0ECF5; --sub:#ABA4BB; --line:#353043; --accent:#E07ACB; --accent-soft:#3A1F37; --ok:#4CC9A0; --ok-soft:#14302A; --c1:#C455B0; --c2:#24A37C; --c3:#C97526; --c4:#8068DE; --cn:#5B5568; --track:#2B2734; --bad:#F07C80; --bad-soft:#3A1C1F; --warn:#F0A75E; --warn-soft:#3A2814; color-scheme:dark; }
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45}
 button,input,select{font:inherit;color:inherit}
@@ -28,7 +30,7 @@ button{cursor:pointer}
 
 .stage{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:20px 36px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:28px;align-items:start}
 .rail{display:grid;gap:14px;min-width:0}
-.rcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0}
+.rcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0}
 .rcard h2{font-size:1.05rem;margin:0 0 4px;font-weight:800;text-wrap:balance}
 .rcard .lab{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--sub)}
 .brandline{display:flex;gap:12px;align-items:center}
@@ -51,12 +53,12 @@ button{cursor:pointer}
 .steps li.now{color:var(--ink);font-weight:700} .steps li.now i{border-color:var(--accent);color:var(--accent)}
 .rbtn{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-size:.84rem;color:var(--sub)}
 .rbtn:hover{color:var(--ink);border-color:var(--sub)}
-.deck{font-size:.9rem;margin-top:6px}
+.deck{font-size:.86rem;margin-top:4px}
 .deck .src{display:inline-block;margin-top:8px;font-size:.74rem;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px}
-.ledger{display:grid;gap:6px;margin-top:8px}
-.lrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;font-size:.88rem;padding:6px 0;border-bottom:1px solid var(--line)}
-.lrow:last-child{border-bottom:0}
-.lrow b{font-variant-numeric:tabular-nums}
+.ledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
+.lrow{display:grid;gap:1px;padding:7px 10px;border-radius:10px;background:var(--accent-soft);min-width:0}
+.lrow span{font-size:.7rem;color:var(--sub);line-height:1.2}
+.lrow b{font-size:.95rem;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lrow .z{color:var(--ok)}
 .foot{font-size:.74rem;color:var(--sub)}
 
@@ -300,7 +302,7 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
 .teaser-error[hidden]{display:none}
 
 /* ===== Replay card in the left rail ===== */
-.teaser-mini{width:100%;padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 18px 38px rgba(40,10,40,.14);color:var(--ink);display:grid;gap:9px}
+.teaser-mini{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 18px 38px rgba(40,10,40,.14);color:var(--ink);display:grid;gap:7px}
 .teaser-mini[hidden]{display:none}
 .teaser-mini-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .teaser-mini-head b{font-size:.8rem;font-weight:900}
@@ -412,6 +414,179 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
 @keyframes vpSpin{to{transform:rotate(360deg)}}
 @keyframes vpPulse{0%{box-shadow:0 12px 40px rgba(244,51,151,.5),0 0 0 0 rgba(244,51,151,.45)}100%{box-shadow:0 12px 40px rgba(244,51,151,.5),0 0 0 22px rgba(244,51,151,0)}}
 
+.deck .src{border:0;cursor:pointer;font-family:inherit}
+.deck .src:hover{background:var(--accent);color:#fff}
+
+/* ---------------- deck explorer: side tiles + full-screen sheet ---------------- */
+.dx-tiles{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;margin-top:8px}
+.dx-tile{position:relative;min-width:0;height:30px;border:1px solid var(--line);background:var(--accent-soft);color:var(--accent);border-radius:8px;padding:0;display:grid;place-items:center;font-size:.72rem;font-weight:900;font-variant-numeric:tabular-nums;transition:background .15s,color .15s,transform .15s}
+.dx-tile:hover,.dx-tile:focus-visible{background:var(--accent);color:#fff;transform:translateY(-1px)}
+.peek{position:fixed;z-index:90;width:340px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 50px rgba(20,8,28,.35);overflow:hidden;pointer-events:none;animation:peekIn .14s ease-out}
+.peek[hidden]{display:none}
+.peek img{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;background:var(--track);border-bottom:1px solid var(--line)}
+.peek .pk-b{padding:10px 12px 11px}
+.peek .pk-k{font-size:.66rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.peek b{display:block;font-size:.95rem;line-height:1.2;margin:2px 0 3px}
+.peek .pk-l{margin:0 0 6px;font-size:.78rem;font-weight:700;color:var(--ink)}
+.peek .pk-s{margin:0;font-size:.74rem;line-height:1.4;color:var(--sub);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.peek .pk-f{margin-top:8px;font-size:.66rem;color:var(--sub);border-top:1px solid var(--line);padding-top:6px}
+@keyframes peekIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.dx-tile .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.dx-deckh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dx-all{flex:none;border:0;border-radius:999px;padding:6px 14px;background:var(--accent);color:#fff;font-weight:800;font-size:.84rem}
+.dx-modal{position:fixed;inset:0;background:rgba(24,16,31,.62);z-index:100;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;padding:20px}
+.dx-modal[hidden]{display:none}
+.dx-sheet{min-width:0;width:min(1140px,100%);height:min(900px,calc(100vh - 40px));display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 80px rgba(23,10,30,.4);overflow:hidden}
+.dx-head{flex:none;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:18px 22px 12px;background:var(--panel);border-bottom:1px solid var(--line)}
+.dx-head .k{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+.dx-head h2{font-size:1.5rem;line-height:1.1;margin:4px 0 2px;font-weight:900;text-wrap:balance}
+.dx-head p{margin:0;font-size:.82rem;color:var(--sub)}
+.dx-x{flex:none;width:36px;height:36px;border:1px solid var(--line);border-radius:50%;background:var(--panel);font-size:22px;line-height:1;color:var(--sub)}
+.dx-nav{flex:none;display:flex;gap:6px;overflow-x:auto;padding:10px 22px;background:var(--panel);border-bottom:1px solid var(--line);scrollbar-width:thin}
+.dx-nav button{flex:none;border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 11px;font-size:.76rem;font-weight:700;color:var(--sub);white-space:nowrap}
+.dx-nav button:hover{color:var(--ink);border-color:var(--sub)}
+.dx-nav button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.dx-main{flex:1;overflow-y:auto;padding:16px 22px 22px;min-height:0}
+.dx-so{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;background:var(--hq);color:#fff;border-radius:14px;padding:12px 16px;margin-bottom:14px;font-size:.9rem;line-height:1.45}
+.dx-so > b{font-size:1.05rem;font-weight:900;color:#FFC531;white-space:nowrap}
+.dx-so strong{color:#FFC531}
+.dx-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dx-b{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
+.dx-b.w{grid-column:1 / -1}
+.dx-b h3{font-size:.76rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;margin:0 0 10px;display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.dx-b h3 small{font-size:.7rem;font-weight:600;letter-spacing:0;text-transform:none;color:var(--sub);text-align:right}
+.dx-b p{font-size:.84rem;margin:0 0 8px;color:var(--sub)}
+.dx-b p b,.dx-b p strong{color:var(--ink)}
+.dx-note{font-size:.78rem;color:var(--sub);background:var(--accent-soft);border-radius:10px;padding:8px 10px;margin-top:10px;line-height:1.4}
+.dx-note b{color:var(--ink)}
+.dx-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.dx-kpi{border-radius:12px;background:var(--accent-soft);padding:10px 12px;min-width:0}
+.dx-kpi b{display:block;font-size:1.45rem;font-weight:900;line-height:1.05;color:var(--accent);font-variant-numeric:tabular-nums}
+.dx-kpi span{display:block;font-size:.74rem;color:var(--sub);margin-top:3px;line-height:1.3}
+.dx-tw{overflow-x:auto}
+.dx-t{width:100%;border-collapse:collapse;font-size:.78rem;font-variant-numeric:tabular-nums}
+.dx-t th{text-align:left;font-size:.68rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--sub);padding:6px 8px;border-bottom:1.5px solid var(--line);white-space:nowrap}
+.dx-t td{padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.35}
+.dx-t tr:last-child td{border-bottom:0}
+.dx-t td.r,.dx-t th.r{text-align:right;white-space:nowrap}
+.dx-t tr.em td{font-weight:800;background:var(--accent-soft)}
+.dx-t tr.hl td{background:var(--ok-soft)}
+.dx-hb{display:grid;gap:7px}
+.dx-hr{display:grid;grid-template-columns:minmax(80px,32%) minmax(0,1fr) auto;gap:10px;align-items:center;font-size:.78rem}
+.dx-hr > span{line-height:1.2}
+.dx-hr > b{font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.dx-tr{position:relative;height:12px;background:var(--track);border-radius:4px}
+.dx-tr i{position:absolute;left:0;top:0;bottom:0;border-radius:0 4px 4px 0}
+.dx-tr u{position:absolute;top:-4px;bottom:-4px;border-left:2px dashed var(--ink);opacity:.55}
+.dx-vc{position:relative;display:flex;gap:10px;margin:22px 0 44px;border-bottom:1.5px solid var(--line)}
+.dx-col{position:relative;flex:1;height:100%;min-width:0}
+.dx-bar{position:absolute;left:12%;right:12%;border-radius:4px 4px 0 0;min-height:2px}
+.dx-bar em{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);margin-bottom:3px;font-style:normal;font-size:.72rem;font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink)}
+.dx-col > span{position:absolute;top:100%;left:-4px;right:-4px;margin-top:5px;text-align:center;font-size:.68rem;line-height:1.2;color:var(--sub)}
+.dx-z{position:absolute;left:0;right:0;border-top:1.5px solid var(--sub);opacity:.6}
+.dx-ref{position:absolute;left:0;right:0;border-top:2px dashed var(--ink);opacity:.5;z-index:2;pointer-events:none}
+.dx-ref span{position:absolute;right:0;bottom:2px;font-size:.66rem;font-weight:800}
+.dx-st{display:flex;gap:2px;height:22px;border-radius:5px;overflow:hidden}
+.dx-st i{display:grid;place-items:center;min-width:2px;font-style:normal}
+.dx-st i b{font-size:.68rem;color:#fff;font-weight:800}
+.dx-lg{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:7px;font-size:.74rem;color:var(--sub)}
+.dx-lg span{display:inline-flex;align-items:center;gap:5px}
+.dx-lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.dx-lg b{color:var(--ink)}
+.dx-sl{font-size:.7rem;font-weight:800;color:var(--sub);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px}
+.dx-sl:first-child{margin-top:0}
+.dx-db{display:grid;gap:8px}
+.dx-dr{display:grid;grid-template-columns:minmax(90px,38%) minmax(0,1fr) 66px;gap:10px;align-items:center;font-size:.76rem}
+.dx-dt{position:relative;height:12px}
+.dx-dt::before{content:"";position:absolute;left:0;right:0;top:5px;height:2px;background:var(--track)}
+.dx-dt s{position:absolute;top:5px;height:2px;background:var(--sub)}
+.dx-dt i{position:absolute;top:0;width:12px;height:12px;margin-left:-6px;border-radius:50%;box-shadow:0 0 0 2px var(--panel)}
+.dx-dt i.a{background:var(--c4);border-radius:2px}
+.dx-dt i.b{background:var(--c1)}
+.dx-dr b{text-align:right;font-variant-numeric:tabular-nums}
+.dx-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.dx-card{border:1px solid var(--line);border-radius:12px;padding:11px;min-width:0;background:var(--panel)}
+.dx-card .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:.7rem;font-weight:900;margin-bottom:6px}
+.dx-card h4{margin:0 0 4px;font-size:.86rem;font-weight:800;line-height:1.25}
+.dx-card .big{display:block;font-size:1.3rem;font-weight:900;color:var(--accent);line-height:1.1;margin:2px 0 4px;font-variant-numeric:tabular-nums}
+.dx-card p{font-size:.76rem;margin:0 0 5px;color:var(--sub);line-height:1.4}
+.dx-card p b{color:var(--ink)}
+.dx-card .ft{font-size:.7rem;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 7px;display:inline-block;margin-top:2px}
+.dx-card.hi{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.dx-q{font-size:.82rem;font-style:italic;border-left:3px solid var(--accent);padding:4px 0 4px 10px;margin:0 0 10px;line-height:1.45}
+.dx-q:last-child{margin-bottom:0}
+.dx-q cite{display:block;font-style:normal;font-size:.72rem;color:var(--sub);margin-top:3px}
+.dx-ul{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:.8rem}
+.dx-ul li{display:grid;grid-template-columns:16px 1fr;gap:6px;line-height:1.4}
+.dx-ul li::before{content:"✓";color:var(--ok);font-weight:900}
+.dx-ul.x li::before{content:"✕";color:var(--bad)}
+.dx-ul.n li::before{content:"›";color:var(--accent)}
+.dx-pill{display:inline-block;border-radius:999px;padding:1px 8px;font-size:.68rem;font-weight:800;white-space:nowrap}
+.dx-pill.ok{background:var(--ok-soft);color:var(--ok)} .dx-pill.wa{background:var(--warn-soft);color:var(--warn)} .dx-pill.no{background:var(--bad-soft);color:var(--bad)} .dx-pill.ac{background:var(--accent-soft);color:var(--accent)}
+.hv{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--c1);vertical-align:-2px;margin-right:4px;flex:none}
+.hv.f{background:var(--c1)} .hv.h{background:linear-gradient(90deg,var(--c1) 50%,transparent 50%)}
+.dx-hm{display:grid;grid-template-columns:22px repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(64px,auto)) auto;gap:4px;font-size:.74rem}
+.dx-hm .ax{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;font-size:.64rem;font-weight:800;color:var(--sub);letter-spacing:.06em}
+.dx-hm .cx{text-align:center;font-size:.64rem;font-weight:800;color:var(--sub);letter-spacing:.06em}
+.dx-hm .c{border-radius:8px;padding:6px;display:flex;flex-wrap:wrap;gap:4px;align-content:flex-start}
+.dx-hm .c b{background:var(--panel);border-radius:6px;padding:2px 6px;font-size:.7rem;font-weight:700;border:1px solid var(--line);color:var(--ink)}
+.dx-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.dx-flow > div{position:relative;border-radius:12px;padding:10px;background:var(--accent-soft);min-width:0}
+.dx-flow > div b{display:block;font-size:.84rem;margin-bottom:3px}
+.dx-flow > div small{display:block;font-size:.66rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+.dx-flow > div p{font-size:.74rem;margin:0 0 4px;color:var(--sub);line-height:1.4}
+.dx-flow > div em{display:inline-block;margin-top:4px;font-style:normal;font-size:.7rem;font-weight:800;background:var(--panel);border-radius:6px;padding:2px 7px}
+.dx-chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:.74rem;color:var(--sub)}
+.dx-chain span{background:var(--track);border-radius:8px;padding:5px 9px;font-variant-numeric:tabular-nums}
+.dx-chain span b{display:block;font-size:.95rem;color:var(--ink)}
+.dx-chain i{font-style:normal;color:var(--sub);font-weight:800}
+.dx-chain span.end{background:var(--accent);color:#fff}
+.dx-chain span.end b{color:#fff}
+.dx-svg{width:100%;height:auto;display:block;overflow:visible}
+.dx-svg text{font-family:var(--font);fill:var(--sub);font-size:11px}
+.dx-svg .ink{fill:var(--ink);font-weight:800}
+.dx-foot{flex:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 22px;background:var(--panel);border-top:1px solid var(--line);font-size:.72rem;color:var(--sub)}
+.dx-foot .pn{display:flex;gap:8px;flex:none}
+.dx-foot button{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-size:.8rem;font-weight:700;color:var(--ink)}
+.dx-foot button:hover{border-color:var(--accent)}
+.dx-foot button[disabled]{opacity:.4;cursor:default}
+.dx-tip{position:fixed;z-index:200;pointer-events:none;background:var(--hq);color:#fff;font-size:.74rem;font-weight:600;padding:6px 9px;border-radius:8px;max-width:260px;box-shadow:0 6px 18px rgba(0,0,0,.25);line-height:1.35}
+.dx-tip[hidden]{display:none}
+@media(max-width:760px){.dx-modal{padding:0}.dx-sheet{height:100vh;border-radius:0}.dx-grid{grid-template-columns:minmax(0,1fr)}.dx-head,.dx-nav,.dx-main,.dx-foot{padding-inline:16px}.dx-head h2{font-size:1.2rem}.dx-so{grid-template-columns:1fr;gap:4px}.dx-foot .src{display:none}}
+/* ---------------- original deck viewer ---------------- */
+.pv{position:fixed;inset:0;z-index:150;background:#0D0A12;display:flex;flex-direction:column;color:#fff}
+.pv[hidden]{display:none}
+.pv-stage{flex:1;min-height:0;display:grid;place-items:center;padding:16px 16px 0;position:relative}
+.pv-frame{position:relative;width:min(100%,calc((100vh - 84px) * 16 / 9));aspect-ratio:16 / 9;background:#1B1622;border-radius:6px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.pv-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.pv-frame a{position:absolute;border-radius:4px;z-index:2}
+.pv-frame a:hover,.pv-frame a:focus-visible{background:rgba(255,197,49,.25);outline:2px solid #FFC531}
+.pv-nav{position:absolute;top:0;bottom:0;width:22%;border:0;background:transparent;z-index:1;padding:0}
+.pv-nav.l{left:0;cursor:w-resize} .pv-nav.r{right:0;cursor:e-resize}
+.pv-bar{flex:none;height:68px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;font-size:.84rem}
+.pv-bar .t{color:#CFC6DD;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pv-bar .t b{color:#fff}
+.pv-bar .c{display:flex;gap:8px;align-items:center;flex:none}
+.pv-bar button{border:1.5px solid #3A3248;background:#1F1A28;color:#fff;border-radius:999px;padding:7px 14px;font-size:.82rem;font-weight:700}
+.pv-bar button:hover{border-color:#E07ACB}
+.pv-bar button[disabled]{opacity:.35;cursor:default}
+.pv-bar .n{font-variant-numeric:tabular-nums;color:#CFC6DD;min-width:62px;text-align:center}
+.pv-prog{flex:none;height:3px;background:#2A2333}
+.pv-prog i{display:block;height:100%;background:#E07ACB;transition:width .25s}
+.dx-orig{margin-top:8px;border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:4px 12px;font-size:.76rem;font-weight:700;color:var(--accent)}
+.dx-orig:hover{border-color:var(--accent)}
+@media(max-width:760px){.pv-bar{padding:0 10px}.pv-bar .t{display:none}.pv-bar .x span{display:none}}
+
+/* desktop: the whole stage fits one screen; side rails scroll on their own if they run long */
+@media (min-width:1181px){
+  body{margin:0}
+  .stage{height:100vh;height:100dvh;padding-block:14px;grid-template-rows:minmax(0,1fr);align-items:stretch}
+  .rail{overflow-y:auto;overscroll-behavior:contain;align-content:start;padding-right:4px;margin-right:-4px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .rail.left{padding:0 4px 0 0}
+  .phonewrap{align-self:center}
+}
+.teaser-mini-note{display:none}
+
 @media (max-width:1180px){
   .stage{grid-template-columns:minmax(0,1fr) auto}
   .rail.right{grid-column:1 / -1;grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -422,7 +597,7 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
   .teaser-mini{width:min(390px,calc(100vw - 32px));margin:14px auto 0}
 }
 @media (max-width:430px){
-  .phone{width:calc(100vw - 32px);height:760px;border-radius:44px;padding:9px}
+  .phone{width:calc(100vw - 32px);height:min(760px,calc(100dvh - 24px));border-radius:44px;padding:9px}
   .scr{border-radius:36px}
 }
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -458,15 +633,9 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
       <div class="row" style="display:flex;justify-content:space-between;align-items:center"><div class="lab">Demo path</div><button class="rbtn" id="reset" type="button">Reset demo</button></div>
       <ol class="steps" id="steps"></ol>
     </div>
-    <div class="teaser-mini" id="teaserMini" hidden aria-label="Watch the solution overview again">
-      <div class="teaser-mini-head">
-        <b>Solution overview · 1:43</b>
-        <button class="teaser-mini-link" id="teaserMiniLink" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Watch full-size</button>
-      </div>
-      <div class="vp vp--compact" id="teaserMiniPlayer" tabindex="0" aria-label="Solution overview video player">
-        <video id="teaserMiniVideo" playsinline preload="metadata" src="Moshi_Moshi_BTN_Teaser_1min43.mp4#t=5"></video>
-      </div>
-      <p class="teaser-mini-note">Click the video to play.</p>
+    <div class="rcard">
+      <div class="lab">Money on every arrow · live</div>
+      <div class="ledger" id="ledger"></div>
     </div>
   </aside>
 
@@ -481,13 +650,38 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
       <div class="deck" id="deckB"></div>
     </div>
     <div class="rcard">
-      <div class="lab">Money on every arrow · live</div>
-      <div class="ledger" id="ledger"></div>
+      <div class="dx-deckh"><div class="lab">Round 2 deck · slides</div><button class="dx-all" type="button" data-pv="1">▶ Present deck</button></div>
+      <div class="dx-tiles" id="dxTiles"></div>
+    </div>
+    <div class="teaser-mini" id="teaserMini" hidden aria-label="Watch the solution overview again">
+      <div class="teaser-mini-head">
+        <b>Solution overview · 1:43</b>
+        <button class="teaser-mini-link" id="teaserMiniLink" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Watch full-size</button>
+      </div>
+      <div class="vp vp--compact" id="teaserMiniPlayer" tabindex="0" aria-label="Solution overview video player">
+        <video id="teaserMiniVideo" playsinline preload="metadata" src="Moshi_Moshi_BTN_Teaser_1min43.mp4#t=5"></video>
+      </div>
+      <p class="teaser-mini-note">Click the video to play.</p>
     </div>
     <div class="rcard foot">Prices, costs, pilot gates and the FY27–31 business case come from our Round 2 deck. Segment sizes, response mixes, ratings and the 90-day lift are illustrative until the pilot measures them. Interface inspired by the Meesho app; not an official Meesho product.</div>
   </aside>
 </div>
 
+<div class="dx-modal" id="dxModal" hidden>
+  <section class="dx-sheet" role="dialog" aria-modal="true" aria-labelledby="dxTitle">
+    <div class="dx-head"><div><div class="k" id="dxKick"></div><h2 id="dxTitle"></h2><p id="dxSub"></p><button class="dx-orig" type="button" id="dxOrig">▶ View the original slide</button></div><button class="dx-x" id="dxClose" type="button" aria-label="Close deck explorer">×</button></div>
+    <nav class="dx-nav" id="dxNav" aria-label="Deck sections"></nav>
+    <div class="dx-main" id="dxMain"></div>
+    <div class="dx-foot"><span class="src" id="dxSrc"></span><span class="pn"><button type="button" id="dxPrev">‹ Prev</button><button type="button" id="dxNext">Next ›</button></span></div>
+  </section>
+</div>
+<div class="dx-tip" id="dxTip" hidden></div>
+<div class="peek" id="peek" hidden aria-hidden="true"><img id="peekImg" alt=""><div class="pk-b"><div class="pk-k" id="peekK"></div><b id="peekT"></b><p class="pk-l" id="peekL"></p><p class="pk-s" id="peekS"></p><div class="pk-f">Click to open this slide · ← → to keep going</div></div></div>
+<div class="pv" id="pv" hidden role="dialog" aria-modal="true" aria-label="Round 2 deck">
+  <div class="pv-stage"><div class="pv-frame" id="pvFrame"><img id="pvImg" alt=""><button class="pv-nav l" type="button" id="pvL" aria-label="Previous slide"></button><button class="pv-nav r" type="button" id="pvR" aria-label="Next slide"></button><span id="pvLinks"></span></div></div>
+  <div class="pv-bar"><span class="t" id="pvT"></span><span class="c"><button type="button" id="pvPrev">‹</button><span class="n" id="pvN"></span><button type="button" id="pvNext">›</button><button type="button" id="pvFs">Full screen</button><button type="button" id="pvMore">In depth</button><button type="button" class="x" id="pvX">✕<span> Close</span></button></span></div>
+  <div class="pv-prog"><i id="pvP"></i></div>
+</div>
 <script>
 (function(){
 "use strict";
@@ -1336,7 +1530,7 @@ var DECK={
 };
 function rails(){
   var key=(S.app||'home')+':'+(S.app?cur(S.app):''), d=DECK[key]||DECK['home:'];
-  $('deckH').textContent=d[0]; $('deckB').innerHTML=esc(d[1])+'<br><span class="src">'+d[2]+'</span>';
+  $('deckH').textContent=d[0]; var sn=(d[2].match(/\d\d/)||['01'])[0]; $('deckB').innerHTML=esc(d[1])+'<br><button type="button" class="src" data-dx="'+sn+'" title="Open slide '+sn+' in depth">'+d[2]+' ›</button>';
   var dl=delivered(), pr=curPrice(), cn=contr(pr);
   $('ledger').innerHTML='<div class="lrow"><span>Brand pays Meesho</span><b>'+inr(dl*pr)+'</b></div><div class="lrow"><span>Seller pays</span><b class="z">₹0</b></div><div class="lrow"><span>Buyer pays</span><b class="z">₹0 · +₹15 off</b></div><div class="lrow"><span>Valmo insertion work</span><b>'+inr(dl*insCost())+'</b></div><div class="lrow"><span>Meesho keeps</span><b>'+inr(dl*cn)+'</b></div><div class="lrow"><span>Verified answers to brand</span><b>'+num(answers())+'</b></div>';
   $('applist').innerHTML=APPS.map(function(a,i){var dn=progress()[i];return '<button class="appbtn" data-open="'+a.id+'" aria-current="'+(S.app===a.id)+'"><span class="ai" style="background:'+a.bg+';border:1px solid var(--line)">'+a.glyph.replace(/font-size:\d+px/,'font-size:'+(a.id==='hub'?11:18)+'px')+'</span><span><b>'+a.nm+' · '+a.role+'</b><span>'+a.desc+'</span></span><span class="done"'+(dn?'':' hidden')+'>✓</span></button>'}).join('');
@@ -1412,5 +1606,382 @@ $('reset').addEventListener('click',function(){S=fresh();render()});
 
 render();
 })();
+</script>
+<script>
+/* ================= deck explorer: every slide of the Round 2 deck, in depth, beside the phone ================= */
+(function(){
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function strip(s){return String(s).replace(/<[^>]+>/g,'')}
+
+/* ---------- building blocks ---------- */
+function blk(t,body,o){o=o||{};return '<div class="dx-b'+(o.w?' w':'')+'">'+(t?'<h3><span>'+t+'</span>'+(o.s?'<small>'+o.s+'</small>':'')+'</h3>':'')+body+'</div>'}
+function kpis(a){return '<div class="dx-kpis">'+a.map(function(k){return '<div class="dx-kpi"><b>'+k[0]+'</b><span>'+k[1]+'</span></div>'}).join('')+'</div>'}
+function note(h){return '<div class="dx-note">'+h+'</div>'}
+function sl(t){return '<div class="dx-sl">'+t+'</div>'}
+function ul(a,c){return '<ul class="dx-ul'+(c?' '+c:'')+'">'+a.map(function(x){return '<li><span>'+x+'</span></li>'}).join('')+'</ul>'}
+function pill(t,c){return '<span class="dx-pill '+(c||'ac')+'">'+t+'</span>'}
+function conf(t){var c=/^HIGH/.test(t)?'ok':/^MED/.test(t)?'wa':'no';return pill(t,c)}
+/* table: head cells ending in '>' are right-aligned; o.em / o.hl = row indexes to emphasise */
+function tbl(head,rows,o){o=o||{};var R=head.map(function(h){return /\>$/.test(h)&&!/<[^>]*>$/.test(h)});
+  return '<div class="dx-tw"><table class="dx-t"><thead><tr>'+head.map(function(h,i){return '<th'+(R[i]?' class="r"':'')+'>'+(R[i]?h.slice(0,-1):h)+'</th>'}).join('')+'</tr></thead><tbody>'+
+  rows.map(function(r,j){return '<tr'+((o.em||[]).indexOf(j)>-1?' class="em"':(o.hl||[]).indexOf(j)>-1?' class="hl"':'')+'>'+r.map(function(c,i){return '<td'+(R[i]?' class="r"':'')+'>'+c+'</td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div>'}
+/* horizontal bars: [label, value, shown, colour token, tooltip] */
+function hbars(rows,o){o=o||{};var m=o.max||Math.max.apply(0,rows.map(function(r){return r[1]}));
+  return '<div class="dx-hb">'+rows.map(function(r){var w=Math.max(1,r[1]/m*100);
+    return '<div class="dx-hr" data-tip="'+esc(r[4]||strip(r[0])+': '+strip(r[2]))+'"><span>'+r[0]+'</span><div class="dx-tr"><i style="width:'+w+'%;background:var(--'+(r[3]||'c1')+')"></i>'+(o.ref!=null?'<u style="left:'+(o.ref/m*100)+'%"></u>':'')+'</div><b>'+r[2]+'</b></div>'}).join('')+'</div>'}
+/* columns (supports floating bars for waterfalls): [label, from, to, shown, colour token, tooltip] */
+function cols(rows,o){o=o||{};var mn=o.min||0,mx=o.max,rg=mx-mn,H=o.h||170;
+  return '<div class="dx-vc" style="height:'+H+'px">'+(mn<0?'<div class="dx-z" style="bottom:'+(-mn/rg*100)+'%"></div>':'')+
+  (o.ref!=null?'<div class="dx-ref" style="bottom:'+((o.ref-mn)/rg*100)+'%"><span>'+o.refl+'</span></div>':'')+
+  rows.map(function(r){var lo=Math.min(r[1],r[2]),hi=Math.max(r[1],r[2]);
+    return '<div class="dx-col" data-tip="'+esc(r[5]||strip(r[0])+': '+strip(r[3]))+'"><div class="dx-bar" style="bottom:'+((lo-mn)/rg*100)+'%;height:'+Math.max(.8,(hi-lo)/rg*100)+'%;background:var(--'+(r[4]||'c1')+')"><em>'+r[3]+'</em></div><span>'+r[0]+'</span></div>'}).join('')+'</div>'}
+/* 100% stacked bar: [label, pct, colour token] */
+function stack(segs){return '<div class="dx-st">'+segs.map(function(s){return '<i style="flex:'+s[1]+';background:var(--'+s[2]+')" data-tip="'+esc(s[0]+': '+s[1]+'%')+'">'+(s[1]>=12&&s[2]!=='cn'?'<b>'+s[1]+'%</b>':'')+'</i>'}).join('')+'</div>'+
+  '<div class="dx-lg">'+segs.map(function(s){return '<span><i style="background:var(--'+s[2]+')"></i>'+s[0]+' <b>'+s[1]+'%</b></span>'}).join('')+'</div>'}
+/* dumbbell: [label, metro, non-metro] */
+function dumb(rows){return '<div class="dx-lg" style="margin:0 0 8px"><span><i style="background:var(--c4)"></i>Metro (n = 23)</span><span><i style="background:var(--c1);border-radius:50%"></i>Non-metro (n = 39)</span></div><div class="dx-db">'+rows.map(function(r){var a=r[1],b=r[2];
+  return '<div class="dx-dr" data-tip="'+esc(r[0]+': metro '+a+'%, non-metro '+b+'%')+'"><span>'+r[0]+'</span><div class="dx-dt"><s style="left:'+Math.min(a,b)+'%;width:'+Math.abs(b-a)+'%"></s><i class="a" style="left:'+a+'%"></i><i class="b" style="left:'+b+'%"></i></div><b>'+a+' → '+b+'%</b></div>'}).join('')+'</div>'}
+function cards(a){return '<div class="dx-cards">'+a.map(function(c){return '<div class="dx-card'+(c.hi?' hi':'')+'">'+(c.n?'<span class="n">'+c.n+'</span>':'')+'<h4>'+c.t+'</h4>'+(c.big?'<span class="big">'+c.big+'</span>':'')+(c.b||'')+(c.f?'<span class="ft">'+c.f+'</span>':'')+'</div>'}).join('')+'</div>'}
+function flow(a){return '<div class="dx-flow">'+a.map(function(x){return '<div><small>'+x[0]+'</small><b>'+x[1]+'</b><p>'+x[2]+'</p>'+(x[3]?'<em>'+x[3]+'</em>':'')+'</div>'}).join('')+'</div>'}
+function chain(a){return '<div class="dx-chain">'+a.map(function(x,i){return (x==='×'||x==='÷'||x==='='||x==='→'||x==='+')?'<i>'+x+'</i>':'<span'+(i===a.length-1?' class="end"':'')+'>'+x+'</span>'}).join('')+'</div>'}
+function q(t,c){return '<p class="dx-q">“'+t+'”<cite>'+c+'</cite></p>'}
+function hv(v){return '<span class="hv'+(v===1?' f':v===.5?' h':'')+'"></span>'}
+
+/* cumulative EBITDA line (slide 08) */
+function ebitdaLine(){var P=[['FY27',-12],['FY28 Q1',-19],['FY28',71],['FY29',351],['FY30',734],['FY31',1258]],W=520,H=190,l=40,r=16,t=18,b=28,mn=-100,mx=1300;
+  function x(i){return l+i*(W-l-r)/(P.length-1)} function y(v){return t+(mx-v)/(mx-mn)*(H-t-b)}
+  var s='<svg class="dx-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Cumulative EBITDA, FY27 to FY31: trough of minus 19 crore in early FY28, 1,258 crore by FY31">';
+  [0,500,1000].forEach(function(v){s+='<line x1="'+l+'" x2="'+(W-r)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)" '+(v?'':'stroke-width="1.5" stroke="var(--sub)"')+'/><text x="'+(l-6)+'" y="'+(y(v)+4)+'" text-anchor="end">'+(v?'₹'+v.toLocaleString('en-IN'):'0')+'</text>'});
+  s+='<polyline fill="none" stroke="var(--c1)" stroke-width="2.5" stroke-linejoin="round" points="'+P.map(function(p,i){return x(i)+','+y(p[1])}).join(' ')+'"/>';
+  P.forEach(function(p,i){var pk=i===1;s+='<g data-tip="'+esc(p[0]+': cumulative EBITDA ₹'+p[1].toLocaleString('en-IN')+' Cr'+(pk?' (peak investment)':''))+'"><circle cx="'+x(i)+'" cy="'+y(p[1])+'" r="14" fill="transparent"/><circle cx="'+x(i)+'" cy="'+y(p[1])+'" r="'+(pk?5:4)+'" fill="var(--'+(pk?'c3':'c1')+')" stroke="var(--panel)" stroke-width="2"/></g><text x="'+x(i)+'" y="'+(H-8)+'" text-anchor="middle">'+p[0]+'</text>'});
+  s+='<text class="ink" x="'+(x(1)+8)+'" y="'+(y(-19)+16)+'">peak −₹19 Cr</text><text class="ink" x="'+(x(5)-6)+'" y="'+(y(1258)-10)+'" text-anchor="end">₹1,258 Cr</text></svg>';return s}
+
+/* return-rate delta on a log axis (slide 09) */
+function returnsLog(){var W=520,H=118,l=20,r=20,mn=Math.log10(.05),mx=Math.log10(20);function x(v){return l+(Math.log10(v)-mn)/(mx-mn)*(W-l-r)}
+  var M=[[.1,'Expected','+0.10 pp · ₹0.07 / trial','c2'],[.3,'Kill line','+0.30 pp · hub stops','c3'],[.5,'Reserve','+0.50 pp · ₹0.35 / trial','c4'],[10,'Break-even','+10 pp · ₹6.98 ÷ ₹70','c1']];
+  var s='<svg class="dx-svg" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Return-rate delta versus holdout on a log scale: expected 0.10, kill line 0.30, reserve 0.50, break-even 10 percentage points"><line x1="'+l+'" x2="'+(W-r)+'" y1="46" y2="46" stroke="var(--line)" stroke-width="6" stroke-linecap="round"/>';
+  [.1,1,10].forEach(function(v){s+='<text x="'+x(v)+'" y="'+(H-2)+'" text-anchor="middle">'+v+' pp</text>'});
+  M.forEach(function(m,i){var X=x(m[0]),up=i%2===0;s+='<g data-tip="'+esc(m[1]+': '+m[2])+'"><line x1="'+X+'" x2="'+X+'" y1="'+(up?20:46)+'" y2="'+(up?46:72)+'" stroke="var(--sub)"/><circle cx="'+X+'" cy="46" r="7" fill="var(--'+m[3]+')" stroke="var(--panel)" stroke-width="2"/></g><text class="ink" x="'+X+'" y="'+(up?14:86)+'" text-anchor="'+(i===3?'end':'middle')+'">'+m[1]+' '+m[2].split(' · ')[0]+'</text>'});
+  return s+'</svg>'}
+
+/* ---------- the deck ---------- */
+var S=[
+{n:'01',nav:'Summary',tile:'Executive summary',line:'₹650 Cr run-rate ≈ 1% of NMV',title:'Executive Summary',sub:'What it is worth · the problem that blocks it · how we unblock it',
+ so:'Brands spend <strong>~₹5,400 Cr a year</strong> sampling and testing new products in India and learn almost nothing back. Meesho can sell the missing feedback loop: a <strong>₹650 Cr run-rate by end-FY28 ≈ 1% of NMV</strong>, at <strong>60% lower cost per launch</strong>, with zero commission untouched.',
+ body:function(){return blk('',kpis([['₹650 Cr','exit-FY28 run-rate'],['≈ 1%','of FY28 NMV (₹65,000 Cr at 25% CAGR)'],['60%','cheaper per product launch'],['200×','more feedback per launch'],['₹108','per verified answer (vs ₹54,000)'],['₹0 · ₹0','seller pays · buyer pays']]),{w:1})+
+ blk('Triangulated three independent ways',hbars([['Demand<br><small>trial & testing SAM × 15%</small>',608,'₹608 Cr','c1'],['Users<br><small>331 Mn ATU × 50% opt-in × 3 × ₹13</small>',646,'₹646 Cr','c1'],['Supply<br><small>4.5 Bn parcels × 11% × ₹13</small>',644,'₹644 Cr','c1']],{max:700,ref:650})+note('Dashed line = ₹650 Cr (1% of FY28 NMV). Three routes land within 6% of each other.'),{s:'FY28'})+
+ blk('What it is worth',tbl(['Driver','Value>'],[['Closed-loop trials a year at exit','500 Mn'],['Blended price per delivered trial','₹13'],['Contribution per trial','₹6.63 (51%)'],['Exit-FY28 run-rate','₹650 Cr'],['FY29 full year','≈ ₹800 Cr (0.99% NMV)']],{em:[3]})+note('Every answer re-targets the next campaign: <b>the loop compounds.</b>'))+
+ blk('Who is allowed to pay?',tbl(['Payer','₹416 Cr ÷','Each pays>','Verdict'],[['Every Meesho seller','5.75 L sellers','₹7,200','<span class="dx-pill no">✕ a commission renamed</span><br><small>1.24% of a ₹5.8 L seller’s NMV</small>'],['Every buyer / year','264 Mn buyers','₹16','<span class="dx-pill no">✕ hurts affordability</span>'],['Every parcel','2.67 Bn parcels','₹1.56','<span class="dx-pill wa">✓ anything worth ₹2 a parcel clears the bar</span>'],['A brand outside Meesho','~1,000 campaigns','₹42 L','<span class="dx-pill ok">✓ open door: one launch’s sampling line</span>']],{hl:[3]})+
+   note('1% of FY26 NMV = ₹416 Cr. Zero commission is a <b>mathematical constraint on who the customer may be</b>: the only payer who clears it without touching seller fees or buyer prices is a brand buying something Meesho uniquely has: a parcel already at the door, and a way to hear back.'),{w:1})+
+ blk('Value exchange · the deal for every stakeholder',cards([{t:'Brand (payer)',b:'<p><b>Gives</b> ₹13 / trial from its BTL budget.</p><p><b>Gets</b> a chosen household, her answer in 7 days, her purchase at 90 days. 60% cheaper per launch.</p>',hi:1},{t:'Buyer',b:'<p><b>Gives</b> 3 answers, opt-in only.</p><p><b>Gets</b> a free product she’d never be offered + ₹15 off her next order. Pays ₹0.</p>'},{t:'Seller',b:'<p><b>Gives</b> nothing; sample weight never billed to his slab.</p><p><b>Phase 2:</b> earns ₹3 a parcel for inserting. Pays ₹0.</p>'},{t:'Meesho',b:'<p><b>Keeps</b> ₹6.63 / trial, a new budget pool (BTL) and India’s largest opted-in feedback panel.</p><p>~₹0.73 / parcel to reinvest in shipping subsidy.</p>'}])+note('Money moves one way: <b>Brand → Meesho</b>. Seller and buyer never pay; the buyer is the only party who receives something for free.'),{w:1})+
+ blk('The brief, answered in one line each',tbl(['The question','Our answer'],[['What unmet need?','Brands sample Bharat but get no feedback: no identity, response or purchase signal, and Tier 3-4 barely reached'],['Is it real? Who did we ask?','62 buyers surveyed, 4 recorded interviews (buyers, brand, seller): 79% welcome a sample, 84% would answer'],['How big is it?','₹5,378 Cr of trial & testing spend in 7 categories → ₹608–646 Cr ≈ 1% of NMV, cross-checked 3 ways'],['What is offered, how does it earn?','Closed-loop trial sold to brands at ₹9 / ₹13 / ₹16 per delivered trial; seller and buyer pay ₹0'],['Can it physically run?','Brand-funded inbound, 5 costed packing options on trial, and flag-the-order matching at the hub'],['What does it deliver?','60% cheaper per launch, 200× the feedback, ₹6.63 contribution per trial'],['Who pays, and does it pay back?','FMCG, D2C & SME brands; ₹19 Cr peak investment, payback by month 13, ~1% NMV from FY29'],['What isn’t solved yet?','5 gaps priced (₹410 Cr at stake), returns modelled both ways, guardrails for buyers & sellers'],['How do we test it?','₹46 L, 90-day pilot in Eastern UP & Bihar, with a kill line at every gate']]),{w:1})+
+ blk('The thesis, in one line','<p style="font-size:1rem;color:var(--ink);margin:0">Meesho walks into <b>264 million</b> Bharat homes <b>2.67 billion</b> times a year and uses that moment only to hand over a box. Brands spend <b>~₹5,400 Cr</b> a year trying to put a product in those hands and still cannot hear back. <b>Meesho can sell them both halves.</b></p>',{w:1})},
+ src:'Meesho FY26 annual report & investor material; NielsenIQ India FMCG launch tracker; team survey n = 62, 4 interviews.'},
+
+{n:'02',nav:'Problem',tile:'The problem',line:'0 of 5 L sampled homes ever heard from',title:'The Problem: No Feedback Loop',sub:'Brands pay to put a product in Bharat’s hand, and hear nothing back',
+ so:'The feedback loop does not exist. A promoter hands a sachet to a household and the brand learns nothing: not who got it, not whether she liked it, not whether she bought. And the households brands most want to learn from, <strong>Tier 3 and 4</strong>, are the ones they reach least.',
+ body:function(){return blk('Today’s sampling journey: a one-way street',flow([['1 · Plan','Brand team','Activation manager gets a launch line from BTL budget; picks districts, not people.','Spent ₹1.6 Cr · learns a budget'],['2 · Book','BTL agency','Agency books promoter-days where footfall is highest: malls, mandis, melas.','+10–15% fee · learns a location list'],['3 · Hand out','Promoter at haat / mall','Sachet handed to whoever walks past; promoter fills a count sheet.','₹25–40 / contact · learns a headcount'],['4 · Try','Household','Uses it (or not). Nobody asks what she thought. Her name is never known.','₹0 to her · learns nothing'],['5 · Learn?','Brand team','Waits 3–6 months for district sales; cannot separate sampling from TV, price, season.','₹2–3 L for a 300-person HUT · a guess']])+
+   note('<b>The break:</b> the arrow from step 4 back to step 1 does not exist. No response → no identity → no purchase signal. Brand confidence falls from “this launch will work” to “₹40 a contact in Tier-3?” to “did they reach our buyer?” to “worth it?”. Every launch starts as blind as the last.'),{w:1,s:'One ₹1.6 Cr launch, 5 lakh sachets'})+
+ blk('The cost of not knowing',kpis([['₹54,000','cost per learned household (₹1.62 Cr ÷ 300 HUT answers)'],['0 of 5 L','sampled households heard from'],['5–25%','claimed conversion: survey-based, unmeasured']])+note('“In-store sampling is a $2 Bn channel in the US and nobody agrees on how to measure it.” If the most mature market can’t close the loop, Bharat’s promoters certainly can’t.'))+
+ blk('The feedback gap · need vs what exists',tbl(['What the brand needs','What it gets today','Status'],[['Who received it (PIN, profile, spend)','A location and a headcount',pill('NONE','no')],['Did she use it / like it?','Never asked',pill('NONE','no')],['Did she buy the full size?','District sales, 3–6 months late, confounded',pill('~ PROXY','wa')],['Which segment converts best?','Unknowable: no identity',pill('NONE','no')],['Why she didn’t buy (price, smell, pack)?','A 300-person home-use test, metro-skewed, 6–8 weeks',pill('~ TINY n','wa')],['Can I reach her again?','No, the promoter moved on',pill('NONE','no')]]))+
+ blk('Coverage misses Tier 3-4 · cost per contact',cols([['Metro mall',0,15,'₹15','cn','Metro mall: ₹3,000 promoter-day ÷ 200 contacts = ₹15'],['Tier-2 market',0,20,'₹20','cn','Tier-2: ₹3,000 ÷ 150 contacts = ₹20'],['Tier-3 haat',0,30,'₹30','cn','Tier-3 haat: ₹3,000 ÷ 100 = ₹30 (brand quote ₹28–32)'],['Tier-4 village',0,40,'₹40','cn','Tier-4: ₹3,600 incl. travel ÷ 90 = ₹40'],['Meesho parcel',0,13,'₹13','c1','Meesho parcel, any PIN: already at the door, ₹13 incl. feedback']],{max:45,h:150})+
+   tbl(['Where','₹ / promoter-day>','Contacts / day>','₹ / contact>'],[['Metro mall','3,000','200','15'],['Tier-2 market','3,000','150','20'],['Tier-3 haat','3,000','100','30'],['Tier-4 village + travel','3,600','90','40'],['Meesho parcel, any PIN','already at door','—','13']],{hl:[4]})+note('Cost per contact = promoter-day ÷ footfall. The day costs the same everywhere; footfall does not. A Tier-4 contact costs <b>2.7×</b> a metro one; a Meesho parcel is cheaper than all of them.'),{s:'Promoter-day economics'})+
+ blk('Root cause · 5 whys',tbl(['','Why?','Because'],[['1','Why can’t the brand tell if sampling worked?','It never learns who got the sample.'],['2','Why doesn’t it learn who?','Promoters hand sachets to passers-by, not to named households.'],['3','Why passers-by?','A promoter can only stand where footfall is; he can’t pick a person, or come back to her.'],['4','Why can’t anyone pick her and come back?','That needs a doorstep visit AND a relationship with the household at the same time.'],['5','Why does no one have both?','Delivery firms own the doorstep but not the customer; ad platforms own the customer but not the doorstep.']])+
+   note('<b>Root cause:</b> the loop needs one player with a physical hand-over AND a re-contactable, consenting customer. Meesho is the only one at Bharat scale: 2.67 Bn parcels a year, each tied to a known buyer and purchase history.'))+
+ blk('Jobs-to-be-done · who feels the gap',q('When I launch in Tier-3, I want to put the product in the right households and know what they thought and bought, so I can defend next quarter’s budget.','Activation manager (payer)')+q('When a new brand appears, I want to try before I spend my ₹120, without being tricked or spammed, and to say no if I don’t want it.','Bharat household')+q('When I pack orders, I want nothing that adds cost, weight or work to my parcel, unless it pays me.','Meesho seller · the reason the seller stays out of the chain'))+
+ blk('Why now',kpis([['1.8×','FMCG launches YoY (NIQ)'],['4%','of launches reach 1% penetration'],['May ’27','DPDP: data must be opt-in'],['₹0','of BTL spend reaches e-commerce']])+q('Har quarter sampling budget banta hai par hisaab nahi milta.','Hair & cosmetics manufacturer, brand interview'),{w:1})},
+ src:'Team promoter cost build-up (5 promoters × 10 days, ₹1.5 L, ~10,000 contacts); brand interview; NielsenIQ India; In-Kluso Ground; DPDP Act 2023. Tier-2/4 footfall are team assumptions.'},
+
+{n:'03',nav:'Research',tile:'Voice of Bharat',line:'79% welcome a sample · 84% would answer',title:'Voice of Bharat: Would They Pay?',sub:'4 recorded interviews · 62 survey responses · secondary research on sampling models',
+ so:'Buyers want the sample (<strong>79% positive</strong>) and will answer for it (<strong>84% would or might scan</strong>). Their worries (leakage, unknown brands, “how did they know?”) become design rules, not deal-breakers. The brand will pay at ₹13 and the seller pays nothing.',
+ body:function(){return blk('Research design · methods & coverage',kpis([['62','buyer survey responses (Sep 2026, 63% non-metro)'],['4','in-depth recorded interviews: 2 buyers, 1 brand sales rep, 1 seller'],['₹15','promoter cost build-up'],['15+','secondary sources']])+
+   '<div class="dx-grid" style="margin-top:12px"><div>'+sl('Where respondents live')+stack([['Metro',37,'c4'],['Smaller city',48,'c1'],['Town',8,'c2'],['Village',6,'c3']])+'</div><div>'+sl('How often they shop online')+stack([['Weekly',27,'c1'],['Monthly',47,'c4'],['Few / yearly',19,'c2'],['Rarely',6,'c3']])+'</div></div>',{w:1})+
+ blk('“A free sample arrives in your next order…” how would you feel?',cols([['1',0,2,'2','cn','1 (very negative): 2 respondents'],['2',0,4,'4','cn','2: 4 respondents'],['3',0,7,'7','cn','3 (neutral): 7 respondents'],['4',0,16,'16','c1','4: 16 respondents'],['5',0,33,'33','c1','5 (very positive): 33 respondents']],{max:36,h:140})+note('<b>79% positive (4–5).</b> Even among leak-worriers, 79% still feel positive.'),{s:'1 = very negative · 5 = very positive · n = 62'})+
+ blk('Would she answer, and would she buy?',sl('Scan a QR for 3 questions + coupon?')+stack([['Yes',42,'c1'],['Maybe',42,'c4'],['No',16,'cn']])+note('<b>84% yes or maybe</b> (non-metro 85%).')+sl('If you liked it, buy the full size?')+stack([['Very likely',15,'c1'],['Somewhat',79,'c4'],['Unlikely',6,'cn']])+note('<b>94% would consider:</b> intent we must measure, not trust.'))+
+ blk('What would worry you?',hbars([['Unknown product',40,'40%'],['Leak / spoil clothes',39,'39%'],['“How did they know?”',35,'35%'],['Nothing',26,'26%','cn'],['Clutter / waste',11,'11%']],{max:100}),{s:'multi-select'})+
+ blk('Samples you’d welcome',hbars([['Food & snacks',73,'73%','c2'],['Beauty & personal care',52,'52%','c2'],['Health & wellness',47,'47%','c2'],['Home & cleaning',40,'40%','c2'],['None',5,'5%','cn']],{max:100}),{s:'multi-select'})+
+ blk('Trust in app · opt-out need',sl('Would a sample change your trust in the app?')+stack([['More',43,'c2'],['Same',49,'cn'],['Less',8,'c3']])+sl('Need a one-tap “No thanks”?')+stack([['Must have',23,'c1'],['Nice to have',49,'c4'],['Don’t mind',28,'cn']])+note('<b>5× more</b> say trust rises than falls. <b>72%</b> want a one-tap “No thanks”.'))+
+ blk('Metro vs non-metro',dumb([['Feel positive about a sample',83,77],['Would / might scan the QR',83,85],['Trust the app more after it',30,49],['Want beauty & personal care',43,56],['Want food & snacks',65,77],['Worry about leakage',35,41],['See it as clutter / waste',0,18]])+note('Outside metros a sample <b>builds more trust</b> and beauty is wanted more: the case for leading with BPC in Tier 2–4. Those buyers are also pickier, so relevance and leak-proofing matter more. Small samples: directional, re-measured in the pilot.'),{s:'n = 23 · 39'})+
+ blk('Proof people will pay · willingness-to-pay matrix',tbl(['Who','Pay / join?','How much','Biggest concern'],[['<b>Brand</b><br><small>Hair & cosmetics mfg.</small>',pill('YES · PILOT','ok'),'₹13 / trial vs ₹28–32 Tier-3 today','Must get scan data + targeted household'],['<b>Seller</b><br><small>Blue Srk Clothing</small>',pill('JOINS','ok'),'Pays ₹0; paid ₹3 / insert (phase 2)','Sample must not push parcel over 500 g slab'],['<b>Buyer</b><br><small>Survey, n = 62</small>',pill('84% Y/M','ok'),'Pays ₹0; 3 questions for a ₹15 coupon','Leakage · unknown brand · privacy'],['<b>Amazon</b><br><small>US, 2019-20</small>',pill('PAID','wa'),'$2 / sample, 25k minimum','Closed: unsolicited surprise parcels'],['<b>Peekage, Sampler</b><br><small>Live apps</small>',pill('PAYING','wa'),'Brands buy trial + closed-loop data','Urban, opt-in panels only']])+
+   note('<b>Demand is proven and priced far above ours:</b> Amazon charged ~₹170 a sample. What failed was the surprise parcel. Ours is opt-in, disclosed at checkout, refusable at the door. <b>Payment trigger:</b> the brand’s activation manager already has a sampling line; we compete for an existing ₹ line, not a new one.'),{w:1})+
+ blk('Voice of the stakeholders · recorded verbatims',q('Market se naya brand jaldi nahi leta, paise waste hone ka darr rehta hai. Agar Meesho apne dabbe mein free sample bhejega, toh main try karne ka sochunga.','Buyer · trial & trust · Kushagra Shukla')+q('Idea toh achha hai… koi extra delivery charge nahi hai, toh try karne mein kya nuksaan? Bas dhyaan rakhna sachet leak hoke kapde kharab na kare.','Buyer · risk & leakage · Vaishnavi Varshney')+q('Har quarter sampling budget banta hai par hisaab nahi milta. Tier-3 cost ₹28–32… ₹13 mein scan data aur targeted household mil jaye toh pilot ka budget ban jayega.','Brand · targeted sampling · sales representative')+q('Har insert ka ₹3 mil raha hai toh ladkon ko bol dunga… par sample ka weight mila ke 500-gram slab cross na ho jaaye.','Seller · operations · Blue Srk Clothing'))+
+ blk('Survey open-ends (verbatim)',q('Never give surprise free samples. You may specify while buying “this product comes with a free sample”.','Survey respondent')+q('Would prefer if it is tailored to the product choices I have; a random product may annoy me.','Survey respondent')+q('They must mention that they themselves are sending it so it doesn’t feel suspicious.','Survey respondent'))+
+ blk('Insight → design rule · every worry becomes a spec',tbl(['Insight','Design rule'],[['<b>39%</b> fear leakage on clothes','Leak-tested sealed sachet outside the seller’s carton; creams/powders before oils'],['<b>35%</b> “how did they know?”','Opt-in Free Sample Club, checkout disclosure, targeting stays inside Meesho, cohort-only reports'],['<b>40%</b> distrust unknown products','Licensed brands only; “Meesho Trial Verified” seal; ingredients on the sachet'],['<b>72%</b> want a “No thanks”','One-tap opt-out in app + refuse at the door (rider hand-over)'],['“<b>Tailored</b> to my choices”','Segments on spend behaviour, never a random sachet'],['<b>84%</b> would / might scan','QR → 3 questions → ₹15 coupon; base case 12%, kill < 6%'],['<b>94%</b> would consider buying','90-day purchase read vs matched holdout: measure, don’t assume'],['<b>500 g</b> seller’s shipping slab','Sample weight billed to the campaign, never the seller']])+
+   note('<b>Read across:</b> intent overstates behaviour, so we plan on <b>12% verified response</b> (42% “definitely” × 0.3 say-do discount), not 84%. Pilot kill line: 6%.'),{w:1})},
+ src:'Primary: Google Form survey, n = 62 (Sep 2026; 63% non-metro); recorded interviews with 2 buyers, 1 brand sales rep, 1 Meesho seller. Secondary: Amazon Product Sampling (2019-20), Peekage, Sampler. Say-do discount of 0.3 is a team assumption tested at Day 30.'},
+
+{n:'04',nav:'Sizing',tile:'Market sizing',line:'TAM ₹7,368 Cr → SOM ₹608 Cr',title:'Rough Sizing: How Big Is It?',sub:'Bottom-up from category spend · TAM → SAM → SOM · triangulated three ways',
+ so:'Brands will spend <strong>~₹7,370 Cr</strong> on product trial & testing in FY28; ~₹4,050 Cr of it aims at non-metro homes Meesho already reaches. A 15% share is <strong>₹608 Cr (0.94% NMV)</strong>, and the user and parcel routes give ₹646 / ₹644 Cr, so <strong>₹650 Cr ≈ 1% of NMV</strong> sits at the top of a tight range.',
+ body:function(){var C=[['Beauty & personal care','1,95,500','12%','23,460','3,519','25%','880','598',1478,'Redseer $23 Bn'],['Perfume & deodorant','10,000','12%','1,200','180','25%','45','31',76,'BW Business'],['Snacks, biscuits, confec.','2,07,167','5%','10,358','1,554','20%','311','264',575,'IMARC · IBEF'],['Other packaged food & bev. '+pill('widened','wa'),'8,91,000','4%','35,640','5,346','20%','1,069','909',1978,'IMARC $129 Bn'],['Home care '+pill('widened','wa'),'66,600','8%','5,328','799','20%','160','136',296,'Euromonitor'],['Nutra & wellness '+pill('widened','wa'),'75,900','15%','11,385','1,708','25%','427','290',717,'IMARC $8.9 Bn'],['Baby care '+pill('widened','wa'),'41,000','10%','4,100','615','25%','154','105',258,'IMARC $4.8 Bn']];
+  return blk('Steps 1–3 · bottom-up from category spend',tbl(['Category','Sales>','A&P %>','A&P ₹>','Launch 15%>','S&T %>','Launch S&T>','+ Expansion 3%>','Pool>','','Source'],C.map(function(r){return r.slice(0,8).concat([r[8].toLocaleString('en-IN'),'<div class="dx-tr" style="width:90px" data-tip="'+esc(strip(r[0])+' pool: ₹'+r[8].toLocaleString('en-IN')+' Cr')+'"><i style="width:'+(r[8]/1978*100)+'%;background:var(--c1)"></i></div>',r[9]])}).concat([['<b>TAM · trial & testing, FY25</b>','14,87,167','','91,471','13,721','','3,046','2,333','<b>5,378</b>','','≈ 5.9% of A&P']]),{em:[7]})+
+   '<div class="dx-flow" style="margin-top:10px"><div><small>② A&P 4–15%</small><p>Filings: HUL 9.6%, Marico 11.2%, Emami ~20%, Britannia 3.1%, Tata Cons. 7.2%</p></div><div><small>③ Launch 15%</small><p>Launches = 3–7% of sales (Nestlé 7%, Dabur 3–5%) × 2–3× ad intensity</p></div><div><small>④ S&T 20–25%</small><p>DTC brands put ~15% of all marketing into sampling</p></div><div><small>+ Expansion 3%</small><p>Launches alone = ₹3,046 Cr (0.53%): we widened the market, never the %s</p></div></div>',{w:1,s:'FY25 ₹ Cr · sales → A&P → behind launches → on sampling & testing, + expansion trial'})+
+ blk('Steps 4–5 · TAM → SAM → SOM',hbars([['<b>TAM</b><br><small>₹5,378 Cr × 1.37 (11% CAGR, 3 yrs)</small>',7368,'₹7,368 Cr','c4'],['<b>SAM</b><br><small>× 55% aimed at non-metro homes</small>',4052,'₹4,052 Cr','c1'],['<b>SOM</b><br><small>× 15% Meesho share</small>',608,'₹608 Cr','c2']])+
+   note('<b>≈ 0.94% of FY28 NMV</b> (₹65,000 Cr). <b>Why 55%?</b> Rural = 38% of FMCG sales (NIQ 2025); add Tier-2/3 towns. <b>Why 15%?</b> Meesho holds ~16% of e-com retail media today, and here it is 50%+ cheaper than incumbents. <b>At 10% share:</b> ₹405 Cr = 0.62% NMV. Stated, not hidden.'),{s:'FY28'})+
+ blk('Where “1% of NMV = ₹650 Cr” comes from',chain(['FY26 contribution<b>₹2,060 Cr</b>','÷','contribution margin<b>4.95%</b>','=','FY26 NMV<b>₹41,600 Cr</b>','×','25% CAGR<b>1.25</b>','=','FY28 NMV<b>₹65,000 Cr</b>','×','1%','=','Target<b>₹650 Cr</b>'])+
+   sl('Per ₹100 of beauty sales')+chain(['₹12 A&P','→','₹1.80 on launches','→','₹0.45 S&T','+','₹0.31 expansion','=','₹0.76','×','55% × 15%','=','₹0.06 Meesho can address'])+
+   note('<b>Not counted (upside):</b> OTC & ayurveda, pet care, small appliances, and leg-two targeted reach that brands buy after they learn which segment converts.'))+
+ blk('Step 4 · where brands sample today, and what it costs them',tbl(['Channel','Cost>','Feedback','Reach'],[['In-store promoter','₹25–40 / contact',pill('✕ none','no'),'Tier 3-4 low'],['Door-to-door crew','₹20–30 est.',pill('✕ none','no'),'Urban only'],['Haat / mela stall','₹30–90 / contact',pill('✕ none','no'),'Seasonal'],['Bundled in own pack','₹2–5 est.',pill('~ own buyers','wa'),'No new households'],['Home-use test agency','₹800 / respondent',pill('n ≈ 300','wa'),'Metro, 6–8 weeks'],['<b>Meesho BTN</b>','<b>₹13 / trial</b>',pill('✓ 12% respond','ok'),'Any PIN, 7 days']],{hl:[5]}),{w:1})+
+ blk('Cross-check · three routes, one answer',tbl(['Route','Working','FY28>'],[['① Demand: what brands spend','Trial & testing pool ₹7,368 Cr × 55% non-metro × 15% share','₹608 Cr'],['② Users: who can receive one','331 Mn FY28 ATU (264 Mn × 12% p.a.) × 50% opt-in (79% liked it; we halve it) × 3 trials / yr (cap 1 a month) × ₹13','₹646 Cr'],['③ Supply: what parcels can carry','4.5 Bn FY28 parcels × 11% carry a trial (1 in 9) × ₹13 = 495 Mn trials','₹644 Cr']])+
+   note('Three independent routes land within 6% of each other: demand, users and parcel capacity are <b>not</b> the binding constraint. <b>Brand adoption is</b>, which is what the pilot tests.'))+
+ blk('Sensitivity · where it breaks',tbl(['Parcels with a trial ↓ / price →','₹9 reach>','₹13 blend>','₹16 closed-loop>'],[['8% (1 in 12)','324','468','576'],['<b>11% base (1 in 9)</b>','446','<b>644</b>','792'],['14% (1 in 7)','567','819','1,008']],{hl:[1]})+
+   sl('Meesho share of SAM → revenue · dashed = 1% NMV')+hbars([['10% share',405,'₹405 Cr · 0.62%','cn'],['12.5% share',507,'₹507 Cr · 0.78%','cn'],['15% share',608,'₹608 Cr · 0.94%','c1'],['20% share',810,'₹810 Cr · 1.25%','c1']],{max:850,ref:650})+
+   note('<b>The number to defend:</b> if order-level matching fails, everything prices at ₹9 → ₹446 Cr (0.69%). Gap #1 on slide 09 is worth ~₹200 Cr. <b>Break-even fill rate</b> for 1% NMV at ₹13 is 11.1%, one sampled parcel in nine. Below 8% the idea is a ~0.7% business, still the largest new lever screened.'),{s:'₹ Cr, FY28'})+
+ blk('Which category leads? · weighted scoring',hbars([['Beauty & personal care',4.15,'4.15','c1'],['Edible',3.80,'3.80','cn'],['Perfume',3.10,'3.10','cn'],['Wellness',3.00,'3.00','cn'],['Home',2.90,'2.90','cn'],['Baby',2.05,'2.05','cn']],{max:5})+
+   '<p style="margin-top:10px">Criteria: trial pool size (25%), launch frequency, sachet / format fit, buyer demand (survey), regulatory ease, fit with Meesho buyer (15% each).</p>'+
+   note('<b>Lead with beauty & personal care:</b> 27% of the pool, Bharat already buys it in ₹1–2 sachets, Cosmetics Rules allow “free sample, not for sale”. Edible is bigger (47%) but needs FSSAI sample-label sign-off and shelf-life control, so it follows in phase 2; perfume rides with BPC.')+
+   flow([['Pilot','BPC','Beauty & personal care only'],['FY28','+ Perfume, Home','Hindi belt, then West & South'],['FY29','+ Edible, Wellness, Baby','After FSSAI sign-off']]),{w:1})},
+ src:'Sales: Redseer (BPC $23 Bn), BW Businessworld (perfume & deo ₹10,000 Cr), IMARC/IBEF (packaged food $129 Bn, snacks, biscuits, confectionery, nutra, baby), Euromonitor (home ₹666 bn). A&P: company filings FY25. Launch share: Nestlé India, Dabur, Kantar. Rural share: NIQ 2025. ₹85/$.'},
+
+{n:'05',nav:'Solution',tile:'The solution',line:'Closed-loop trial at ₹9 / ₹13 / ₹16',title:'The Solution: A Closed Feedback Loop',sub:'What is offered · how it earns · who pays for what',
+ so:'Meesho sells brands a <strong>closed-loop trial</strong>: a sample in a chosen household’s hand, her answer within days, and her purchase behaviour at 90 days, priced per delivered trial at <strong>₹13</strong> against ₹25–40 for a promoter contact that returns nothing.',
+ body:function(){return blk('How the loop closes, and how the money moves',flow([['1 · The payer','Target','FMCG / D2C brand books on a console: spend segment, PIN clusters, quota, dates. Min 10,000 trials (₹1.3 L). Ships sachets to one Valmo mother hub, brand-funded (~₹0.25 / sample).','pays ₹13 / trial'],['2 · Meesho + Valmo','Flag & insert','At order creation the engine flags matching order IDs (opted-in only). Hub induction scan diverts flagged parcels; sachet goes in by pouch, over-bag or rider; a pairing scan ties sachet QR ↔ order ID.','seller untouched · ₹0'],['3 · The household','Try & respond','Disclosed sample arrives with her order. She scans the QR or taps the in-app card → 3 questions → ₹15 off her next order (Meesho-funded). Can refuse at the door or opt out in one tap.','free product + ₹15'],['4 · The proof','Prove at 90 days','Sampled cohort vs matched holdout (same segment, no sample): 90-day re-survey + Meesho purchase data → incremental purchase lift, not “intent”.','lift, not intent'],['5 · Back to the payer','Learn & re-target','Dashboard by segment: delivered, response %, rating, price acceptance, 90-day lift. Cohort data only, min 5,000 households, never PII. The next campaign re-targets the segment that converted.','data → next booking']])+
+   note('<b>Learning loop:</b> every answer re-targets the next booking, so each loop is cheaper than the last. The seller is never in the chain.'),{w:1})+
+ blk('Segment builder · spend, not demographics',tbl(['Dimension','S-07 range>','Avg user>'],[['① Wallet share: Meesho’s share of her orders','≥ 60%','—'],['② Annual spend on Meesho','₹2,500 – 6,000','₹1,580'],['③ Avg order value','₹200 – 400','₹156'],['④ Category spend: beauty, not “lifestyle”','₹300 – 900 / yr','—'],['⑤ Order frequency','≥ 12 / yr','10 / yr']])+
+   '<p style="margin-top:10px">+ Geography · consent: PIN clusters in E-UP & Bihar, opted-in only.</p>'+chain(['matching homes<b>2.1 Mn</b>','→','booked (24%)<b>5 L</b>','→','at ₹13<b>₹65 L</b>','→','answers @ 12%<b>60k</b>'])+
+   note('<b>Why spend, not demographics:</b> “Tier-3 woman, 25–40” says nothing about whether she buys the category. Spend rules show the brand exactly who it is buying. <b>Second sizing route:</b> 2.1 Mn S-07 homes × ~₹600 beauty spend = ₹126 Cr already on Meesho in one segment; sampling all of them once costs a brand ₹2.7 Cr.'),{s:'S-07 “Beauty switchers · E-UP & Bihar” · illustrative'})+
+ blk('How it earns · good / better / best',cards([{t:'Reach',big:'₹9',b:'<p>PIN-cluster targeting · QR responses · delivered count</p>',f:'mix 25%'},{t:'Segment · base tier',big:'₹13',b:'<p>5-dimension spend segment · response, rating, price acceptance by segment</p>',f:'mix 50%',hi:1},{t:'Closed-loop',big:'₹16',b:'<p>Segment + 90-day lift vs holdout + re-target list</p>',f:'mix 25%'}])+
+   sl('Tier mix')+stack([['₹9 Reach',25,'c4'],['₹13 Segment',50,'c1'],['₹16 Closed-loop',25,'c2']])+
+   note('Blended <b>₹12.75 ≈ ₹13</b>, sold as a media rate (cost per delivered trial) to the brand or its agency: <b>no commission, no seller fee, no product price change.</b>'))+
+ blk('Buyer journey · “Pehle try, phir buy”',flow([['①','Opt-in at checkout','“Free Sample Club: get free trial products with some orders. Picked from what you shop. We never share your details.” Yes, I’m in / No thanks.'],['②','Disclosed sample','“Your parcel has a FREE sample from Brand X Hair Oil 9 ml, sent by Meesho.”'],['③','Respond (QR / app)','Did you use it? · How was it? · Buy 100 ml at ₹99? Takes 20 seconds.'],['④','Reward + opt-out','₹15 off the next order unlocked; “Buy full size ₹99”; “Don’t want samples? Stop”.']])+
+   note('<b>Meet Sunita, 31, Gorakhpur:</b> ~1 Meesho order a month, ₹3,200 a year, so she is in S-07. Day 3: tries the sachet, answers. Day 90: in-app card “Bought it since?” vs holdout. <b>This is the path the phone demo walks.</b>'))+
+ blk('Who pays the incentive? Meesho.',chain(['₹15 coupon','×','40% redemption','×','12% responders','=','per trial<b>₹0.72</b>'])+'<p style="margin-top:10px">It buys a repeat order (₹156 NMV): a retention lever Meesho already pays for. The brand may add its own full-size offer to read purchase intent directly.</p>')+
+ blk('MVP scope · MoSCoW',cards([{t:'Must',b:ul(['Opt-in + disclosure','Order flag + pairing scan','QR → 3 Qs → coupon','Holdout','Cohort report']),f:'ships in the 90-day pilot',hi:1},{t:'Should',b:ul(['5-dimension segment builder','Rider hand-over lane','Brand dashboard v1'],'n')},{t:'Could',b:ul(['Self-serve console','Choose-your-sample menu','Brand full-size offer'],'n')},{t:'Won’t (yet)',b:ul(['Edible samples','Seller-bench insertion','Reach-ads upsell','PII to brands: never'],'x')}]),{w:1})},
+ src:'Avg-user figures from Meesho FY26 (2.67 Bn orders, 264 Mn ATU, ₹156 NMV/order). Segment S-07 size and screens are illustrative (see prototype). Coupon economics: ₹15 × 40% redemption × 12% response = ₹0.72/trial.'},
+
+{n:'06',nav:'Operations',tile:'Operations in the hub',line:'5 packing options costed, 3 on trial',title:'Operations: Making It Work in the Hub',sub:'Samples to hubs · sample into a sealed parcel · sample to the right order ID',
+ so:'We don’t pick one packing method: we <strong>trial three side by side</strong> and let cost, buyer sentiment and shipping cost decide. And we never match samples to orders: <strong>we flag orders for samples</strong>, so “targeted” on the slide is “targeted” in the warehouse.',
+ body:function(){return blk('① Getting samples to the hubs',chain(['Brand plant<b>5 L sachets</b>','→','1 FTL truck<b>6 t · ~₹50k</b>','→','regional<b>Valmo mother hub</b>','→','Spoke hubs<b>+₹0.15 handling</b>'])+
+   '<div style="margin-top:10px">'+tbl(['Route','₹ / sample>','How'],[['R1 · Direct','0.24','PTL courier to each hub; 20+ consignments a campaign'],['<b>R2 · Mother hub</b> '+pill('chosen','ok'),'0.25','One truck, one receipt; scales to any hub count'],['R3 · Brand depots','0.05–0.15','Large FMCG distributors drop on their own beat']],{hl:[1]})+'</div>'+
+   kpis([['₹1.25 L','inbound for a 5 L-trial campaign'],['1.9%','of the ₹65 L booking'],['₹0','to Meesho or seller']])+
+   note('<b>The brand funds inbound:</b> it already pays to move samples to agencies and promoters today. Meesho bills it at cost. <b>Stock control:</b> one campaign rack per hub · daily in = inserted + damaged + returned · variance > 1% pauses that hub · FEFO by expiry · leftovers go back to the brand.'),{s:'who funds it · costed'})+
+ blk('② Insert cost per option',cols([['A Over-bag',0,2.6,'₹2.60','cn','A · Over-bag & re-label: ₹2.60 (control lane)'],['B Second pkg',0,3.2,'₹3.20','cn','B · Second package: ₹3.20 (dropped)'],['C Outer pouch',0,.9,'₹0.90','c2','C · Tamper-evident outer pouch: ₹0.90 (pilot lane)'],['D Rider',0,1.2,'₹1.20','c2','D · Rider hand-over: ₹1.20 (pilot lane)'],['E Seller bench',0,3,'₹3.00','cn','E · Seller packing bench: ₹3.00 paid to seller (phase 2)']],{max:3.6,h:150,ref:3,refl:'₹3.00 budgeted'})+
+   note('<b>Pilot runs C + D, A as control.</b> Unit economics are budgeted at ₹3.00, the worst option, so the case holds even if the cheap ones fail.'),{s:'₹ per insert'})+
+ blk('② Getting the sample into a sealed parcel · five options, costed',tbl(['Option','Cost>','Pugh vs A>','Ship','Buyer','Risk','Match','Status'],[['<b>A · Over-bag & re-label</b><br><small>Sealed parcel + sachet into a Valmo mailer; fresh AWB</small>','₹2.60<br><small>1.5 bag · 0.4 label · 0.7 labour</small>','0 · base','+12 g, same slab','Sealed, tidy','Label mismatch','Flag + pair',pill('Control lane','ac')],['<b>B · Second package</b><br><small>Sachet in its own mini-pouch with a child label</small>','₹3.20<br><small>0.5 pouch · 1.0 sort · 1.7 drop</small>','−5','Two handlings','“Why two parcels?”','Child pouch lost','Flag + pair',pill('✕ Dropped','no')],['<b>C · Tamper-evident outer pouch</b><br><small>“Documents enclosed” sleeve outside; never opens the parcel</small>','₹0.90<br><small>0.5 pouch · 0.4 labour</small>','+1','+12 g','Seen before accepting','Peel-off detected (QR never scanned)','Flag + pair',pill('✓ Pilot lane','ok')],['<b>D · Rider hand-over</b><br><small>Rider carries a kit; app flags the stop: “free sample from Meesho, want it?”</small>','₹1.20<br><small>1.0 rider · 0.2 kit</small>','+3','0 g · +10 s / drop','Best consent moment','Pilferage → kit count','Run-sheet native',pill('✓ Pilot lane','ok')],['<b>E · Seller packing bench</b><br><small>High-volume sellers insert at packing</small>','₹3.00<br><small>paid to the seller</small>','−3','Weight credited','Sealed inside','Seller stock control','Seller stock',pill('Phase 2','wa')]],{hl:[2,3]})+
+   note('<b>Pugh score vs A</b> (+1 / 0 / −1) on cost · sentiment · shipping cost · fraud & damage · matching · scalability. D wins on consent and matching; C on cost and scale; rider capacity is the open question. <b>Sachet spec for every option</b> (fixes the 39% leak worry): ≤ 20 g · double heat-sealed · 1 m drop + 45 °C heat test · creams/powders before oils · “free sample, not for sale”, batch, expiry · unique QR per sachet (enables pairing and peel-off detection).'),{w:1,s:'we pitch all, trial three, let the data pick'})+
+ blk('③ Matching 500 bulk samples to specific order IDs · service blueprint',tbl(['','Order placed','Before dispatch','Hub induction','Insertion','Last mile','After delivery'],[['<b>Buyer</b>','Opted in; sees “may include a free sample”','','','','Receives disclosed sample; may refuse (D)','Scans QR → 3 Qs → ₹15 coupon'],['<b>Rider</b>','','','','(D) Picks S-07 kit sized to flagged stops','App flags the stop; hands over, taps “given”',''],['<b>Hub operator</b> <small>below the line of visibility</small>','','','Handheld beeps “S-07” → parcel to sample table (A/C) or stays in zone bag (D)','Picks sachet, applies pouch, pairing scan (sachet QR + AWB), back to bucket','',''],['<b>Meesho systems</b>','Targeting engine matches order to S-07 → campaign flag on AWB record','Quota counter per hub; stops at booked volume','Sort app reads the flag at a scan that already happens','Stores QR ↔ order ID; unpaired sachet = alert','Run sheet + kit count per route','Response joins order ID → cohort report vs holdout']])+
+   note('<b>Why it works:</b> the worker never searches 500 sachets for an order. The order arrives already tagged at a scan that exists today; the sachet stays generic until the pairing scan gives it an ID. <b>Zone-level (₹9 tier) needs no flag:</b> the hub already buckets by PIN cluster, so every parcel in a targeted bucket gets one sachet until quota. This is the pilot’s Day-30 mode.'),{w:1,s:'flip it: flag the order, don’t match the sample'})+
+ blk('Trial design · the method, not the guess',cards([{t:'Lane A',big:'10k',b:'<p>over-bag</p>'},{t:'Lane C',big:'10k',b:'<p>outer pouch</p>',hi:1},{t:'Lane D',big:'10k',b:'<p>rider</p>',hi:1},{t:'Holdout',big:'10k',b:'<p>no sample</p>'}])+
+   flow([['Week 1','Randomise, train',''],['Weeks 2–3','All lanes live','Daily NPS & returns'],['Week 4','Pick winner','']])+
+   '<p style="margin-top:10px"><b>Measured per lane:</b> ₹/insert · insert-error % · NPS Δ vs holdout · return Δ · shipping-cost Δ · response % · rider s/drop · pouch-removal %.</p>'+
+   note('<b>Decision rule:</b> lowest ₹ per verified response, if NPS ≥ holdout − 1 and return Δ ≤ +0.1 pp. Hubs may differ (dense urban → C; Tier-3/4 routes → D). 10k / lane detects ±1.3 pp response gaps.'),{s:'randomised, 1 hub, 4 weeks'})+
+ blk('Hub throughput check',chain(['parcels / day<b>50,000</b>','×','11%','=','inserts<b>5,500</b>','×','8 s','=','12.2 h','=','operators / shift<b>1.5</b>'])+kpis([['₹0.17','labour per insert'],['3×','festive peak: add 3 temps or pause']])+'<p style="margin-top:10px">Costs are team estimates from packaging & freight quotes (₹20/kg PTL, ~₹50k FTL, ₹600 operator-shift). All to be validated in the Day 0–30 lanes.</p>')},
+ src:'Costs are team estimates from packaging & freight quotes; Pugh scoring vs option A on six criteria. Throughput assumes a 50,000 parcels/day hub and 8 s per insert. All validated in Day 0–30 lanes.'},
+
+{n:'07',nav:'Impact',tile:'Impact & unit economics',line:'60% cheaper · ₹6.63 kept per trial',title:'Outcome: 60% Cheaper per Launch',sub:'Per product · per trial · per campaign · against today’s benchmarks',
+ so:'For one product launch a brand spends <strong>₹1.62 Cr today and gets 300 answers</strong>. On Meesho it spends <strong>₹65 L and gets 60,000 answers</strong> plus a measured purchase lift: a 60% saving per product. Meesho keeps ₹6.63 a trial; seller and buyer pay nothing.',
+ body:function(){return blk('Per product launch · 1 SKU, 5 L homes',tbl(['','Today · promoter + home-use test','Bharat Trial Network'],[['Cost','<b>₹1.62 Cr</b><br><small>₹1.60 Cr sampling (₹32 / contact) + ₹2.4 L HUT (300 × ₹800)</small>','<b>₹0.65 Cr</b><br><small>5 L trials at ₹13, no separate product test needed</small>'],['Answers','300, metro-skewed','60,000 by segment (12%)'],['₹ per answer','₹54,000','₹108'],['Who got it','a location','a spend segment'],['Purchase signal','district sales, months later','90-day lift vs holdout'],['First read','6–8 weeks','7 days']])+
+   kpis([['~60%','cost per launch: saves ₹97 L'],['200×','more answers'],['~99.8%','lower ₹ per answer'],['6×','faster first read']]),{w:1})+
+ blk('Cost per launch',hbars([['Today',162,'₹1.62 Cr','cn','Today: ₹1.60 Cr promoter sampling + ₹2.4 L home-use test'],['BTN',65,'₹0.65 Cr','c1','BTN: 5 L trials × ₹13']],{max:170})+
+   sl('Saving holds across tiers & promoter cost')+hbars([['₹9 reach tier',72,'72%','c2'],['₹13 segment tier',60,'60%','c2'],['₹16 closed-loop',51,'51%','c2'],['vs promoter at ₹25',49,'49%','c2'],['vs promoter at ₹40',68,'68%','c2']],{max:100}),{s:'1 SKU · 5 L homes'})+
+ blk('How it is paid for · per trial',cols([['Price to brand',0,13,'₹13.00','c1'],['Insertion (worst case)',13,10,'−3.00','c3'],['Weight & volume',10,8.5,'−1.50','c3'],['Platform & measurement',8.5,7.7,'−0.80','c3'],['Buyer coupon',7.7,6.98,'−0.72','c3'],['Returns reserve',6.98,6.63,'−0.35','c3'],['Contribution',0,6.63,'₹6.63','c2','Contribution: ₹6.63 per trial (51%)']],{max:14,h:190})+
+   kpis([['₹13','brand pays / trial'],['₹6.63','Meesho keeps (51%)'],['₹331 Cr','FY28 contribution']])+
+   note('<b>51%, budgeted pessimistically:</b> insertion uses the ₹3.00 worst option. If C or D win (₹0.9–1.2), contribution rises to <b>₹8.4–8.7 (65–67%)</b>. Inbound is brand-funded.'),{s:'₹, base tier blend'})+
+ blk('Brand ROI per campaign',tbl(['Per campaign','Promoter>','BTN>'],[['Spend','₹1.62 Cr','₹65 L'],['Incremental conversion (assumed)','3% untargeted','6% targeted'],['New buyers','15,000','30,000'],['Yr-1 gross margin / buyer (4 × ₹120 × 50%)','₹240','₹240']])+
+   sl('₹ per new buyer')+hbars([['Promoter',1080,'₹1,080','cn'],['BTN',217,'₹217','c1']])+
+   sl('Year-1 ROI · dashed = break-even (1×)')+hbars([['Promoter',.22,'0.22×','cn'],['BTN',1.11,'1.11×','c1']],{max:1.3,ref:1})+
+   note('<b>5× cheaper per new buyer; pays back inside year 1, with holdout proof.</b> Break-even conversion: BTN needs 5.4%; promoter sampling needs 13.5%, above most measured evidence. Even at 3%, BTN halves ₹ per buyer.'),{s:'5 L trials · first-year view'})+
+ blk('North-star metric & KPI tree',note('<b>North star: verified answers delivered to brands / week.</b> Value to brand (learning) × value to buyer (free trial) in one number.')+
+   cards([{t:'Reach',b:'<p>Opt-in rate <b>50%</b><br>Parcels with trial <b>11%</b><br>Hubs live</p>'},{t:'Response',b:'<p>Scan rate<br>Completion<br>Verified <b>12%</b></p>'},{t:'Brand value',b:'<p>90-day lift<br>₹ / answer <b>₹108</b><br>Rebooking <b>≥ 60%</b></p>'},{t:'Revenue',b:'<p>Trials × price<br>Blend <b>₹13</b><br>Contribution <b>51%</b></p>'}])+
+   '<p style="margin-top:10px"><b>Counter-metrics, never traded away:</b> NPS Δ vs holdout · return Δ · 30-day opt-out · hub sort SLA · complaints / 10k.</p>'+
+   note('<b>Biggest lever:</b> at the FY28 run-rate, 9.6 Mn trials a week × 12% = <b>1.15 Mn answers a week</b>. +1 pp of response adds ~96k answers at zero extra trials, so response quality is optimised first.'))+
+ blk('Success ratio · benchmarked against Meesho',tbl(['Metric','Benchmark today','Target>','Kill line>'],[['▲ Verified response rate','0% (promoter) · HUT n = 300','12%','< 6%'],['▲ Sample → purchase lift','5–25% claimed, unmeasured','+6 pp','not signif.'],['▲ Buyer NPS Δ','Meesho holdout parcels','≥ 0','< −2'],['▼ Return-rate Δ','Meesho holdout parcels','≤ +0.1 pp','> +0.3 pp'],['▼ 30-day opt-out rate','survey: 23% “must have”','< 10%','> 25%'],['▼ Insert cost','₹3.00 budgeted','≤ ₹1.20','> ₹3.00'],['● Hub sort SLA','Valmo baseline','no change','> 1% late'],['▲ Brand rebooking','—','3 of 5','< 2 of 5']])+
+   note('<b>Why holdouts:</b> Meesho doesn’t publish insert or survey metrics, so the cleanest “current metric” is its own parcels without a sample: same hub, segment and week. ▲ up is good · ▼ down is good.'),{s:'holdout = today'})+
+ blk('Why it fits the brief · new · zero commission · affordability',cards([{n:'01',t:'Genuinely new',b:'<p>New payer (brands that may never sell on Meesho), new budget (BTL; e-com gets ₹0 today), new product (consented feedback, not an impression). No auction, so seller CAC doesn’t rise.</p>'},{n:'02',t:'Zero commission intact',b:'<p>Seller pays ₹0 and isn’t a party. <b>Test:</b> delete every seller from the model and revenue is unchanged.</p>'},{n:'03',t:'Affordability improved',b:'<p>The buyer gets a free product + ₹15 off; ₹0.73 of margin per parcel can flow into the ₹46.3 shipping cost that sets prices.</p>'}])+
+   note('<b>Why only Meesho:</b> the one player that can both hand a product to a chosen Bharat household and hear back from her (benchmark, slide 08).')+
+   sl('15 ideas screened · 12 killed, for example')+ul(['Seller subscription: a 12% commission renamed','Demand-data: ₹1,600 Cr MR market','Kirana B2B: Kirana Club bought','Doorstep verification: Delhivery-Ecom','Paid MSME on-ramp: GST 34/2023'],'x'),{w:1})},
+ src:'Promoter ₹32/contact = midpoint of ₹25–40; HUT ₹800/respondent and 3%/6% conversion are assumptions (Appendix). Gross margin/buyer: 4 packs × ₹120 × 50%. Benchmarks read against matched holdouts from Meesho’s own parcels.'},
+
+{n:'08',nav:'Business case',tile:'Business case',line:'₹19 Cr peak · payback month 13',title:'Business Case: Who Pays & How It Scales',sub:'Payer segments · benchmarking vs existing sampling models · 5-year P&L · phased rollout',
+ so:'Three kinds of brands pay, from national FMCG to a ₹0.9 L regional SME ticket. No existing sampling model both <strong>puts the product in a chosen hand and hears back</strong> at Bharat scale. It needs <strong>₹19 Cr at peak</strong>, pays back by <strong>month 13</strong>, and holds ~1% of NMV from FY29.',
+ body:function(){return blk('Who pays · three brand segments',cards([{t:'National FMCG',big:'₹16',b:'<p><small>closed-loop tier · launch teams, listed HPC & food</small></p>'+ul(['20+ launches a year','Has promoters, lacks proof','Buys via its BTL agency']),f:'HUL alone spent ₹6,199 Cr on A&P in FY25'},{t:'D2C & challenger',big:'₹13',b:'<p><small>segment tier · beauty, wellness, personal care</small></p>'+ul(['No Tier 3-4 distribution','Needs who converts','Self-serve console']),f:'Launches up 1.8×, only 4% reach 1% penetration',hi:1},{t:'Regional & SME',big:'₹9',b:'<p><small>reach tier, from ₹0.9 L · e.g. a Kanpur hair-oil maker</small></p>'+ul(['Promoters unaffordable beyond home district','Serves small players']),f:'“₹13 mein … pilot ka budget ban jayega”'}])+
+   sl('FY28 trial mix → blended price')+stack([['FMCG × ₹16',30,'c4'],['D2C × ₹13',45,'c1'],['SME × ₹9',25,'c2']])+
+   note('= <b>₹12.9 ≈ ₹13 blended.</b> <b>Small players served:</b> a 10,000-trial SME campaign at ₹9 costs ₹0.9 L, less than one month of a single promoter team, and it comes with the answers.'),{s:'payer segmentation · FY28 trial mix'})+
+ blk('Capability score / 6',hbars([['BTL promoter agency',2,'2.0','cn'],['Free minis in own orders',2.5,'2.5','cn'],['Home-use test agency',4,'4.0','cn'],['Amazon Sampling (US)',3,'3.0','cn'],['Sampler, Peekage (apps)',4.5,'4.5','cn'],['<b>Meesho BTN</b>',6,'6.0','c1']],{max:6})+note('No existing model scores more than 4.5: BTN is the only one with all six capabilities at Bharat scale.'))+
+ blk('Benchmarking · who else puts a product in hand, and hears back?',tbl(['Capability','BTL promoter','Free minis in own orders','Home-use test agency','Amazon Sampling (US)','Sampler, Peekage','<b>Meesho BTN</b>'],[
+   ['Physical product in hand',hv(1),hv(1),hv(1),hv(1),hv(1),hv(1)],
+   ['Chooses the household',hv(0),hv(.5)+'own buyers only',hv(1)+'recruited',hv(1)+'purchase history',hv(1)+'profile',hv(1)+'<b>spend segment</b>'],
+   ['Hears back (response)',hv(0),hv(0),hv(1)+'n ≈ 300',hv(.5)+'reviews',hv(1),hv(1)+'<b>12%</b>'],
+   ['Purchase proof vs holdout',hv(0),hv(.5)+'own sales',hv(0),hv(.5)+'own sales',hv(.5),hv(1)+'<b>90-day</b>'],
+   ['Reaches Tier 3-4 at scale',hv(.5)+'costly',hv(0)+'urban',hv(0)+'metro',hv(0)+'not India',hv(0)+'not India',hv(1)+'<b>264 Mn buyers</b>'],
+   ['Opt-in, disclosed',hv(.5),hv(.5),hv(1),hv(0)+'surprise',hv(1),hv(1)],
+   ['<b>Capability score / 6</b>','<b>2.0</b>','<b>2.5</b>','<b>4.0</b>','<b>3.0</b>','<b>4.5</b>','<b>6.0</b>'],
+   ['Cost per contact','₹25–40','₹2–5','₹800','~₹170','premium','<b>₹9–16</b>'],
+   ['What we borrow','the trial habit & BTL budget line','no extra trip','structured 3-question read','targeting on purchase history','reward for answering','all five, at Bharat scale'],
+   ['What we avoid','no data','no new buyers','tiny, slow n','surprise parcels (it closed)','urban-only panel','—']],{em:[6]})+
+   note('Full circle = 1, half = 0.5, empty = 0. Amazon ≈ $2/sample, 25k minimum. Agency & HUT costs from our build-up and brand interview; app pricing not public.'),{w:1,s:'India & global sampling models'})+
+ blk('Five-year business case · P&L',tbl(['₹ Cr','FY27>','FY28>','FY29>','FY30>','FY31>'],[['Trials delivered (Mn)','2','235','616','770','963'],['Blended price (₹)','9','13','13','13.5','14'],['<b>Revenue</b>','<b>2</b>','<b>306</b>','<b>801</b>','<b>1,040</b>','<b>1,348</b>'],['Contribution (51–53%)','1','156','408','541','715'],['− Agency & sales commission (6%)','0','18','48','62','81'],['− Fixed: tech, team, compliance','12','55','80','95','110'],['<b>EBITDA</b>','<b>−12</b>','<b>82</b>','<b>280</b>','<b>383</b>','<b>524</b>'],['Cumulative','−12','71','351','734','1,258'],['% of that year’s NMV','0.00%','0.47%','0.99%','1.02%','1.06%']],{em:[6]})+
+   note('Trials = parcels × 11% (FY28 ramps 10 → 30 → 70 → 125 Mn a quarter). Price rises to ₹14 by FY31 as 90-day proof matures. Fixed FY28: tech & data ₹20 Cr, team ₹20 Cr, hub set-up ₹8 Cr, trust & compliance ₹7 Cr. NMV grows 25% a year from ₹41,600 Cr (FY26).'),{w:1,s:'₹ Cr · FY = Apr–Mar · pilot starts Oct 2026'})+
+ blk('Revenue by year',cols([['FY27',0,2,'₹2'],['FY28',0,306,'₹306'],['FY29',0,801,'₹801'],['FY30',0,1040,'₹1,040'],['FY31',0,1348,'₹1,348']],{max:1450,h:170})+
+   sl('EBITDA by year')+cols([['FY27',-12,0,'−₹12','c3'],['FY28',0,82,'₹82','c2'],['FY29',0,280,'₹280','c2'],['FY30',0,383,'₹383','c2'],['FY31',0,524,'₹524','c2']],{min:-60,max:580,h:150}),{s:'₹ Cr'})+
+ blk('Profit curve · cumulative EBITDA',ebitdaLine()+kpis([['₹19 Cr','peak investment'],['Month 10','operating break-even (Q2 FY28)'],['Month 13','cumulative payback (Q3 FY28)']])+
+   note('<b>Downside case</b> (order-level matching fails, every trial sells at ₹9): contribution falls to ₹2.63 a trial, FY28 EBITDA ≈ −₹6 Cr, FY29 ≈ +₹49 Cr: <b>still profitable</b>, payback slips into FY29. The pilot’s Day-60 gate tests exactly this.'),{s:'₹ Cr'})+
+ blk('Phased cluster expansion · where Meesho’s Tier 2-4 buyers are densest first',flow([['① Q3 FY27 · Pilot','Eastern UP & Bihar','Lucknow → Patna, Varanasi · 3 hubs · BPC only','3 hubs · 0.3 Mn trials'],['② FY28 H1','Hindi belt','Rest of UP, MP, Rajasthan, Jharkhand · 60 hubs · + perfume','60 hubs · 40 Mn'],['③ FY28 H2','West & South Tier 2-4','Maharashtra, Gujarat, Karnataka, Telangana · all hubs · + home care · vernacular survey','all hubs · 195 Mn'],['④ FY29','Pan-India + new categories','East & North-East · + edible, wellness · seller-bench insertion','+ categories · 616 Mn']])+
+   note('<b>Why this order:</b> start where Meesho’s parcels are densest and brand coverage is thinnest, prove it in Hindi first, then add languages and categories once the 3-question survey and the leak-proof formats are proven.'),{w:1,s:'FY27 – FY29'})},
+ src:'P&L built from the same inputs as slides 04–07 (Appendix). Commission assumes half of revenue sold via agencies at 12%. Fixed-cost lines are team estimates. Amazon Product Sampling terms from public reporting (2019-20).'},
+
+{n:'09',nav:'Gaps & risks',tile:'Gaps, risks & guardrails',line:'₹410 Cr at stake · trust is the kill-switch',title:'What Is Still Unsolved',sub:'Named gaps, priced · risks · guardrails for buyer prices, small sellers and trust',
+ so:'Five things are not yet proven. Two of them alone put <strong>~₹410 Cr of the ₹650 Cr at stake</strong>, which is why the ₹46 L pilot measures them first and kills the idea if they fail. <strong>Buyer trust, not scan rate, is the kill-switch.</strong>',
+ body:function(){return blk('What is still unsolved, and what solving it is worth',cards([{n:'1',t:'Order-level matching at peak',big:'₹200 Cr',b:'<p><small>₹4 × 500 Mn trials</small></p><p><b>Why open:</b> pairing scan adds ~8 s; untested at 3× festive volume.</p><p><b>Fallback:</b> zone-level targeting, priced at ₹9.</p>',f:'Day 60 · error ≤ 2%, ≤ 8 s'},{n:'2',t:'Cheapest packing buyers accept',big:'₹50 Cr',b:'<p><small>per ₹1 saved per insert</small></p><p><b>Why open:</b> four options from ₹0.9 to ₹3.2; buyer sentiment unknown.</p><p><b>Fallback:</b> budget stays at ₹3.00 (worst case).</p>',f:'Day 30 · lanes A / C / D'},{n:'3',t:'Edible samples',big:'₹305 Cr',b:'<p><small>edible = 47% of the pool</small></p><p><b>Why open:</b> most wanted (73%) but FSSAI labelling, shelf-life, heat in transit.</p><p><b>Fallback:</b> BPC, perfume, home care only.</p>',f:'Month 6 · FSSAI label sign-off'},{n:'4',t:'Return-rate direction',big:'₹3.5 Cr',b:'<p><small>per 0.1 pp avoided</small></p><p><b>Why open:</b> a leak can raise returns, a welcome gift can lower them; no data yet.</p><p><b>Fallback:</b> reserve ₹0.35 / trial (+0.5 pp).</p>',f:'Day 30–60 · holdout delta'},{n:'5',t:'True response rate',big:'Price power',b:'<p><small>−8% ₹/answer per +1 pp</small></p><p><b>Why open:</b> 42% say “definitely”; the real say-do gap is unknown.</p><p><b>Fallback:</b> at 6%, ₹/answer doubles to ₹217, still 99% below today.</p>',f:'Day 30 · kill if < 6%'}]),{w:1,s:'named · priced · each tied to a pilot gate'})+
+ blk('If gaps 1 and 3 both stay unsolved, ₹650 Cr becomes ₹240 Cr',stack([['₹240 Cr secured',37,'c2'],['₹105 Cr gap 1',16,'c3'],['₹305 Cr gap 3 · edible',47,'c1']])+
+   note('Gap 1 is worth ₹200 Cr alone, but only ₹105 Cr once edible is already out, so <b>₹410 Cr is at stake in total, not ₹505 Cr.</b> ₹410 Cr at stake ÷ ₹46 L pilot ≈ <b>890×</b>. The pilot settles gaps 1, 2, 4, 5.')+
+   sl('Decided, not gaps')+tbl(['Question','Decision'],[['Buyer incentive?','Meesho pays, ₹0.72 / trial'],['Non-responders?','Brand pays per delivered trial'],['Packing first?','C + D, A as control'],['Lead category?','Beauty & personal care'],['Where?','Eastern UP & Bihar']]),{s:'= 0.37% NMV'})+
+ blk('Risk heat map',(function(){var g={'H,L':['R6 Regulatory'],'H,M':['R1 Leak → return','R2 “How did they know?”','R7 No rebooking'],'H,H':[],'M,L':['R9 Amazon / Flipkart copy'],'M,M':['R3 Response < 6%'],'M,H':['R4 Hub congestion at festive peak'],'L,L':[],'L,M':['R8 Rider pilferage'],'L,H':['R5 Agencies defend clients']},sev={L:1,M:2,H:3},h='<div class="dx-hm">';
+   ['H','M','L'].forEach(function(im,ri){h+='<div class="ax">'+(ri===0?'HIGH':ri===1?'IMPACT':'LOW')+'</div>';['L','M','H'].forEach(function(pr){var k=im+','+pr,v=sev[im]*sev[pr];h+='<div class="c" style="background:color-mix(in srgb,var(--c1) '+(v*9)+'%,var(--panel))" data-tip="'+esc('Impact '+im+' · probability '+pr+(g[k].length?': '+g[k].join(', '):': none'))+'">'+g[k].map(function(r){return '<b>'+r+'</b>'}).join('')+'</div>'})});
+   return h+'<div></div><div class="cx">LOW</div><div class="cx">PROBABILITY →</div><div class="cx">HIGH</div></div>'})()+
+   sl('Mitigation')+tbl(['Risk','With mitigation'],[['R1','One insert, leak-tested, outside the carton'],['R2','Opt-in + disclosure, cohort-only data'],['R3','Relevance-first, ₹15 coupon, 20-s survey'],['R4','Per-hub caps, festive blackout'],['R5','Sell through agencies at 10–15%'],['R6','Category exclusions from day 1'],['R7','Day-90 proof before any scale'],['R8','Per-route kit count, unpaired alert'],['R9','Moat = Tier 2-4 parcel base + a consented panel, not the mechanic']]),{s:'probability × impact · with mitigation'})+
+ blk('Guardrails · buyer prices, small sellers, trust',cards([{t:'Buyer prices',b:ul(['Not one paisa added to any product price','Coupon cuts her next basket by ₹15','₹0.73 per parcel free for shipping subsidy','No auction, so seller CAC doesn’t rise'])},{t:'Small sellers',b:ul(['Seller pays ₹0 and isn’t a party','Sample weight never billed to his slab','No ranking or visibility impact','Phase 2: optional ₹3 / parcel (+1.9% of sales)'])},{t:'Trust & privacy',b:ul(['Opt-in only; max 1 sample a month','Brands see cohorts ≥ 5,000, never PII','Never a competitor of what she bought','Rating < 3.0 auto-pauses a campaign'])}])+
+   note('<b>KILL-SWITCH: buyer trust, not scan rate.</b> Any hub with NPS below holdout − 2 or return Δ above +0.3 pp stops inserting the same day.'),{w:1,s:'non-negotiables'})+
+ blk('Return orders · both directions',cards([{t:'↑ Could raise returns',b:'<p>Leak stains the order: 0.2% leak × 50% damaging = <b>+0.10 pp</b>. Outside pouch looks tampered: tracked by reason code.</p>'},{t:'↓ Could lower returns',b:'<p><b>49%</b> of non-metro buyers say a sample raises trust. A gift at the door may cut COD refusals: not counted.</p>'}])+
+   sl('Return-rate Δ vs holdout · log scale, pp')+returnsLog()+
+   note('<b>Read:</b> money is never the constraint; a sample must cause 1 extra return in 10 parcels to lose money. <b>The kill line protects buyer trust.</b> Measured on sampled vs holdout parcels, same hub & week, with a “sample” reason code.'),{s:'modelled before the pilot'})+
+ blk('Compliance checklist',tbl(['Rule','Our design','When'],[['Cosmetics Rules, 2020','Licensed brands only; “free sample, not for sale”, batch & expiry on every sachet',pill('Day 1','ok')],['FSSAI labelling','Edible only after full-label & shelf-life sign-off',pill('Phase 2','wa')],['Legal Metrology','Mandatory declarations printed on pack',pill('Day 1','ok')],['DPDP Act, 2023','Explicit opt-in, purpose-limited, deletion on opt-out; cohorts ≥ 5,000, never PII',pill('Day 1','ok')],['Consumer Protection (E-com)','Disclosed at checkout and on the parcel; “sent by Meesho”; no dark patterns',pill('Day 1','ok')],['IMS Act','No infant-food samples; baby care limited to skin & hygiene',pill('Phase 2','wa')],['Never sampled','Medicines, alcohol, tobacco, or a rival of what she just bought',pill('Never','no')]]),{s:'what the law asks · how we comply'})},
+ src:'Return cost ≈ 1.5× forward logistics (₹46.3/order, Meesho FY26). Leak rate (0.2%) and damage share (50%) are team assumptions. Heat-map placements are team judgements, revisited at each pilot gate.'},
+
+{n:'10',nav:'Roadmap',tile:'Roadmap & pilot',line:'₹46 L, 90 days, kill line at every gate',title:'Roadmap: 90 Days to Prove It',sub:'30 / 60 / 90 pilot with kill gates · OKRs · now / next / later',
+ so:'<strong>₹46 lakh and 90 days</strong> settle the unsolved questions in the order that matters: buyer trust first, then the packing and matching mechanics, then whether brands pay again. <strong>Net ₹24 L</strong> after brands pay a 50% pilot rate.',
+ body:function(){return blk('30 / 60 / 90 pilot · hypothesis-driven, with the number that kills it at each gate',cards([{t:'Week −4 → 0 · Set up',b:ul(['Sign 2 BPC brands at a 50% pilot rate (₹6.50/trial)','Opt-in + checkout disclosure live for Lucknow PINs','AWB campaign flag + pairing scan in the sort app','QR → 3 questions → coupon service','“Free sample, not for sale” labels · DPDP consent text','Holdout randomised and locked before day 0']),f:'✓ READY · contracts, build, consent'},
+   {t:'Day 0–30 · Prove the buyer & packing',b:'<p><b>We believe</b> opted-in buyers welcome a disclosed sample, and a ₹1 insert is liked as much as a ₹2.60 one.</p><p><b>Scope:</b> 1 Valmo hub · 2 brands · 40k parcels · lanes A / C / D + holdout · zone targeting</p><p><b>Measure:</b> NPS Δ · return Δ · opt-out · ₹/insert · response % · rider s/drop</p>',f:'✕ KILL IF NPS < holdout − 2 · return Δ > +0.3 pp · response < 6%'},
+   {t:'Day 31–60 · Prove targeting & matching',b:'<p><b>We believe</b> spend segments answer ≥ 1.5× better than zone targeting, and flag-the-order matching holds ≤ 2% error.</p><p><b>Scope:</b> 3 hubs (+ Patna, Varanasi) · 5 brands · 3 L trials · price tiers ₹9 / ₹13 / ₹16</p><p><b>Measure:</b> response by segment · matching error · s/insert · willingness to pay by tier</p>',f:'✕ KILL IF segment < 1.5× zone · matching error > 2% · insert > ₹3'},
+   {t:'Day 61–90 · Prove the proof',b:'<p><b>We believe</b> the 90-day purchase lift is real and measurable, and brands pay full price to get it again.</p><p><b>Scope:</b> 90-day re-survey + purchase data on cohort 1 vs matched holdout · dashboard v1 · rebooking ask at ₹13</p><p><b>Measure:</b> incremental lift · ₹ per new buyer · rebooking rate</p>',f:'✕ KILL IF no significant lift · < 2 of 5 brands rebook at ≥ ₹13'}]),{w:1,s:'Oct–Dec 2026 · Eastern UP & Bihar · total ₹46 L'})+
+ blk('Workstreams',tbl(['','Set up','Day 0–30','Day 31–60','Day 61–90'],[['<b>Tech & data</b>','AWB flag · pairing scan · QR service','Dashboard v0 · daily NPS / returns','Segment builder · price tiers','Dashboard v1 · lift model'],['<b>Hub ops</b>','SOPs · racks · training · kits','Lanes A / C / D at Lucknow','+ Patna, Varanasi · winner per hub','Steady state · festive-peak plan'],['<b>Brand sales</b>','2 pilot MoUs at ₹6.50','Weekly read-outs to brands','+3 brands · tier pricing','Rebooking ask at ₹13'],['<b>Research & legal</b>','Labels · DPDP text · randomisation','Holdout NPS & return deltas','Segment response analysis','90-day re-survey · lift read']]),{w:1})+
+ blk('Day-90 decision',cards([{t:'GO',big:'Scale',b:'<p>All three gates pass → 15 hubs in Q1 FY28, console build starts.</p>',hi:1},{t:'PIVOT',big:'₹9 only',b:'<p>Buyers happy, lift unproven → sell ₹9 reach tier only (~₹446 Cr).</p>'},{t:'STOP',big:'Exit',b:'<p>Trust gate fails → exit at ₹24 L net, no scale capex spent.</p>'}]))+
+ blk('Pilot OKRs',tbl(['','Objective','Key results'],[['O1','Buyers welcome it.','NPS Δ ≥ 0 · opt-out < 10% · return Δ ≤ +0.1 pp'],['O2','The loop works.','Verified response ≥ 12% · matching error ≤ 2% · insert ≤ ₹1.20'],['O3','Brands pay again.','3 of 5 rebook at ≥ ₹13 · significant 90-day lift in ≥ 2 campaigns']]),{s:'what success means'})+
+ blk('The ₹46 L · what it costs',hbars([['Tech: flag, pairing scan, QR, dashboard',14,'₹14 L','c1'],['Hub ops: operators, pouches, kits, riders',12,'₹12 L','c1'],['Programme team (PM + ops, 3 months)',7,'₹7 L','c1'],['Legal & compliance (labels, DPDP)',5,'₹5 L','c1'],['Holdout re-survey & analysis',4,'₹4 L','c1'],['Buyer coupons + contingency',4,'₹4 L','c1']],{max:14})+
+   chain(['gross<b>₹46 L</b>','−','brand pilot fees<b>₹22 L</b>','=','net to Meesho<b>₹24 L</b>'])+'<p style="margin-top:8px"><small>Pilot fees: 3.4 L trials × ₹6.50.</small></p>',{s:'gross'})+
+ blk('FY28 ramp · trials per quarter',cols([['Q1 · 15 hubs',0,10,'10 Mn · ₹13 Cr','c1'],['Q2 · 60 hubs',0,30,'30 Mn · ₹39 Cr','c1'],['Q3 · 150 hubs',0,70,'70 Mn · ₹91 Cr','c1'],['Q4 · all hubs',0,125,'125 Mn · ₹163 Cr','c1']],{max:140,h:170})+
+   kpis([['₹650 Cr','Q4 run-rate (500 Mn / yr)'],['~235 Mn','FY28 trials ≈ ₹305 Cr'],['≈ ₹800 Cr','FY29 ≈ 1% of FY29 NMV']]),{s:'Mn trials · revenue'})+
+ blk('Scale · now / next / later',flow([['Now · Q3 FY27','Pilot','BPC, 3 hubs, C + D packing, segments, holdouts. Go / no-go at day 90.'],['Next · FY28','Scale','All Valmo hubs · rider lane on Tier 3-4 · self-serve console · 2 agencies · + perfume, home care'],['Later · FY29+','Expand','Edible (post-FSSAI) · seller-bench insertion (₹3/parcel) · concept tests · leg-two reach']])+note('<b>1% NMV ≈ 1 in 9 parcels × ₹13.</b>'),{s:'1% NMV ≈ 1 in 9 parcels × ₹13'})+
+ blk('10× and long-term thinking · go-to-market · moat · vision',flow([['Flywheel','More parcels carry trials','→'],['','More answers','→'],['','Sharper targeting','→'],['','Higher response, lower ₹/answer','→'],['','More brands book','↺']])+
+   cards([{t:'The moat compounds',b:'<p>Each lap of the flywheel makes the next campaign cheaper. The mechanic is copyable; <b>the Tier 2-4 audience and its consent are not.</b></p>'},{t:'Go-to-market',b:'<p>Beachhead: D2C & mid-size hair-oil, skin-care and fragrance brands entering Tier 2-4. Sell via 2 BTL agencies (10–15%), then a self-serve console.</p>'},{t:'The 10× version: the Bharat Trial Panel',b:'<p>165 Mn opted-in households become India’s largest always-on consumer panel. Brands test 3 pack / price variants with 10k homes each <b>before</b> launch, a Tier-3 panel India’s ₹1,600 Cr research industry has never had.</p>',hi:1},{t:'Leg two (secondary)',b:'<p>Brands that learn which segment converts then buy targeted reach on Meesho. Upside not counted in the ₹650 Cr.</p>'}]),{w:1})},
+ src:'Pilot geography: Lucknow → Patna, Varanasi (Eastern UP & Bihar). FY28 ramp assumes hub roll-out 15 → 60 → 150 → all; FY29 parcels 5.6 Bn at 25% growth. Pilot fees: 3.4 L trials × ₹6.50.'},
+
+{n:'A',nav:'Appendix',tile:'Appendix · assumptions',line:'Every number, its basis and its test',title:'Appendix: Show the Working',sub:'Assumption register · sources · glossary',
+ so:'Every number in this deck is either sourced, from our own primary research, or a labelled assumption with the pilot gate that tests it. <strong>Low-confidence assumptions are exactly the pilot’s kill lines.</strong>',
+ body:function(){var A=[
+  ['Meesho baseline','FY26 NMV','₹41,600 Cr','Contribution ₹2,060 Cr = 4.95% of NMV (FY26 annual report)','HIGH · filed'],
+  ['','NMV growth to FY28','25% CAGR','Management guidance; FY28 NMV ₹65,000 Cr; 1% = ₹650 Cr','MED · guidance'],
+  ['','Orders · ATU · NMV/order','2.67 Bn · 264 Mn · ₹156','FY26 filings; 10.1 orders / user / yr; ₹1,580 annual spend','HIGH · filed'],
+  ['','FY28 parcels','4.5 Bn','Orders grow with NMV at constant ₹/order','MED'],
+  ['Demand-side sizing','Category sales (7)','₹14.9 lakh Cr','Redseer (BPC), BW (fragrance), IMARC/IBEF (packaged food $129 Bn, snacks, biscuits, confectionery, nutra, baby), Euromonitor (home)','HIGH · secondary'],
+  ['','A&P as % of sales','4–15%','HUL 9.6%, Marico 11.2%, Emami ~20%, Britannia 3.1%, Tata Consumer 7.2%, Jyothy 8.3%, Zydus Wellness 15.4%; deo industry 7–8%','HIGH · filings'],
+  ['','Share of A&P behind launches','15%','Launches = 3–7% of sales (Nestlé India 7%, Dabur 3–5%, Kantar <10%) × 2–3× ad intensity at launch','MED · brand calls'],
+  ['','Sampling + testing share of launch spend','20–25%','DTC brands spend ~15% of all marketing on sampling; launches lean harder on trial; +~5% consumer testing','MED · brand calls'],
+  ['','Expansion trial, existing brands','3% of A&P','Brands entering new households / regions; a fifth of the DTC sampling benchmark','LOW · brand calls'],
+  ['','Non-metro share (SAM)','55%','Rural = 38% of FMCG sales (NIQ 2025) + Tier-2/3 towns','MED'],
+  ['','Meesho share of SAM (SOM)','15% → ₹608 Cr','Analog: Meesho holds ~16% of e-com retail media','LOW · Day-90 rebook'],
+  ['Product & unit economics','Opt-in rate','50%','Survey: 79% positive; halved for caution','MED · Day 30'],
+  ['','Verified response rate','12%','Survey: 42% “definitely” × 0.3 say-do discount','LOW · Day 30'],
+  ['','Coupon redemption','40% of ₹15','₹0.72 / trial, Meesho-funded','MED · Day 60'],
+  ['','Insertion cost','₹0.9–3.2','Pouch, mailer, label, labour quotes; ₹0.17 labour from throughput math','MED · Day 30 lanes'],
+  ['','Return cost · expected','₹70 × +0.1 pp','~1.5× ₹46.3 forward logistics; 0.2% leak × 50% damaging','LOW · holdout'],
+  ['','Promoter cost per contact','₹25–40','Our 5-promoter × 10-day cost build-up + brand interview (Tier-3 ₹28–32)','HIGH · primary'],
+  ['','Home-use test cost','₹800 / resp.','Agency rate-card estimate for a 300-person HUT','MED · brand calls'],
+  ['','Opted-in households × trials each','165 Mn × 3 / yr','331 Mn FY28 ATU × 50%; cap of 1 sample a month','MED · Day 60'],
+  ['','Promoter-day cost','₹3,000','₹1.5 L ÷ 50 promoter-days (our cost build-up)','HIGH · primary'],
+  ['','Inbound freight','₹0.25 / sample','~₹50k FTL for 6 t + ₹0.15 hub handling','MED · quotes'],
+  ['','Gross margin per new buyer','₹240 / yr','4 full-size packs × ₹120 × 50% margin','MED · brand data'],
+  ['','Incremental conversion','6% vs 3%','Industry 5–25% claimed (survey-based); conservative','LOW · Day 90']];
+  var cnt={HIGH:0,MED:0,LOW:0};A.forEach(function(r){cnt[r[4].split(' ')[0]]++});
+  return blk('Confidence across the register',stack([['High',Math.round(cnt.HIGH/A.length*100),'c2'],['Medium',Math.round(cnt.MED/A.length*100),'c4'],['Low',Math.round(cnt.LOW/A.length*100),'c3']])+note('<b>'+cnt.HIGH+' high, '+cnt.MED+' medium, '+cnt.LOW+' low</b> of '+A.length+' assumptions. Every low-confidence assumption is tied to a pilot gate (Day 30, holdout or Day 90).'),{w:1})+
+  blk('Assumption register · every number on the deck, its basis, and how the pilot tests it',tbl(['Group','Assumption','Value','Basis / source','Confidence · test'],A.map(function(r){return [r[0]?'<b>'+r[0]+'</b>':'',r[1],'<b>'+r[2]+'</b>',r[3],conf(r[4])]})),{w:1,s:'show the working'})+
+  blk('Secondary sources · India & global','<ol style="margin:0;padding-left:18px;font-size:.78rem;display:grid;gap:5px;color:var(--sub)"><li>Redseer: Beauty Blitz 2030: India BPC $23 Bn FY25, 12% CAGR</li><li>BW Businessworld: India perfume & deo ~₹10,000 Cr (perfume ₹4,500, deo ₹5,500)</li><li>IMARC: India snacks ₹50,590 Cr; confectionery ₹39,871 Cr; nutraceuticals $8.93 Bn; baby care $4.82 Bn (2025)</li><li>IBEF: biscuits, cookies & crackers ₹1,16,706 Cr (2025)</li><li>Euromonitor: India home care retail value ₹666 bn (2025)</li><li>NielsenIQ India: FMCG launches 1.8× (yr to May 2025); 4% reach 1% penetration; rural = 38% of FMCG (2025)</li><li>FY25 A&P (afaqs, Storyboard18, company results): HUL ~9.6%, Marico 11.2%, Emami ~20%, Britannia 3.1%, Tata Consumer 7.2%, Jyothy 8.3%, Zydus Wellness 15.4%; Fogg/Vini 23% S&D</li><li>Innovation share of sales: Nestlé India ~7%, Dabur NPD 3–5%, Kantar launches <10% (2020)</li><li>Meesho FY26 annual report & investor presentation: NMV, orders, ATU, contribution, Valmo share</li><li>WiFi Talents sampling statistics: DTC brands ~15% of marketing on sampling · In-Kluso Ground on US in-store sampling</li><li>International Journal of Advertising (1992): “The effect of product sampling on product trial, purchase and conversion”</li><li>Amazon Product Sampling (2019-20), Peekage, Sampler: sampling pricing & closed-loop models</li><li>DPDP Act 2023 & Rules; Drugs & Cosmetics Rules; FSSAI labelling regulations; Legal Metrology</li></ol>')+
+  blk('Glossary',tbl(['Term','Meaning'],[['A&P','Advertising & promotion spend'],['BTL','Below-the-line (sampling, activation)'],['HUT','Home-use product test'],['S&T','Sampling & testing spend'],['NMV','Net merchandise value'],['ATU','Annual transacting users'],['TAM / SAM / SOM','Total / serviceable / obtainable market'],['CPT','Cost per (delivered) trial'],['AWB','Airway bill (parcel ID)'],['PTL / FTL','Part / full truckload'],['Holdout','Matched parcels with no sample'],['pp','Percentage points']]))+
+  blk('Primary research & prototype',ul(['<b>Survey responses (n = 62):</b> Google Sheet · 10 questions · Sep 2026','<b>Call recordings (4 interviews):</b> 2 buyers, 1 brand sales rep, 1 seller','<b>Clickable prototype:</b> buyer opt-in → sample → 3 questions → coupon; brand console & sizing calculator (this page)'],'n')+note('<b>Calculation trail:</b> every figure on slides 02–10 reproduces from the register; the three sizing routes, the waterfall and the per-product saving use only these inputs.')+'<p style="margin-top:10px"><small>Team Moshi Moshi (Mukund Singhal, team leader · Vaibhav Itauriya · Karmanya Goyal) · Meesho DICE Challenge Season 3 · Business Track · Round 2.</small></p>',{w:1})},
+ src:'Assumption register, sources and glossary from the Round 2 deck appendix.'}
+];
+
+/* ---------- side tiles ---------- */
+function tile(x){return '<button class="dx-tile" type="button" data-pv="'+(x.n==='A'?13:+x.n+1)+'" data-peek="'+x.n+'"><span class="no">'+x.n+'</span><span class="sr"> '+x.tile+'</span></button>'}
+$('dxTiles').innerHTML=S.map(tile).join('');
+
+/* quick peek on the numbered slide buttons: thumbnail + title + one-line summary + the slide's "so what" */
+var PK=$('peek'),pkThumbs=false;
+function pkShow(btn){var x=null;S.forEach(function(y){if(y.n===btn.dataset.peek)x=y});if(!x)return;
+  var pg=x.n==='A'?13:+x.n+1;
+  if(!pkThumbs){pkThumbs=true;for(var i=1;i<=13;i++)new Image().src='deck/thumb-'+(i<10?'0':'')+i+'.jpg'}
+  $('peekImg').src='deck/thumb-'+(pg<10?'0':'')+pg+'.jpg';
+  $('peekK').textContent=x.n==='A'?'Appendix':'Slide '+x.n+' / 10 · '+x.nav;$('peekT').textContent=x.title;
+  $('peekL').textContent=x.line;$('peekS').textContent=strip(x.so);
+  PK.hidden=false;var r=btn.getBoundingClientRect(),row=TL.getBoundingClientRect(),w=PK.offsetWidth,h=PK.offsetHeight,left,top;
+  if(row.left-w-16>=8){left=row.left-w-16;top=Math.max(8,Math.min(r.top+r.height/2-h/2,innerHeight-h-8))} /* beside the deck card, never over the buttons */
+  else{left=Math.max(8,Math.min(r.left+r.width/2-w/2,innerWidth-w-8));top=r.bottom+8;if(top+h>innerHeight-8)top=Math.max(8,r.top-h-8)}
+  PK.style.left=left+'px';PK.style.top=top+'px'}
+function pkHide(){PK.hidden=true}
+var TL=$('dxTiles');
+TL.addEventListener('mouseover',function(e){var b=e.target.closest('[data-peek]');if(b)pkShow(b)});
+TL.addEventListener('mouseleave',pkHide);
+TL.addEventListener('focusin',function(e){var b=e.target.closest('[data-peek]');if(b)pkShow(b)});
+TL.addEventListener('focusout',pkHide);
+TL.addEventListener('click',pkHide);
+document.querySelector('.rail.right').addEventListener('scroll',pkHide);
+addEventListener('resize',pkHide);
+$('dxNav').innerHTML=S.map(function(x,i){return '<button type="button" data-i="'+i+'">'+(x.n==='A'?'':x.n+' ')+x.nav+'</button>'}).join('');
+
+/* ---------- sheet ---------- */
+var cur=0,opener=null,M=$('dxModal'),tip=$('dxTip');
+function show(i){cur=Math.max(0,Math.min(S.length-1,i));var x=S[cur];
+  $('dxKick').textContent=x.n==='A'?'Appendix':'Slide '+x.n+' / 10 · '+x.nav;$('dxTitle').textContent=x.title;$('dxSub').textContent=x.sub;
+  $('dxMain').innerHTML='<div class="dx-so"><b>SO WHAT</b><div>'+x.so+'</div></div><div class="dx-grid">'+x.body()+'</div>';
+  $('dxMain').scrollTop=0;$('dxSrc').textContent='Source: '+x.src;
+  [].forEach.call($('dxNav').children,function(b,j){b.setAttribute('aria-current',j===cur?'true':'false');if(j===cur&&b.scrollIntoView)b.scrollIntoView({block:'nearest',inline:'nearest'})});
+  $('dxPrev').disabled=cur===0;$('dxNext').disabled=cur===S.length-1;
+  $('dxPrev').textContent=cur>0?'‹ '+S[cur-1].nav:'‹ Prev';$('dxNext').textContent=cur<S.length-1?S[cur+1].nav+' ›':'Next ›'}
+function openDx(n,from){var i=0;S.forEach(function(x,j){if(x.n===n)i=j});opener=from||null;M.hidden=false;document.body.style.overflow='hidden';show(i);$('dxClose').focus()}
+function closeDx(){M.hidden=true;tip.hidden=true;document.body.style.overflow='';if(opener&&opener.focus)opener.focus()}
+
+document.addEventListener('click',function(e){var b=e.target.closest('[data-dx]');if(b){openDx(b.dataset.dx,b)}});
+$('dxNav').addEventListener('click',function(e){var b=e.target.closest('[data-i]');if(b)show(+b.dataset.i)});
+$('dxPrev').addEventListener('click',function(){show(cur-1)});
+$('dxNext').addEventListener('click',function(){show(cur+1)});
+$('dxClose').addEventListener('click',closeDx);
+M.addEventListener('click',function(e){if(e.target===M)closeDx()});
+document.addEventListener('keydown',function(e){if(M.hidden)return;
+  if(e.key==='Escape')closeDx();else if(e.key==='ArrowRight'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))show(cur+1);else if(e.key==='ArrowLeft'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))show(cur-1)});
+
+/* hover tooltips on every chart mark */
+M.addEventListener('mouseover',function(e){var t=e.target.closest('[data-tip]');if(!t){tip.hidden=true;return}tip.textContent=t.getAttribute('data-tip');tip.hidden=false});
+M.addEventListener('mousemove',function(e){if(tip.hidden)return;var w=tip.offsetWidth,h=tip.offsetHeight,x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+'px';tip.style.top=y+'px'});
+M.addEventListener('mouseleave',function(){tip.hidden=true});
+
+/* shrink the phone (whole device, contents included) so it always fits the window height */
+var phoneEl=document.querySelector('.phone');
+function fitPhone(){if(innerWidth<=430){phoneEl.style.zoom='';return}
+  var room=innerHeight-(innerWidth>1180?28:24);phoneEl.style.zoom=Math.max(.5,Math.min(1,room/836)).toFixed(3)}
+fitPhone();addEventListener('resize',fitPhone);
+
+/* ---------- original deck viewer: the Round 2 PDF, exported page by page to deck/slide-NN.jpg ---------- */
+var PV=[['Title','Bharat Trial Network'],['01','Executive Summary'],['02','The Problem: No Feedback Loop'],['03','Voice of Bharat: Would They Pay?'],['04','Rough Sizing: How Big Is It?'],['05','The Solution: A Closed Feedback Loop'],['06','Operations: Making It Work in the Hub'],['07','Outcome: 60% Cheaper per Launch'],['08','Business Case: Who Pays & How It Scales'],['09','What Is Still Unsolved'],['10','Roadmap: 90 Days to Prove It'],['Links','Prototype · survey responses · call recordings'],['A','Appendix: assumption register & sources']];
+/* clickable links kept from the PDF, in PDF points on a 1440 × 810 page */
+var PVL={4:[[393,494,444,508,'Call recordings (Drive folder)','https://drive.google.com/drive/folders/1ciHUIgHPQ448HbD2GAmrsvARJa8tJ85F?usp=sharing'],[487,493,545,509,'Survey responses (Google Sheet)','https://docs.google.com/spreadsheets/d/1gfFfcKef82l7JblBN39xz3-Rzhbd9aTPRwbzYx6NS5g/edit?usp=sharing'],[68,593,111,604,'Recording: buyer, trial & trust','https://drive.google.com/file/d/1ni88d4U8ozBoqfAb6iqKo5sKqgWj8Src/view?usp=sharing'],[487,593,529,604,'Recording: buyer, risk & leakage','https://drive.google.com/file/d/1gleE7_fvnofqRnni-5TogbpbRKGrwq-R/view?usp=sharing'],[487,689,529,700,'Recording: seller, operations','https://drive.google.com/file/d/1eAN5fM-dZod5tNoCdFGXpDGoSCAWtJFa/view?usp=sharing']],
+ 12:[[645,773,830,803,'Survey responses (Google Sheet)','https://docs.google.com/spreadsheets/d/1gfFfcKef82l7JblBN39xz3-Rzhbd9aTPRwbzYx6NS5g/edit?gid=1230932232#gid=1230932232'],[942,773,1100,803,'Call recordings (Drive folder)','https://drive.google.com/drive/folders/1ciHUIgHPQ448HbD2GAmrsvARJa8tJ85F?usp=sharing']],
+ 13:[[1094,587,1153,599,'Survey responses (Google Sheet)','https://docs.google.com/spreadsheets/d/1gfFfcKef82l7JblBN39xz3-Rzhbd9aTPRwbzYx6NS5g/edit?gid=1230932232#gid=1230932232'],[1102,628,1151,640,'Call recordings (Drive folder)','https://drive.google.com/drive/folders/1ciHUIgHPQ448HbD2GAmrsvARJa8tJ85F?usp=sharing']]};
+var pv=1,pvFrom=null,PVE=$('pv');
+function pvSrc(i){return 'deck/slide-'+(i<10?'0':'')+i+'.jpg'}
+function pvShow(i){pv=Math.max(1,Math.min(PV.length,i));var d=PV[pv-1];
+  $('pvImg').src=pvSrc(pv);$('pvImg').alt=(/^\d/.test(d[0])?'Slide '+d[0]+': ':'')+d[1];
+  $('pvT').innerHTML=(/^\d/.test(d[0])?'<b>Slide '+d[0]+' / 10</b> · ':'<b>'+d[0]+'</b> · ')+esc(d[1]);
+  $('pvN').textContent=pv+' / '+PV.length;$('pvP').style.width=(pv/PV.length*100)+'%';
+  $('pvPrev').disabled=pv===1;$('pvNext').disabled=pv===PV.length;$('pvMore').hidden=!pvDx();
+  $('pvLinks').innerHTML=(PVL[pv]||[]).map(function(l){return '<a href="'+l[5]+'" target="_blank" rel="noopener" title="'+esc(l[4])+'" aria-label="'+esc(l[4])+'" style="left:'+(l[0]/14.4)+'%;top:'+(l[1]/8.1)+'%;width:'+((l[2]-l[0])/14.4)+'%;height:'+((l[3]-l[1])/8.1)+'%"></a>'}).join('');
+  if(pv<PV.length)new Image().src=pvSrc(pv+1)}
+function pvDx(){var d=PV[pv-1][0];return /^\d/.test(d)||d==='A'?d:null}
+function pvOpen(i,from){pvFrom=from||null;PVE.hidden=false;document.body.style.overflow='hidden';pvShow(i);$('pvNext').focus()}
+function pvClose(){if(document.fullscreenElement&&document.exitFullscreen)document.exitFullscreen();PVE.hidden=true;document.body.style.overflow=M.hidden?'':'hidden';if(pvFrom&&pvFrom.focus)pvFrom.focus()}
+document.addEventListener('click',function(e){var b=e.target.closest('[data-pv]');if(b)pvOpen(+b.dataset.pv,b)});
+$('dxOrig').addEventListener('click',function(e){var n=S[cur].n;pvOpen(n==='A'?13:+n+1,e.currentTarget)});
+$('pvPrev').addEventListener('click',function(){pvShow(pv-1)});$('pvNext').addEventListener('click',function(){pvShow(pv+1)});
+$('pvL').addEventListener('click',function(){pvShow(pv-1)});$('pvR').addEventListener('click',function(){pvShow(pv+1)});
+$('pvX').addEventListener('click',pvClose);
+$('pvMore').addEventListener('click',function(){var d=pvDx();pvClose();if(d)openDx(d)});
+$('pvFs').addEventListener('click',function(){if(document.fullscreenElement)document.exitFullscreen();else if(PVE.requestFullscreen)PVE.requestFullscreen()});
+document.addEventListener('fullscreenchange',function(){$('pvFs').textContent=document.fullscreenElement?'Exit full screen':'Full screen'});
+document.addEventListener('keydown',function(e){if(PVE.hidden)return;var k=e.key;
+  if(k==='ArrowRight'||k==='PageDown'||k===' '){e.preventDefault();e.stopImmediatePropagation();pvShow(pv+1)}
+  else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault();e.stopImmediatePropagation();pvShow(pv-1)}
+  else if(k==='Home')pvShow(1);else if(k==='End')pvShow(PV.length);
+  else if(k==='Escape'&&!document.fullscreenElement){e.stopImmediatePropagation();pvClose()}},true);
+})();
+
 </script>
 </body></html>
