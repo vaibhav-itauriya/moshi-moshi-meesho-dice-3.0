@@ -94,6 +94,7 @@ Things to try:
 | Promoter benchmark | ₹32 a contact + ₹2.4 L home-use test for 300 answers | Deck slide 07 |
 | Scale | 4.5 Bn FY28 parcels, FY28 NMV ₹65,000 Cr, 11% of parcels × ₹13 ≈ 1% of NMV | Deck slides 04, 10 |
 | Pilot | ₹6 L / ₹18 L / ₹22 L over days 0–30 / 31–60 / 61–90 | Deck slide 10 |
+| Pilot partner rate | ₹6.50 a trial (50% of ₹13) for 2 BPC brands, Segment tier only, on each brand's first 1.7 lakh trials during the Oct–Dec 2026 pilot; ₹22 L of pilot fees in all, which takes the ₹46 L pilot to ₹24 L net | Deck slide 10 |
 
 **Illustrative (to be replaced by pilot data):** the size of the opted-in pool (9.0 Mn in Eastern UP & Bihar), segment pass rates, rating and price-acceptance mixes, the 90-day lift (18.2% sampled vs 12.1% holdout), the counter-metric readings, and the rider's route (36 drops in Gorakhpur, 4 flagged). The app labels these as illustrative.
 
