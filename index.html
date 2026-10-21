@@ -28,40 +28,6 @@ button{cursor:pointer}
 :focus-visible{outline:3px solid var(--m-pink);outline-offset:2px;border-radius:6px}
 .n{font-variant-numeric:tabular-nums}
 
-.stage{max-width:1280px;margin:0 auto;padding-inline:20px;padding-block:20px 36px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:28px;align-items:start}
-.rail{display:grid;gap:14px;min-width:0}
-.rcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0}
-.rcard h2{font-size:1.05rem;margin:0 0 4px;font-weight:800;text-wrap:balance}
-.rcard .lab{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--sub)}
-.brandline{display:flex;gap:12px;align-items:center}
-.brandline .lg{width:42px;height:42px;border-radius:12px;background:var(--m-logo);color:#fff;display:grid;place-items:center;font-weight:900;font-size:1.5rem}
-.brandline h1{font-size:1.25rem;margin:0;font-weight:900;line-height:1.1}
-.brandline p{margin:0;font-size:.8rem;color:var(--sub)}
-.applist{display:grid;gap:8px;margin-top:8px}
-.appbtn{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:12px;padding:8px 10px}
-.appbtn:hover{border-color:var(--sub)}
-.appbtn[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.appbtn .ai{width:40px;height:40px;border-radius:10px;display:grid;place-items:center}
-.appbtn b{display:block;font-size:.92rem}
-.appbtn span{display:block;font-size:.76rem;color:var(--sub);line-height:1.3}
-.done{width:20px;height:20px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.7rem;font-weight:900}
-.done[hidden]{display:none!important}
-.steps{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:.84rem}
-.steps li{display:grid;grid-template-columns:22px 1fr;gap:8px;color:var(--sub)}
-.steps li i{font-style:normal;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:.72rem;font-weight:800}
-.steps li.ok{color:var(--ink)} .steps li.ok i{background:var(--ok);border-color:var(--ok);color:#fff}
-.steps li.now{color:var(--ink);font-weight:700} .steps li.now i{border-color:var(--accent);color:var(--accent)}
-.rbtn{border:1.5px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 14px;font-size:.84rem;color:var(--sub)}
-.rbtn:hover{color:var(--ink);border-color:var(--sub)}
-.deck{font-size:.86rem;margin-top:4px}
-.deck .src{display:inline-block;margin-top:8px;font-size:.74rem;font-weight:800;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:2px 10px}
-.ledger{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}
-.lrow{display:grid;gap:1px;padding:7px 10px;border-radius:10px;background:var(--accent-soft);min-width:0}
-.lrow span{font-size:.7rem;color:var(--sub);line-height:1.2}
-.lrow b{font-size:.95rem;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lrow .z{color:var(--ok)}
-.foot{font-size:.74rem;color:var(--sub)}
-
 /* ---------------- phone ---------------- */
 .phone{width:390px;height:812px;border-radius:54px;background:#0E0D12;padding:12px;box-shadow:0 30px 60px -20px rgba(40,10,40,.45),0 0 0 2px #2A2830 inset;position:relative}
 .scr{position:relative;width:100%;height:100%;border-radius:43px;overflow:hidden;background:var(--m-bg);display:flex;flex-direction:column;color:var(--m-text);font-size:14px;line-height:1.4;isolation:isolate}
@@ -89,7 +55,7 @@ button{cursor:pointer}
 .home .clock{text-align:center;margin-top:26px;font-weight:300;font-size:64px;line-height:1;letter-spacing:-2px}
 .home .date{text-align:center;font-size:14px;font-weight:600;opacity:.85}
 .widget{margin:22px 18px 0;background:rgba(255,255,255,.14);border-radius:22px;padding:14px;backdrop-filter:blur(10px)}
-.widget .t{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+.widget .t{font-size:12px;font-weight:700;opacity:.8;margin-bottom:4px}
 .widget ol{margin:8px 0 0;padding-left:18px;font-size:13px;display:grid;gap:3px}
 .widget li.ok{opacity:.55;text-decoration:line-through}
 .icons{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 8px;padding:24px 18px 0}
@@ -301,15 +267,6 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
 .teaser-error{margin:0;color:#FFD9ED;font-size:.9rem;text-align:center}
 .teaser-error[hidden]{display:none}
 
-/* ===== Replay card in the left rail ===== */
-.teaser-mini{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:var(--panel);box-shadow:0 18px 38px rgba(40,10,40,.14);color:var(--ink);display:grid;gap:7px}
-.teaser-mini[hidden]{display:none}
-.teaser-mini-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.teaser-mini-head b{font-size:.8rem;font-weight:900}
-.teaser-mini-link{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.72rem;font-weight:800;white-space:nowrap}
-.teaser-mini-link:hover{border-color:var(--accent)}
-.teaser-mini-link svg{width:13px;height:13px}
-.teaser-mini-note{color:var(--sub);font-size:.7rem;margin:0 2px}
 
 /* ===== Video player ===== */
 .vp{--vp-accent:#F43397;position:relative;overflow:hidden;width:100%;aspect-ratio:16/9;border-radius:18px;background:#080609;color:#fff;isolation:isolate;outline:none;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;font-family:var(--font)}
@@ -414,8 +371,6 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
 @keyframes vpSpin{to{transform:rotate(360deg)}}
 @keyframes vpPulse{0%{box-shadow:0 12px 40px rgba(244,51,151,.5),0 0 0 0 rgba(244,51,151,.45)}100%{box-shadow:0 12px 40px rgba(244,51,151,.5),0 0 0 22px rgba(244,51,151,0)}}
 
-.deck .src{border:0;cursor:pointer;font-family:inherit}
-.deck .src:hover{background:var(--accent);color:#fff}
 
 /* ---------------- deck explorer: side tiles + full-screen sheet ---------------- */
 .dx-tiles{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px;margin-top:8px}
@@ -577,29 +532,130 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
 .dx-orig:hover{border-color:var(--accent)}
 @media(max-width:760px){.pv-bar{padding:0 10px}.pv-bar .t{display:none}.pv-bar .x span{display:none}}
 
-/* desktop: the whole stage fits one screen; side rails scroll on their own if they run long */
-@media (min-width:1181px){
-  body{margin:0}
-  .stage{height:100vh;height:100dvh;padding-block:14px;grid-template-rows:minmax(0,1fr);align-items:stretch}
-  .rail{overflow-y:auto;overscroll-behavior:contain;align-content:start;padding-right:4px;margin-right:-4px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
-  .rail.left{padding:0 4px 0 0}
-  .phonewrap{align-self:center}
-}
-.teaser-mini-note{display:none}
-
-@media (max-width:1180px){
-  .stage{grid-template-columns:minmax(0,1fr) auto}
-  .rail.right{grid-column:1 / -1;grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:820px){
-  .stage{grid-template-columns:minmax(0,1fr);padding-inline:16px}
-  .rail.left{order:2} .phonewrap{order:1;justify-self:center} .rail.right{order:3;grid-template-columns:minmax(0,1fr)}
-  .teaser-mini{width:min(390px,calc(100vw - 32px));margin:14px auto 0}
-}
 @media (max-width:430px){
   .phone{width:calc(100vw - 32px);height:min(760px,calc(100dvh - 24px));border-radius:44px;padding:9px}
   .scr{border-radius:36px}
 }
+/* ================= page layout: top bar, phone in the middle, two quiet columns ================= */
+:root{--tbh:64px}
+body{margin:0}
+
+/* top bar: brand · app switcher (centred over the phone) · teaser and deck */
+.tb{position:sticky;top:0;z-index:20;min-height:var(--tbh);display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:16px;padding:10px 28px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);box-sizing:border-box}
+.tb-brand{display:flex;align-items:center;gap:11px;min-width:0}
+.tb-brand .lg{flex:none;width:36px;height:36px;border-radius:10px;background:var(--m-logo);color:#fff;display:grid;place-items:center;font-weight:900;font-size:1.3rem;line-height:1}
+.tb-brand b{display:block;font-size:1rem;font-weight:900;line-height:1.15;white-space:nowrap}
+.tb-brand small{display:block;font-size:.75rem;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.tb-apps{display:flex;gap:2px;padding:4px;border-radius:14px;background:var(--panel);border:1px solid var(--line)}
+.tb-app{position:relative;display:inline-flex;align-items:center;gap:8px;border:0;background:none;border-radius:10px;padding:5px 12px 5px 5px;color:var(--sub);font-weight:700;font-size:.84rem;white-space:nowrap}
+.tb-app:hover{color:var(--ink);background:color-mix(in srgb,var(--accent-soft) 55%,transparent)}
+.tb-app[aria-current="true"]{background:var(--accent-soft);color:var(--ink)}
+.tb-app .ai{flex:none;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.tb-app .ai svg{width:16px;height:16px}
+.tb-app .done{position:absolute;top:1px;left:23px;width:14px;height:14px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:.55rem;font-weight:900;box-shadow:0 0 0 2px var(--panel)}
+.tb-app .done[hidden]{display:none}
+
+.tb-act{justify-self:end;display:flex;gap:8px}
+.tb-btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 15px;font-weight:800;font-size:.84rem;white-space:nowrap}
+.tb-btn svg{width:15px;height:15px;flex:none}
+.tb-btn:hover{border-color:var(--sub)}
+.tb-btn.pri{background:var(--accent);border-color:transparent;color:var(--panel)}   /* white on light, near-black on dark: readable on both pinks */
+.tb-btn.pri:hover{filter:brightness(1.08)}
+
+/* stage */
+.stage{max-width:1360px;margin:0 auto;padding:20px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:52px;box-sizing:border-box}
+.rail{min-width:0;display:flex;flex-direction:column;gap:30px}
+.rail.left{justify-self:end;width:100%;max-width:300px}
+.rail.right{justify-self:start;width:100%;max-width:350px}
+.phonewrap{position:relative;isolation:isolate;justify-self:center}
+.phonewrap::before{content:"";position:absolute;inset:-6% -38%;z-index:-1;pointer-events:none;background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 20%,transparent),transparent)}
+
+.blk-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px}
+.blk-h h2{margin:0;font-size:.95rem;font-weight:800}
+.lnk{border:0;background:none;padding:0;color:var(--sub);font-weight:700;font-size:.8rem;text-decoration:underline;text-underline-offset:3px}
+.lnk:hover{color:var(--ink)}
+.hint{font-size:.76rem;color:var(--sub)}
+.live{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:800;color:var(--ok)}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+
+/* demo path: a real sequence, so numbered, with a connecting line */
+.steps{margin:0;padding:0;list-style:none;display:grid;gap:14px}
+.steps li{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:start;color:var(--sub)}
+.steps li:not(:last-child)::before{content:"";position:absolute;left:11px;top:28px;bottom:-12px;width:2px;border-radius:1px;background:var(--line)}
+.steps li.ok:not(:last-child)::before{background:var(--ok)}
+.steps li i{font-style:normal;width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:.74rem;font-weight:800;background:var(--bg);box-sizing:border-box}
+.steps li.ok i{background:var(--ok);border-color:var(--ok);color:#fff}
+.steps li.now i{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.steps button{border:0;background:none;padding:2px 0 0;text-align:left;color:inherit}
+.steps b{display:block;font-size:.9rem;font-weight:700;line-height:1.3}
+.steps span{display:block;font-size:.78rem;color:var(--sub)}
+.steps li.now b{color:var(--ink);font-weight:800}
+.steps li.ok b{color:var(--ink)}
+.steps button:hover b{text-decoration:underline;text-underline-offset:3px}
+
+/* live money: a plain two-column list */
+.ledger{display:grid}
+.lrow{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:0}
+.lrow span{font-size:.84rem;color:var(--sub)}
+.lrow b{font-size:.95rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lrow .z{color:var(--ok)}
+.lrow small{display:block;margin-top:2px;font-size:.74rem;line-height:1.35;color:var(--sub);opacity:.85}
+
+/* what this screen proves, with the original slide pages it comes from */
+.ctx .kick{margin:0 0 6px;font-size:.8rem;font-weight:800;color:var(--accent)}
+.ctx h2{margin:0 0 10px;font-size:1.45rem;line-height:1.18;font-weight:900;letter-spacing:-.01em;text-wrap:balance}
+.deck p{margin:0;font-size:.92rem;line-height:1.55;color:var(--sub);max-width:44ch}
+.refs{display:grid;gap:10px;margin-top:16px}
+.refs.n1{grid-template-columns:minmax(0,230px)}
+.refs.n2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.refs.n3,.refs.n4{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ref{border:0;padding:0;background:none;text-align:left;display:grid;gap:6px;color:var(--ink);border-radius:9px}
+.ref img{display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:var(--panel);transition:transform .15s ease,box-shadow .15s ease}
+.ref:hover img,.ref:focus-visible img{transform:translateY(-2px);box-shadow:0 12px 26px -12px rgba(60,10,60,.55)}
+.ref span{font-size:.78rem;font-weight:800}
+.deck .ref-cap{margin-top:8px;font-size:.78rem}
+
+/* the deck strip, quieter than before */
+.rail .dx-tiles{margin-top:0}
+.rail .dx-tile{background:transparent;color:var(--sub)}
+.rail .dx-tile:hover,.rail .dx-tile:focus-visible{background:var(--accent);border-color:var(--accent);color:var(--panel)}
+@media (hover:none){.hint{display:none}}
+
+.fine{margin:0;font-size:.74rem;line-height:1.5;color:var(--sub);max-width:46ch}
+
+/* desktop: everything fits one screen; the columns scroll on their own if they run long */
+@media (min-width:1181px){
+  .stage{height:calc(100vh - var(--tbh));height:calc(100dvh - var(--tbh));align-items:stretch;padding-block:22px 18px}
+  .rail{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;padding:4px 4px 4px 0}
+  .phonewrap{align-self:center}
+}
+/* laptop / tablet: phone on the left, both columns stacked beside it */
+@media (max-width:1180px){
+  .tb{grid-template-columns:minmax(0,1fr) auto;padding:10px 20px;position:static}
+  .tb-apps{grid-column:1 / -1;grid-row:2;justify-self:center}
+  .tb-act{grid-row:1;grid-column:2}
+  .stage{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"phone left" "phone right";gap:36px 44px;padding:24px 20px 40px;align-items:start}
+  .phonewrap{grid-area:phone;position:sticky;top:20px}
+  .rail.right{grid-area:right;max-width:520px}
+  .rail.left{grid-area:left;justify-self:start;max-width:520px}
+}
+/* phones: one column */
+@media (max-width:820px){
+  .stage{grid-template-columns:minmax(0,1fr);grid-template-areas:"phone" "left" "right";padding:20px 16px 36px;gap:32px}
+  .phonewrap{position:static;justify-self:center}
+  .phonewrap::before{inset:-4% -10%}
+  .tb{padding:10px 16px}
+  .tb-apps{justify-self:stretch;overflow-x:auto;scrollbar-width:none}
+  .tb-apps::-webkit-scrollbar{display:none}
+}
+@media (max-width:560px){
+  .tb-brand > span:last-child{display:none}   /* logo only; the title is on the phone and in the teaser */
+  .tb-btn{padding:8px 12px}
+  .refs.n3,.refs.n4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
@@ -620,52 +676,44 @@ select,input[type=text]{width:100%;border:1.5px solid var(--m-line);border-radiu
   </div>
 </section>
 
-<div class="stage">
-  <aside class="rail left">
-    <div class="rcard">
-      <div class="brandline"><div class="lg" aria-hidden="true">m</div><div><h1>Bharat Trial Network</h1><p>Working app prototype · Team Moshi Moshi</p></div></div>
-    </div>
-    <div class="rcard">
-      <div class="lab">Apps on this phone</div>
-      <div class="applist" id="applist"></div>
-    </div>
-    <div class="rcard">
-      <div class="row" style="display:flex;justify-content:space-between;align-items:center"><div class="lab">Demo path</div><button class="rbtn" id="reset" type="button">Reset demo</button></div>
+<header class="tb">
+  <div class="tb-brand"><span class="lg" aria-hidden="true">m</span><span><b>Bharat Trial Network</b><small>Team Moshi Moshi, Meesho DICE Season 3</small></span></div>
+  <nav class="tb-apps" id="applist" aria-label="Open an app on the phone"></nav>
+  <div class="tb-act">
+    <button class="tb-btn" id="tbTeaser" type="button"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.86l10.98-6.86a1 1 0 0 0 0-1.72L9.52 4.28A1 1 0 0 0 8 5.14z"/></svg>Teaser</button>
+    <button class="tb-btn pri" type="button" data-pv="1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M12 16v4M8 20h8"/></svg>Present deck</button>
+  </div>
+</header>
+
+<main class="stage">
+  <aside class="rail left" aria-label="Demo progress and money flow">
+    <section class="blk">
+      <div class="blk-h"><h2>Demo path</h2><button class="lnk" id="reset" type="button">Reset</button></div>
       <ol class="steps" id="steps"></ol>
-    </div>
-    <div class="rcard">
-      <div class="lab">Money on every arrow · live</div>
+    </section>
+    <section class="blk">
+      <div class="blk-h"><h2>Money on every arrow</h2><span class="live">Live</span></div>
       <div class="ledger" id="ledger"></div>
-    </div>
+    </section>
   </aside>
 
   <div class="phonewrap">
     <div class="phone"><div class="scr" id="scr"></div></div>
   </div>
 
-  <aside class="rail right">
-    <div class="rcard">
-      <div class="lab">On this screen</div>
+  <aside class="rail right" aria-label="What this screen shows">
+    <section class="ctx">
+      <p class="kick">On this screen</p>
       <h2 id="deckH"></h2>
       <div class="deck" id="deckB"></div>
-    </div>
-    <div class="rcard">
-      <div class="dx-deckh"><div class="lab">Round 2 deck · slides</div><button class="dx-all" type="button" data-pv="1">▶ Present deck</button></div>
+    </section>
+    <section class="blk">
+      <div class="blk-h"><h2>Round 2 deck</h2><span class="hint">Hover to preview</span></div>
       <div class="dx-tiles" id="dxTiles"></div>
-    </div>
-    <div class="teaser-mini" id="teaserMini" hidden aria-label="Watch the solution overview again">
-      <div class="teaser-mini-head">
-        <b>Solution overview · 1:43</b>
-        <button class="teaser-mini-link" id="teaserMiniLink" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Watch full-size</button>
-      </div>
-      <div class="vp vp--compact" id="teaserMiniPlayer" tabindex="0" aria-label="Solution overview video player">
-        <video id="teaserMiniVideo" playsinline preload="metadata" src="Moshi_Moshi_BTN_Teaser_1min43.mp4#t=5"></video>
-      </div>
-      <p class="teaser-mini-note">Click the video to play.</p>
-    </div>
-    <div class="rcard foot">Prices, costs, pilot gates and the FY27–31 business case come from our Round 2 deck. Segment sizes, response mixes, ratings and the 90-day lift are illustrative until the pilot measures them. Interface inspired by the Meesho app; not an official Meesho product.</div>
+    </section>
+    <p class="fine">Prices, costs, pilot gates and the FY27–31 business case come from our Round 2 deck. Segment sizes, response mixes, ratings and the 90-day lift are illustrative until the pilot measures them. Interface inspired by the Meesho app; not an official Meesho product.</p>
   </aside>
-</div>
+</main>
 
 <div class="dx-modal" id="dxModal" hidden>
   <section class="dx-sheet" role="dialog" aria-modal="true" aria-labelledby="dxTitle">
@@ -880,35 +928,29 @@ function createPlayer(wrap,opts){
   return api;
 }
 
-/* ================= teaser overlay + replay card ================= */
-var teaser=$('teaser'), teaserMini=$('teaserMini');
+/* ================= teaser overlay (reopened from the top bar) ================= */
+var teaser=$('teaser');
 var teaserPlayer=createPlayer($('teaserPlayer'),{onError:function(){$('teaserError').hidden=false}});
-var miniPlayer=createPlayer($('teaserMiniPlayer'));
-var teaserCloseT=0;
+var teaserCloseT=0, teaserFrom=null;
 document.documentElement.style.overflow='hidden';           /* no page scroll behind the overlay */
 function closeTeaser(){
   if(teaser.hidden)return;
   clearTimeout(teaserCloseT);
-  var v=teaserPlayer.video;
   teaserPlayer.exitFullscreen();
-  v.pause();
-  /* carry the position over so "Watch full-size" / the small player resume where you left off */
-  if(teaserPlayer.isStarted()&&!v.ended&&v.currentTime>1){miniPlayer.video.currentTime=v.currentTime;miniPlayer.markStarted()}
-  teaser.hidden=true;teaserMini.hidden=false;
+  teaserPlayer.video.pause();                                /* paused, not reset: "Teaser" resumes from here */
+  teaser.hidden=true;
   document.documentElement.style.overflow='';
+  if(teaserFrom&&teaserFrom.focus)teaserFrom.focus();teaserFrom=null;
 }
-function openTeaser(){
-  var m=miniPlayer.video;
-  miniPlayer.exitFullscreen();
-  if(miniPlayer.isStarted()&&!m.ended&&m.currentTime>1){teaserPlayer.video.currentTime=m.currentTime;teaserPlayer.markStarted()}
-  m.pause();
+function openTeaser(from){
+  teaserFrom=from||null;
   teaser.hidden=false;document.documentElement.style.overflow='hidden';
   teaserPlayer.play();
   try{teaserPlayer.wrap.focus({preventScroll:true})}catch(e){teaserPlayer.wrap.focus()}
 }
 teaserPlayer.video.addEventListener('ended',function(){teaserCloseT=setTimeout(closeTeaser,900)});
 $('teaserClose').addEventListener('click',closeTeaser);
-$('teaserMiniLink').addEventListener('click',function(e){e.preventDefault();openTeaser()});
+$('tbTeaser').addEventListener('click',function(e){openTeaser(e.currentTarget)});
 document.addEventListener('keydown',function(e){
   if(teaser.hidden)return;
   if(e.key==='Escape'&&!fsElement()){e.preventDefault();closeTeaser();return}
@@ -1066,7 +1108,8 @@ function homeScreen(){
   var st=progress();
   var steps=['Book a campaign in Meesho Brands','Order, try and answer in Meesho','See what happened in Valmo Hub','Review the economics in BTN Control'];
   return '<div class="home">'+sbar('dark')+'<div class="clock n">9:41</div><div class="date">Monday, 5 October</div>'+
-   '<div class="widget"><div class="t">Bharat Trial Network · demo</div><ol>'+steps.map(function(s,i){return '<li class="'+(st[i]?'ok':'')+'">'+s+'</li>'}).join('')+'</ol></div>'+
+   /* one "next step" widget; the full demo path lives beside the phone */
+   (function(){var nx=st.indexOf(false),done=st.filter(Boolean).length;return '<div class="widget"><div class="t">Bharat Trial Network demo · '+done+' of 4 done</div><div style="font-size:15px;font-weight:800;line-height:1.3">'+(nx<0?'All four apps seen. Reset to run it again.':'Next: '+steps[nx])+'</div></div>'})()+
    '<div class="icons">'+APPS.map(appIcon).join('')+'</div>'+
    '<div style="margin:auto 18px 34px;text-align:center;font-size:12px;opacity:.75">Tap an app to open it. The bar at the bottom returns here.</div></div>';
 }
@@ -1411,7 +1454,7 @@ function hqApp(){
     var wk=weekAnswers();
     h='<div class="pad gap"><div class="card" style="background:var(--hq);color:#fff;border:0"><div class="xs" style="opacity:.8;font-weight:800">NORTH STAR</div><div style="font-weight:800">Verified answers delivered to brands, last 7 days</div><div class="big" style="color:#7EF0C4;margin-top:4px">'+num(wk)+'</div><div class="xs" style="opacity:.8">At the FY28 run-rate: 9.6 Mn trials × 12% = 1.15 Mn a week. +1 pt of response adds ~96k answers at zero extra trials.</div></div>'+
       '<div class="k4"><div class="kp"><div class="l">Trials delivered</div><div class="v">'+num(dl)+'</div><div class="s">'+(S.camp?S.camp.id+' · day '+S.day:'no campaign live')+'</div></div><div class="kp"><div class="l">Response rate</div><div class="v">'+(dl?pct(ans/dl):'–')+'</div><div class="s">target 12% · kill < 6%</div></div><div class="kp"><div class="l">Revenue from brands</div><div class="v">'+inr(dl*pr)+'</div><div class="s">₹'+pr+' a trial</div></div><div class="kp"><div class="l">Contribution</div><div class="v">'+inr(dl*cn)+'</div><div class="s">'+rs(cn)+' a trial</div></div></div>'+
-      '<div class="card"><div class="row sp"><h4>Who pays what</h4><span class="pill g">Zero commission</span></div><div class="kv" style="margin-top:6px"><span>Brand, per delivered trial</span><b>₹'+pr+'</b><span>Seller</span><b style="color:var(--m-green)">'+(S.hq.noSellers?'n/a':'₹0')+'</b><span>Buyer</span><b style="color:var(--m-green)">₹0 · gets ₹15 off</b><span>Valmo insertion work</span><b>'+rs(insCost())+'</b></div>'+
+      '<div class="card"><div class="row sp"><h4>Who pays what</h4><span class="pill g">Zero commission</span></div><div class="kv" style="margin-top:6px"><span>Brand, per delivered trial</span><b>₹'+pr+'</b><span>Seller</span><b style="color:var(--m-green)">'+(S.hq.noSellers?'n/a':'₹0')+'</b><span>Buyer</span><b style="color:var(--m-green)">₹0 + ₹15 coupon</b><span>Valmo insertion work</span><b>'+rs(insCost())+'</b></div>'+
       '<div class="row sp" style="margin-top:8px"><span class="sm">Delete every seller from the model</span><button class="toggle" role="switch" aria-checked="'+S.hq.noSellers+'" data-a="nosellers" aria-label="Delete sellers"></button></div><div class="xs sub" style="margin-top:4px">'+(S.hq.noSellers?'Sellers removed. Revenue is still '+inr(dl*pr)+': every rupee comes from brands.':'Revenue comes only from brands, so removing sellers changes nothing.')+'</div></div>'+
       '<div class="card"><h4>Counter-metrics · never traded away</h4>'+cmRow('Buyer NPS vs holdout','+0.4','≥ 0','< −2',true)+cmRow('Return-rate change','+0.05 pp','≤ +0.1 pp','> +0.3 pp',true)+cmRow('30-day opt-out',(S.buyer.optedOut?'4.6%':'4.2%'),'< 10%','> 25%',true)+cmRow('Cost per insert',rs(LANES[S.hub.lane].c),'≤ ₹1.20','> ₹3.00',LANES[S.hub.lane].c<=1.2)+cmRow('Hub sort SLA','no change','no change','> 1% late',true)+'<div class="xs sub" style="margin-top:4px">Values except insert cost are illustrative pilot readings.</div></div></div>';
   } else if(s==='econ'){
@@ -1530,12 +1573,16 @@ var DECK={
 };
 function rails(){
   var key=(S.app||'home')+':'+(S.app?cur(S.app):''), d=DECK[key]||DECK['home:'];
-  $('deckH').textContent=d[0]; var sn=(d[2].match(/\d\d/)||['01'])[0]; $('deckB').innerHTML=esc(d[1])+'<br><button type="button" class="src" data-dx="'+sn+'" title="Open slide '+sn+' in depth">'+d[2]+' ›</button>';
+  $('deckH').textContent=d[0];
+  /* every slide this screen draws on, shown as the original deck page; clicking opens that page, and "In depth" sits inside the viewer */
+  var refs=(d[2].match(/\b(\d\d|A)\b/g)||['05']);
+  $('deckB').innerHTML='<p>'+esc(d[1])+'</p><div class="refs n'+refs.length+'">'+refs.map(function(n){var pg=n==='A'?13:+n+1,pp=(pg<10?'0':'')+pg;
+    return '<button type="button" class="ref" data-pv="'+pg+'" title="Open '+(n==='A'?'the appendix':'slide '+n)+'"><img src="deck/thumb-'+pp+'.jpg" alt="" loading="lazy"><span>'+(n==='A'?'Appendix':'Slide '+n)+'</span></button>'}).join('')+'</div>'+(d[2].indexOf(' · ')>0?'<p class="ref-cap">'+esc(d[2].split(' · ').slice(1).join(' · '))+'</p>':'');
   var dl=delivered(), pr=curPrice(), cn=contr(pr);
-  $('ledger').innerHTML='<div class="lrow"><span>Brand pays Meesho</span><b>'+inr(dl*pr)+'</b></div><div class="lrow"><span>Seller pays</span><b class="z">₹0</b></div><div class="lrow"><span>Buyer pays</span><b class="z">₹0 · +₹15 off</b></div><div class="lrow"><span>Valmo insertion work</span><b>'+inr(dl*insCost())+'</b></div><div class="lrow"><span>Meesho keeps</span><b>'+inr(dl*cn)+'</b></div><div class="lrow"><span>Verified answers to brand</span><b>'+num(answers())+'</b></div>';
-  $('applist').innerHTML=APPS.map(function(a,i){var dn=progress()[i];return '<button class="appbtn" data-open="'+a.id+'" aria-current="'+(S.app===a.id)+'"><span class="ai" style="background:'+a.bg+';border:1px solid var(--line)">'+a.glyph.replace(/font-size:\d+px/,'font-size:'+(a.id==='hub'?11:18)+'px')+'</span><span><b>'+a.nm+' · '+a.role+'</b><span>'+a.desc+'</span></span><span class="done"'+(dn?'':' hidden')+'>✓</span></button>'}).join('');
+  $('ledger').innerHTML='<div class="lrow"><span>Brand pays Meesho</span><b>'+inr(dl*pr)+'</b></div><div class="lrow"><span>Seller pays</span><b class="z">₹0</b></div><div class="lrow"><span>Buyer pays<small>Gets a ₹15 coupon for her next order, like the full-size pack</small></span><b class="z">₹0</b></div><div class="lrow"><span>Valmo insertion work</span><b>'+inr(dl*insCost())+'</b></div><div class="lrow"><span>Meesho keeps</span><b>'+inr(dl*cn)+'</b></div><div class="lrow"><span>Verified answers to brand</span><b>'+num(answers())+'</b></div>';
+  $('applist').innerHTML=APPS.map(function(a,i){var dn=progress()[i];return '<button type="button" class="tb-app" data-open="'+a.id+'" aria-current="'+(S.app===a.id)+'" title="'+esc(a.desc)+'"><span class="ai" style="background:'+a.bg+'">'+a.glyph.replace(/font-size:\d+px/,'font-size:'+(a.id==='hub'?8:a.id==='buyer'?17:13)+'px').replace('width:28px;height:28px','width:16px;height:16px')+'</span><span class="nm">'+a.nm+'</span><span class="done"'+(dn?'':' hidden')+' aria-label="done">✓</span></button>'}).join('');
   var st=progress(), nx=st.indexOf(false);
-  $('steps').innerHTML=['Book a campaign · Meesho Brands','Order, try, answer · Meesho','Behind the scenes · Valmo Hub','Review economics · BTN Control'].map(function(s,i){return '<li class="'+(st[i]?'ok':i===nx?'now':'')+'"><i>'+(st[i]?'✓':i+1)+'</i><span>'+s+'</span></li>'}).join('');
+  $('steps').innerHTML=[['Book a campaign','Meesho Brands','brand'],['Order, try the sample, answer','Meesho','buyer'],['See what happened at the hub','Valmo Hub','hub'],['Review the economics','BTN Control','hq']].map(function(s,i){return '<li class="'+(st[i]?'ok':i===nx?'now':'')+'"><i>'+(st[i]?'✓':i+1)+'</i><button type="button" data-open="'+s[2]+'"><b>'+s[0]+'</b><span>in '+s[1]+'</span></button></li>'}).join('');
 }
 
 /* ================= actions ================= */
@@ -1601,7 +1648,7 @@ scr.addEventListener('input',function(e){var t=e.target;
 scr.addEventListener('change',function(e){var t=e.target;
   if(t.dataset.s){S.d[t.dataset.s]=+t.value;render()}
   else if(t.dataset.g||t.dataset.i||t.dataset.h){render()}});
-document.querySelector('.rail.left').addEventListener('click',function(e){var b=e.target.closest('[data-open]');if(b)open(b.dataset.open)});
+[$('applist'),$('steps')].forEach(function(el){el.addEventListener('click',function(e){var b=e.target.closest('[data-open]');if(b)open(b.dataset.open)})});
 $('reset').addEventListener('click',function(){S=fresh();render()});
 
 render();
@@ -1743,7 +1790,7 @@ var S=[
  blk('How it earns · good / better / best',cards([{t:'Reach',big:'₹9',b:'<p>PIN-cluster targeting · QR responses · delivered count</p>',f:'mix 25%'},{t:'Segment · base tier',big:'₹13',b:'<p>5-dimension spend segment · response, rating, price acceptance by segment</p>',f:'mix 50%',hi:1},{t:'Closed-loop',big:'₹16',b:'<p>Segment + 90-day lift vs holdout + re-target list</p>',f:'mix 25%'}])+
    sl('Tier mix')+stack([['₹9 Reach',25,'c4'],['₹13 Segment',50,'c1'],['₹16 Closed-loop',25,'c2']])+
    note('Blended <b>₹12.75 ≈ ₹13</b>, sold as a media rate (cost per delivered trial) to the brand or its agency: <b>no commission, no seller fee, no product price change.</b>'))+
- blk('Buyer journey · “Pehle try, phir buy”',flow([['①','Opt-in at checkout','“Free Sample Club: get free trial products with some orders. Picked from what you shop. We never share your details.” Yes, I’m in / No thanks.'],['②','Disclosed sample','“Your parcel has a FREE sample from Brand X Hair Oil 9 ml, sent by Meesho.”'],['③','Respond (QR / app)','Did you use it? · How was it? · Buy 100 ml at ₹99? Takes 20 seconds.'],['④','Reward + opt-out','₹15 off the next order unlocked; “Buy full size ₹99”; “Don’t want samples? Stop”.']])+
+ blk('Buyer journey · “Pehle try, phir buy”',flow([['①','Opt-in at checkout','“Free Sample Club: get free trial products with some orders. Picked from what you shop. We never share your details.” Yes, I’m in / No thanks.'],['②','Disclosed sample','“Your parcel has a FREE sample from Brand X Hair Oil 9 ml, sent by Meesho.”'],['③','Respond (QR / app)','Did you use it? · How was it? · Buy 100 ml at ₹120? Takes 20 seconds.'],['④','Reward + opt-out','₹15 off the next order unlocked; “Buy full size ₹120”; “Don’t want samples? Stop”.']])+
    note('<b>Meet Sunita, 31, Gorakhpur:</b> ~1 Meesho order a month, ₹3,200 a year, so she is in S-07. Day 3: tries the sachet, answers. Day 90: in-app card “Bought it since?” vs holdout. <b>This is the path the phone demo walks.</b>'))+
  blk('Who pays the incentive? Meesho.',chain(['₹15 coupon','×','40% redemption','×','12% responders','=','per trial<b>₹0.72</b>'])+'<p style="margin-top:10px">It buys a repeat order (₹156 NMV): a retention lever Meesho already pays for. The brand may add its own full-size offer to read purchase intent directly.</p>')+
  blk('MVP scope · MoSCoW',cards([{t:'Must',b:ul(['Opt-in + disclosure','Order flag + pairing scan','QR → 3 Qs → coupon','Holdout','Cohort report']),f:'ships in the 90-day pilot',hi:1},{t:'Should',b:ul(['5-dimension segment builder','Rider hand-over lane','Brand dashboard v1'],'n')},{t:'Could',b:ul(['Self-serve console','Choose-your-sample menu','Brand full-size offer'],'n')},{t:'Won’t (yet)',b:ul(['Edible samples','Seller-bench insertion','Reach-ads upsell','PII to brands: never'],'x')}]),{w:1})},
@@ -1947,7 +1994,7 @@ M.addEventListener('mouseleave',function(){tip.hidden=true});
 /* shrink the phone (whole device, contents included) so it always fits the window height */
 var phoneEl=document.querySelector('.phone');
 function fitPhone(){if(innerWidth<=430){phoneEl.style.zoom='';return}
-  var room=innerHeight-(innerWidth>1180?28:24);phoneEl.style.zoom=Math.max(.5,Math.min(1,room/836)).toFixed(3)}
+  var tb=document.querySelector('.tb'),room=innerHeight-(innerWidth>1180?(tb?tb.offsetHeight:0)+40:32);phoneEl.style.zoom=Math.max(.5,Math.min(1,room/836)).toFixed(3)}
 fitPhone();addEventListener('resize',fitPhone);
 
 /* ---------- original deck viewer: the Round 2 PDF, exported page by page to deck/slide-NN.jpg ---------- */
