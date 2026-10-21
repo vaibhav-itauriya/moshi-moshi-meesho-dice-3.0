@@ -514,7 +514,7 @@ function createPlayer(wrap,opts){
   video.controls=false;
   wrap.insertAdjacentHTML('beforeend',
     '<div class="vp-shade"></div>'+
-    '<button class="vp-big" type="button" aria-label="Play video with sound"><span class="ring">'+VP_ICON.play+'</span><span class="cap">'+VP_ICON.vol+'<span class="vp-captext">Play with sound</span><b class="vp-dur"></b></span></button>'+
+    '<button class="vp-big" type="button" aria-label="Play"><span class="ring">'+VP_ICON.play+'</span><span class="cap"><span class="vp-captext">Play</span></span></button>'+
     '<div class="vp-spinner" aria-hidden="true"></div>'+
     '<button class="vp-chip" type="button">'+VP_ICON.mute+'Tap for sound</button>'+
     '<div class="vp-bar">'+
@@ -529,7 +529,7 @@ function createPlayer(wrap,opts){
       '</div>'+
     '</div>');
   var q=function(s){return wrap.querySelector(s)};
-  var big=q('.vp-big'),ring=q('.vp-big .ring'),capText=q('.vp-captext'),durLbl=q('.vp-dur'),chip=q('.vp-chip'),bar=q('.vp-bar'),
+  var big=q('.vp-big'),ring=q('.vp-big .ring'),capText=q('.vp-captext'),chip=q('.vp-chip'),bar=q('.vp-bar'),
       prog=q('.vp-prog'),fill=q('.vp-fill'),buf=q('.vp-buf'),thumb=q('.vp-thumb'),tip=q('.vp-tip'),
       playB=q('.vp-play'),cur=q('.vp-time .cur'),tot=q('.vp-time .tot'),muteB=q('.vp-mute'),volR=q('.vp-volr'),speedB=q('.vp-speed'),fsB=q('.vp-fs');
   var speeds=[1,1.25,1.5,2],si=0,idleT=0,scrubbing=false,overBar=false,lastVol=1,lastPointer='mouse';
@@ -582,8 +582,8 @@ function createPlayer(wrap,opts){
     playB.innerHTML=video.ended?VP_ICON.replay:playing?VP_ICON.pause:VP_ICON.play;
     playB.setAttribute('aria-label',video.ended?'Replay':playing?'Pause':'Play');
     ring.innerHTML=video.ended?VP_ICON.replay:VP_ICON.play;
-    capText.textContent=video.ended?'Watch again':'Play with sound';
-    big.setAttribute('aria-label',video.ended?'Watch again':started()?'Resume':'Play video with sound');
+    capText.textContent=video.ended?'Watch again':'Play';
+    big.setAttribute('aria-label',video.ended?'Watch again':started()?'Resume':'Play');
     muteB.innerHTML=muted?VP_ICON.mute:video.volume<.5?VP_ICON.volLow:VP_ICON.vol;
     muteB.setAttribute('aria-label',muted?'Unmute':'Mute');
     volR.value=muted?0:video.volume;
@@ -673,12 +673,10 @@ function createPlayer(wrap,opts){
   /* --- media events --- */
   ['play','pause','ended','volumechange','ratechange','loadedmetadata','durationchange'].forEach(function(ev){video.addEventListener(ev,sync)});
   ['timeupdate','progress','seeked'].forEach(function(ev){video.addEventListener(ev,paint)});
-  video.addEventListener('loadedmetadata',function(){durLbl.textContent='· '+formatVideoTime(video.duration)});
   video.addEventListener('waiting',function(){wrap.classList.add('is-waiting')});
   ['playing','canplay','pause','seeked'].forEach(function(ev){video.addEventListener(ev,function(){wrap.classList.remove('is-waiting')})});
   video.addEventListener('playing',showUI);
   video.addEventListener('error',function(){if(opts.onError)opts.onError()});
-  if(video.readyState>=1)durLbl.textContent='· '+formatVideoTime(video.duration);
   sync();
 
   var api={video:video,wrap:wrap,play:play,toggle:toggle,handleKey:handleKey,isStarted:started,
@@ -731,21 +729,22 @@ var TIERS=[
   {nm:'Closed-loop',p:16,code:'C',resp:0.12,who:'National FMCG',mix:'25% of FY28 mix',feat:['90-day purchase lift vs matched holdout','Re-target list of converters']}
 ];
 var PRODUCTS=[
-  {cat:'Face care',nm:'Face cream sachet',sz:'8 g',short:'face cream',w:8,catLbl:'beauty',full:'50 g pack at ₹99',fit:'Best fit: a thick cream does not leak.',c:['#FFD3E8','#F48FC0']},
-  {cat:'Hair care',nm:'Hair-oil sachet',sz:'9 ml',short:'hair oil',w:12,catLbl:'hair care',full:'100 ml at ₹99',fit:'Classic sachet. Oils ship last, double heat-sealed.',c:['#FFE7A8','#F5B841']},
-  {cat:'Feminine hygiene',nm:'Single pad, discreet pouch',sz:'pouch',short:'sanitary pad',w:9,catLbl:'personal care',full:'pack of 8 at ₹99',fit:'High switching barrier. Plain pouch.',c:['#E5D5FA','#B48CE8']},
-  {cat:'Baby care',nm:'Baby lotion sachet',sz:'10 ml',short:'baby lotion',w:11,catLbl:'baby care',full:'100 ml at ₹99',fit:'Baby-clothes purchases are a life-stage signal.',c:['#D3ECFB','#7CC0EC']},
-  {cat:'Home care',nm:'Detergent sachet',sz:'18 g',short:'detergent',w:18,catLbl:'home care',full:'500 g at ₹99',fit:'Classic rural sampling product; powder double-sealed.',c:['#D2F3E5','#5FCFA2']}
+  {cat:'Face care',nm:'Face cream sachet',sz:'8 g',short:'face cream',w:8,catLbl:'beauty',full:'50 g pack at ₹120',fit:'Best fit: a thick cream does not leak.',c:['#FFD3E8','#F48FC0']},
+  {cat:'Hair care',nm:'Hair-oil sachet',sz:'9 ml',short:'hair oil',w:12,catLbl:'hair care',full:'100 ml at ₹120',fit:'Classic sachet. Oils ship last, double heat-sealed.',c:['#FFE7A8','#F5B841']},
+  {cat:'Feminine hygiene',nm:'Single pad, discreet pouch',sz:'pouch',short:'sanitary pad',w:9,catLbl:'personal care',full:'pack of 8 at ₹120',fit:'High switching barrier. Plain pouch.',c:['#E5D5FA','#B48CE8']},
+  {cat:'Baby care',nm:'Baby lotion sachet',sz:'10 ml',short:'baby lotion',w:11,catLbl:'baby care',full:'100 ml at ₹120',fit:'Baby-clothes purchases are a life-stage signal.',c:['#D3ECFB','#7CC0EC']},
+  {cat:'Home care',nm:'Detergent sachet',sz:'18 g',short:'detergent',w:18,catLbl:'home care',full:'500 g at ₹120',fit:'Classic rural sampling product; powder double-sealed.',c:['#D2F3E5','#5FCFA2']}
 ];
 var GEO=[{id:'eup',nm:'Eastern UP & Bihar',pool:9.0e6,hubs:3,live:true},{id:'hb',nm:'Rest of Hindi belt',live:false,when:'FY28 H1'},{id:'ws',nm:'West & South',live:false,when:'FY28 H2'}];
 var LANES={
-  A:{nm:'Over-bag & re-label',c:2.60,g:12,pugh:'Control lane · sealed, tidy · risk: label mismatch'},
-  C:{nm:'Tamper-evident outer pouch',c:0.90,g:12,pugh:'Pilot lane · seen before accepting · peel-off detected by unscanned QR'},
-  D:{nm:'Rider hand-over',c:1.20,g:0,pugh:'Pilot lane · best consent moment · +10 s a drop · kit count stops pilferage'}
+  A:{sh:'Over-bag',nm:'Over-bag & re-label',c:2.60,g:12,pugh:'Control lane · sealed, tidy · risk: label mismatch'},
+  C:{sh:'Outer pouch',nm:'Tamper-evident outer pouch',c:0.90,g:12,pugh:'Pilot lane · seen before accepting · peel-off detected by unscanned QR'},
+  D:{sh:'Rider hand-over',nm:'Rider hand-over',c:1.20,g:0,pugh:'Pilot lane · best consent moment · +10 s a drop · kit count stops pilferage'}
 };
 var INBOUND=[{nm:'R1 · Direct PTL to each hub',r:0.24,ft:'20+ consignments a campaign'},{nm:'R2 · One Valmo mother hub',r:0.25,ft:'One truck, one receipt, scales to any hub count',chosen:true},{nm:'R3 · Brand depots',r:0.10,show:'₹0.05–0.15',ft:'Large FMCG distributors drop on their own beat'}];
 var COST={weight:1.50,platform:0.80,coupon:0.72,returns:0.35,worst:3.00};
-var PROMO=32, HUT=240000, HUB_RATE=5500, SLAB=500;
+var PACK=120, PROMO=32, HUT=240000,   /* full-size pack price: same ₹120 as the deck's margin maths and the buyer interview */
+    HUB_RATE=5500, SLAB=500;
 var SPEND=[[0,1e9],[1000,2500],[2500,6000],[6000,1e9]], AOV=[[0,1e9],[100,200],[200,400],[400,1e9]];
 var SUN={wallet:72,spend:3200,aov:267,cat:640,freq:12,pin:'273001',city:'Gorakhpur',wt:310};
 var PINS=[['273001','Gorakhpur'],['221001','Varanasi'],['800001','Patna'],['823001','Gaya'],['276001','Azamgarh'],['226001','Lucknow'],['845401','Motihari'],['274001','Deoria']];
@@ -980,25 +979,25 @@ function dashHtml(){
   h+='<div class="card gap lockw"><h4>Buy the '+p.full+'?</h4>'+hb('Yes',bu.yes,nb,'g',pct(bu.yes/nb,0))+hb('Maybe',bu.maybe,nb,'o',pct(bu.maybe/nb,0))+hb('No',bu.no,nb,'m',pct(bu.no/nb,0))+'<div class="xs sub">Price acceptance, read straight from buyers.</div>'+(lockSeg?lockHtml('Segment tier','Price acceptance comes with ₹13.'):'')+'</div>';
   var ready=S.day>=90, sb=0.182, hold=0.121, nbuy=dl*(sb-hold);
   h+='<div class="card gap lockw"><div class="row sp"><h4>90-day lift vs holdout</h4>'+(ready?'<span class="pill g">Read</span>':'<span class="pill n">Day '+S.day+' / 90</span>')+'</div>'+
-   (ready?'<div class="k4"><div class="kp"><div class="l">Sampled bought</div><div class="v">'+pct(sb)+'</div></div><div class="kp"><div class="l">Holdout bought</div><div class="v">'+pct(hold)+'</div></div><div class="kp"><div class="l">New buyers</div><div class="v">'+num(nbuy)+'</div></div><div class="kp"><div class="l">₹ per new buyer</div><div class="v">₹'+num(spend/nbuy)+'</div></div></div><div class="xs sub">+'+((sb-hold)*100).toFixed(1)+' pts measured on Meesho orders. Promoters: about ₹1,080 a new buyer, unmeasured. Illustrative.</div><button class="btn" data-a="retarget">Re-target the segment that converted</button>':'<div class="sm sub">Sampled households vs a matched holdout from the same segment, hub and week. Tap "Day 90" to read it.</div>')+
+   (ready?'<div class="k4"><div class="kp"><div class="l">Sampled bought</div><div class="v">'+pct(sb)+'</div></div><div class="kp"><div class="l">Holdout bought</div><div class="v">'+pct(hold)+'</div></div><div class="kp"><div class="l">New buyers</div><div class="v">'+num(nbuy)+'</div></div><div class="kp"><div class="l">₹ per new buyer</div><div class="v">₹'+num(spend/nbuy)+'</div></div></div><div class="xs sub">+'+((sb-hold)*100).toFixed(1)+' pp measured on Meesho orders. Promoters: about ₹1,080 a new buyer, unmeasured. Illustrative.</div><button class="btn" data-a="retarget">Re-target the segment that converted</button>':'<div class="sm sub">Sampled households vs a matched holdout from the same segment, hub and week. Tap "Day 90" to read it.</div>')+
    (c.tier!==2?lockHtml('Closed-loop tier','Lift and the re-target list come with ₹16.'):'')+'</div>'+
    '<div class="note">Cohort-level only, minimum 5,000 households. No names or numbers are ever shared.</div></div>';
   return h;
 }
 function roiHtml(){
   var c=S.camp||{quota:Math.min(S.d.quota,matching(S.d)),price:price(S.d)};
-  var q=c.quota, btn=q*c.price, promo=q*PROMO+HUT, nbP=q*0.03, nbB=q*0.06, gm=240;
-  var rows=[['Spend',inr(promo),inr(btn)],['Answers','300',num(q*0.12)],['₹ per answer','₹54,000','₹'+num(btn/(q*0.12))],['Who got it','a location','a spend segment'],['Purchase signal','district sales, months later','90-day lift vs holdout'],['First read','6–8 weeks','7 days'],['New buyers (3% vs 6%)',num(nbP),num(nbB)],['₹ per new buyer','₹'+num(promo/nbP),'₹'+num(btn/nbB)],['Year-1 ROI',(nbP*gm/promo).toFixed(2)+'×',(nbB*gm/btn).toFixed(2)+'×']];
+  var q=c.quota, btn=q*c.price, promo=q*PROMO+HUT, nbP=q*0.03, nbB=q*0.06, gm=4*PACK*0.5, rr=c.resp||TIERS[S.d.tier].resp;
+  var rows=[['Spend',inr(promo),inr(btn)],['Answers','300',num(q*rr)],['₹ per answer','₹'+num(promo/300),'₹'+num(btn/(q*rr))],['Who got it','a location','a spend segment'],['Purchase signal','district sales, months later','90-day lift vs holdout'],['First read','6–8 weeks','7 days'],['New buyers (3% vs 6%)',num(nbP),num(nbB)],['₹ per new buyer','₹'+num(promo/nbP),'₹'+num(btn/nbB)],['Year-1 ROI',(nbP*gm/promo).toFixed(2)+'×',(nbB*gm/btn).toFixed(2)+'×']];
   return '<div class="pad gap"><div class="card"><h3>One launch, '+num(q)+' homes</h3><div class="xs sub">'+(S.camp?'Your live campaign':'Your draft')+' against promoter sampling plus a 300-person home-use test.</div>'+
    '<div class="scroll-x" style="margin-top:8px"><table class="tbl wrap"><colgroup><col style="width:34%"><col style="width:33%"><col style="width:33%"></colgroup><thead><tr><th></th><th>Promoters</th><th>Meesho trial</th></tr></thead><tbody>'+rows.map(function(r,i){return '<tr class="'+(i===0||i===8?'em':'')+'"><td>'+r[0]+'</td><td>'+r[1]+'</td><td style="color:var(--m-green);font-weight:800">'+r[2]+'</td></tr>'}).join('')+'</tbody></table></div></div>'+
    '<div class="vs"><div class="good"><div class="l">Cheaper per launch</div><div class="v">'+pct(1-btn/promo,0)+'</div></div><div class="good"><div class="l">More answers</div><div class="v">'+num(q*0.12/300)+'×</div></div></div>'+
-   '<div class="note">Year-1 gross margin per new buyer: 4 full packs × ₹120 × 50% = ₹240. Conversion 6% targeted vs 3% untargeted is a conservative assumption the day-90 read replaces.</div></div>';
+   '<div class="note">Year-1 gross margin per new buyer: 4 full packs × ₹'+PACK+' × 50% = ₹'+(4*PACK*0.5)+'. Conversion 6% targeted vs 3% untargeted is a conservative assumption the day-90 read replaces.</div></div>';
 }
 
 /* ================= VALMO HUB APP ================= */
 function hubApp(){
   var s=cur('hub'), H=S.hub, c=S.camp, L=LANES[H.lane], h='', t='';
-  var head='<span class="pill" style="background:rgba(255,197,49,.18);color:#FFC531">Lane '+H.lane+'</span>';
+  var head='<span class="pill" style="background:rgba(255,197,49,.18);color:#FFC531">'+L.sh+'</span>';
   if(s==='line'){
     t='<span style="color:#FFC531;font-weight:900">valmo</span> <span style="font-weight:700;opacity:.8;font-size:13px">LKO-1 · Line 3</span>';
     var p=H.cur, res='';
@@ -1014,7 +1013,7 @@ function hubApp(){
     if(p&&H.stage==='flag') act='<button class="btn" style="background:#C2186F" data-a="hins">'+(H.lane==='A'?'Over-bag and re-label':H.lane==='C'?'Apply outer pouch with sachet':'Add sachet to rider kit R-12')+'</button>';
     else if(p&&H.stage==='pair') act='<button class="btn" style="background:#C2186F" data-a="hpair">Pairing scan · sachet QR + AWB</button>';
     else act='<button class="btn v" data-a="hscan">'+(H.pending?'Scan next parcel (Sunita’s)':'Scan next parcel')+'</button>';
-    h='<div class="pad gap">'+storyCard()+(c?'<div class="note" style="background:#EAE5F7">'+c.id+' · '+esc(c.name)+' · '+PRODUCTS[c.prod].sz+' sachet · lane '+H.lane+': '+L.nm+'</div>':'')+
+    h='<div class="pad gap">'+storyCard()+(c?'<div class="note" style="background:#EAE5F7">'+c.id+' · '+esc(c.name)+' · '+PRODUCTS[c.prod].sz+' sachet · '+L.nm+'</div>':'')+
       '<div class="scanner"><span class="scanline"></span><span>'+(p?p.awb:'point at AWB label')+'</span></div>'+res+act+
       '<button class="btn g" data-a="hauto"'+(H.stage==='flag'||H.stage==='pair'?' disabled':'')+'>Auto-sort 50 parcels</button>'+
       '<div class="card"><div class="row sp xs"><b>Belt</b><span class="sub">pink = sachet in · orange = skipped</span></div><div class="belt">'+(H.belt.length?H.belt.map(function(x){return '<span class="pc '+x.c+(x.su?' su':'')+'">'+x.pin.slice(0,3)+'</span>'}).join(''):'<span class="xs sub">Empty</span>')+'</div>'+
@@ -1024,11 +1023,11 @@ function hubApp(){
     t='Campaign rack · LKO-1';
     if(!c) h='<div class="pad"><div class="card"><h3>No sachets on the rack</h3><div class="sm sub">When a brand books, its truck arrives at the mother hub and this rack fills.</div></div></div>';
     else{
-      var recv=Math.ceil(c.quota/c.hubs), here=Math.round(S.sim.reduce(function(a,b){return a+b},0)/c.hubs)+H.ins, dmg=H.damaged+Math.round(here*0.002), ret=H.refused, rack=Math.max(0,recv-here-dmg);
-      var acc=here+dmg+rack, varc=Math.abs(recv-acc-0)/recv;
-      h='<div class="pad gap"><div class="card"><div class="row sp"><h3>'+c.id+'</h3><span class="pill g">Variance '+pct(varc,1)+'</span></div><div class="xs sub">Batch B-0712 · expiry Mar 2027 · first-expiry-first-out</div><div class="hr"></div>'+
+      var recv=Math.ceil(c.quota/c.hubs), here=Math.round(S.sim.reduce(function(a,b){return a+b},0)/c.hubs)+H.ins, dmg=H.damaged+Math.round(here*0.002), ret=H.refused, rack=Math.max(0,recv-here-dmg+ret);
+      var acc=here-ret+dmg+rack, varc=Math.abs(recv-acc-0)/recv;
+      h='<div class="pad gap"><div class="card"><div class="row sp"><h3>'+c.id+'</h3><span class="pill '+(varc<0.01?'g':'r')+'">'+(varc<0.01?'Books balance':'Count off · paused')+'</span></div><div class="xs sub">Batch B-0712 · expiry Mar 2027 · first-expiry-first-out</div><div class="hr"></div>'+
         '<div class="kv"><span>Received from mother hub</span><b>'+num(recv)+'</b><span>Inserted into parcels</span><b>'+num(here)+'</b><span>Damaged</span><b>'+num(dmg)+'</b><span>Refused at door, back to rack</span><b>'+num(ret)+'</b><span>On the rack now</span><b>'+num(rack)+'</b></div></div>'+
-        '<div class="note">Daily check: received = inserted + damaged + on rack. A variance above 1% pauses inserts at this hub. Leftovers go back to the brand.</div>'+
+        '<div class="note">Daily check: received = inserted − refused + damaged + on rack. A variance above 1% pauses inserts at this hub. Leftovers go back to the brand.</div>'+
         '<button class="btn g" data-a="dmg">Log a damaged sachet</button>'+
         '<div class="card"><h4>Inbound</h4><div class="kv" style="margin-top:6px"><span>Route</span><b>'+INBOUND[c.inbound].nm.split(' · ')[1]+'</b><span>Cost per sample</span><b>₹'+INBOUND[c.inbound].r.toFixed(2)+'</b><span>Paid by</span><b>Brand, at cost</b></div></div></div>';
     }
@@ -1037,18 +1036,25 @@ function hubApp(){
     if(!H.stops) H.stops=makeStops();
     var sunStop=S.buyer.order&&S.buyer.order.st==='out'&&S.buyer.order.sampled&&H.lane==='D';
     var stops=H.stops.slice(); if(sunStop) stops.unshift({nm:'Sunita',pin:'273001',smp:true,st:null,su:true});
-    var kit=stops.filter(function(x){return x.smp&&!x.st}).length;
-    h='<div class="pad gap">'+(H.lane!=='D'?'<div class="note">Line 3 runs lane '+H.lane+' today, so samples travel inside parcels. Switch to lane D in Setup to hand samples at the door.</div>':'')+
-      '<div class="card row sp"><div><h4>Sample kit</h4><div class="xs sub">sized to flagged stops · count checked at return</div></div><span class="big" style="font-size:22px">'+kit+'</span></div>'+
-      '<div class="card" style="padding:4px 12px">'+stops.map(function(x,i){return '<div class="stop '+(x.smp?'smp':'')+(x.su?' su':'')+'"><span class="no">'+(i+1)+'</span><span><b class="sm">'+x.nm+'</b><span class="xs sub" style="display:block">PIN '+x.pin+(x.smp?' · offer free sample':'')+'</span></span><span>'+(x.smp?(x.st?'<span class="pill '+(x.st==='g'?'g':'n')+'">'+(x.st==='g'?'Given':'Refused')+'</span>':(H.lane==='D'&&c?'<span class="row"><button class="btn sm" data-a="stop" data-v="'+i+'|g">Given</button><button class="btn sm g" data-a="stop" data-v="'+i+'|r">No</button></span>':'<span class="pill n">In parcel</span>')):'<span class="pill n">Parcel only</span>')+'</span></div>'}).join('')+'</div>'+
-      '<div class="note">Rider script: "Free sample from Meesho with your order. Do you want it?" A refusal is not billed to the brand.</div></div>';
+    var laneD=H.lane==='D', flaggedAll=ROUTE.flagged+(sunStop?1:0), handled=stops.filter(function(x){return x.smp&&x.st}).length;
+    var kit=laneD?Math.max(0,flaggedAll-handled):0, inTxt=H.lane==='A'?'sample inside':'sample in pouch';
+    h='<div class="pad gap">'+
+      '<div class="card"><div class="row sp"><h4>Gorakhpur · '+ROUTE.drops+' drops today</h4><span class="pill n">'+flaggedAll+' flagged</span></div><div class="xs sub" style="margin-top:2px">About 1 in 9 parcels carries a sample, the same 11% the hub flags.</div></div>'+
+      (laneD
+        ?'<div class="card row sp"><div><h4>Sample kit</h4><div class="xs sub">one sachet per flagged drop · count checked at return</div></div><span class="big" style="font-size:22px">'+kit+'</span></div>'
+        :'<div class="note">Line 3 uses the '+L.sh.toLowerCase()+' today, so each sample travels '+(H.lane==='A'?'inside the over-bag':'in a sealed pouch on the parcel')+' and the rider carries no kit. Switch to rider hand-over in Setup to offer samples at the door.</div>')+
+      '<div class="card" style="padding:4px 12px"><div class="xs sub" style="padding:8px 0 2px">Next '+stops.length+' drops</div>'+stops.map(function(x,i){return '<div class="stop '+(x.smp?'smp':'')+(x.su?' su':'')+'"><span class="no">'+(i+1)+'</span><span><b class="sm">'+x.nm+'</b><span class="xs sub" style="display:block">PIN '+x.pin+(x.smp?(laneD?' · offer free sample':' · '+inTxt):'')+'</span></span><span>'+(x.smp?(x.st?'<span class="pill '+(x.st==='g'?'g':'n')+'">'+(x.st==='g'?'Given':'Refused')+'</span>':(laneD&&c?'<span class="row"><button class="btn sm" data-a="stop" data-v="'+i+'|g">Given</button><button class="btn sm g" data-a="stop" data-v="'+i+'|r">No</button></span>':'<span class="pill n">'+(laneD?'Offer at door':'In parcel')+'</span>')):'<span class="pill n">Parcel only</span>')+'</span></div>'}).join('')+'</div>'+
+      '<div class="note">'+(laneD
+        ?'Rider script: "Free sample from Meesho with your order. Do you want it?" A refusal is not billed to the brand.'
+        :H.lane==='C'?'She sees the pouch before she accepts the parcel. If she does not want the sample, the rider peels the pouch off and brings it back to the hub rack. A refusal is not billed to the brand.'
+        :'The sample is sealed inside the parcel, so the rider just delivers. Her answers come in through the QR on the sachet.')+'</div></div>';
   } else if(s==='setup'){
     t='Line setup · LKO-1';
-    var share=c?0.9*0.5*c.frac:0.11, perDay=50000*share, hrs=perDay*8/3600;
-    h='<div class="pad gap"><div class="card gap"><h4>How the sachet goes in</h4>'+Object.keys(LANES).map(function(k){var l=LANES[k];return '<button class="opt" role="radio" aria-checked="'+(H.lane===k)+'" data-a="lane" data-v="'+k+'"><span class="rd"></span><span><span class="h"><span>'+k+' · '+l.nm+'</span><span>₹'+l.c.toFixed(2)+'</span></span><p>'+l.pugh+' · adds '+l.g+' g</p></span></button>'}).join('')+
-      '<button class="opt" disabled><span class="rd"></span><span><span class="h"><span>E · Seller packing bench</span><span>₹3.00</span></span><p>Phase 2 · paid to the seller</p></span></button></div>'+
-      '<div class="card"><h4>Pilot trial design · 4 weeks</h4><div class="bar2" style="margin-top:6px;grid-template-columns:repeat(4,1fr);text-align:center"><div class="kp"><div class="l">Lane A</div><b>10k</b></div><div class="kp"><div class="l">Lane C</div><b>10k</b></div><div class="kp"><div class="l">Lane D</div><b>10k</b></div><div class="kp"><div class="l">Holdout</div><b>10k</b></div></div><div class="xs sub" style="margin-top:6px">Winner: lowest ₹ per verified response, if NPS ≥ holdout − 1 and returns rise ≤ 0.1 pts.</div></div>'+
-      '<div class="card"><h4>Throughput</h4><div class="kv" style="margin-top:6px"><span>Parcels a day</span><b>50,000</b><span>Flagged ('+pct(share)+')</span><b>'+num(perDay)+'</b><span>8 s an insert</span><b>'+hrs.toFixed(1)+' h</b><span>Operators a shift</span><b>'+(hrs/8).toFixed(1)+'</b><span>Labour per insert</span><b>₹0.17</b></div><div class="xs sub" style="margin-top:6px">Festive peak (3×): add 3 temps or pause the campaign.</div></div></div>';
+    var laneD0=H.lane==='D', share=c?0.9*0.5*c.frac:0.11, perDay=50000*share, insDay=Math.min(perDay,HUB_RATE), hrs=insDay*8/3600;   /* 90% in-region × 50% opted in × segment pass rate; inserts paced at 5,500 a day */
+    h='<div class="pad gap"><div class="card gap"><h4>How the sachet goes in</h4>'+Object.keys(LANES).map(function(k){var l=LANES[k];return '<button class="opt" role="radio" aria-checked="'+(H.lane===k)+'" data-a="lane" data-v="'+k+'"><span class="rd"></span><span><span class="h"><span>'+l.nm+'</span><span>₹'+l.c.toFixed(2)+'</span></span><p>'+l.pugh+' · '+(l.g?'parcel gets sachet + '+l.g+' g':'nothing added to the parcel')+'</p></span></button>'}).join('')+
+      '<button class="opt" disabled><span class="rd"></span><span><span class="h"><span>Seller packing bench</span><span>₹3.00</span></span><p>Phase 2 · paid to the seller</p></span></button></div>'+
+      '<div class="card"><h4>Pilot trial design · 4 weeks</h4><div class="bar2" style="margin-top:6px;grid-template-columns:repeat(4,1fr);text-align:center"><div class="kp"><div class="l">Over-bag</div><b>10k</b></div><div class="kp"><div class="l">Pouch</div><b>10k</b></div><div class="kp"><div class="l">Rider</div><b>10k</b></div><div class="kp"><div class="l">Holdout</div><b>10k</b></div></div><div class="xs sub" style="margin-top:6px">Orders are randomised across the four arms at one hub. 10k an arm is enough to spot a 1.3 pp gap in response rate (12% base, 95% confidence, 80% power).</div><div class="xs sub" style="margin-top:4px">Winner: lowest ₹ per verified response, if NPS ≥ holdout − 1 and returns rise by no more than 0.1 pp.</div></div>'+
+      '<div class="card"><h4>Throughput</h4><div class="kv" style="margin-top:6px"><span>Parcels a day</span><b>50,000</b><span>Eligible ('+pct(share)+')</span><b>'+num(perDay)+'</b>'+(perDay>HUB_RATE?'<span>Inserted (paced to quota)</span><b>'+num(insDay)+'</b>':'')+'<span>'+(laneD0?'Kit packing':'Inserting')+' at 8 s each</span><b>'+hrs.toFixed(1)+' h</b><span>Operators a shift</span><b>'+(hrs/8).toFixed(1)+'</b><span>Labour per insert</span><b>₹0.17</b></div><div class="xs sub" style="margin-top:6px">₹600 a shift ÷ 3,600 inserts = ₹0.17 for the 8 s insert alone. Lane prices above also cover the bag or pouch, re-labelling and the pairing scan.</div><div class="xs sub" style="margin-top:4px">Festive peak (3×): add 3 temps or pause the campaign.</div></div></div>';
   }
   return '<div class="view">'+sbar('valmo')+hdr('valmo',t,'hub',head)+'<div class="body vbody">'+h+'</div>'+tabs('hub',[['line','Sort line',I.scan],['stock','Rack',I.box],['rider','Rider',I.bike],['setup','Setup',I.cog]],true)+'</div>';
 }
@@ -1061,15 +1067,16 @@ function storyCard(){
   else if(!r.ins) rows.push(['10:47','Flag '+c.id+' · skipped',r.why]);
   else{
     rows.push(['10:47','Flag '+c.id,'The order was flagged at checkout because she is opted in and matches S-07. The handheld beeped "S-07".']);
-    rows.push(['10:48','Lane '+r.lane+' · '+L.nm, r.lane==='D'?'Sachet added to rider kit for route R-12.':'Sachet added. '+r.wt+' g → '+(r.wt+r.add)+' g, still under the 500 g slab.']);
+    rows.push(['10:48',L.nm, r.lane==='D'?'Sachet added to rider kit for route R-12.':'Sachet added. '+r.wt+' g → '+(r.wt+r.add)+' g, still under the 500 g slab.']);
     rows.push(['10:48','Pairing scan','Sachet '+r.qr+' tied to AWB '+r.awb+'. Her answer later joins this order without anyone seeing her name.']);
   }
   rows.push(['10:52','Sorted','Bucket for Gorakhpur, same truck as before. No extra trip.']);
   return '<div class="card" style="border:2px solid var(--m-orange)"><div class="row sp"><h3>Behind Sunita\u2019s order</h3><button class="btn g sm" data-a="storyx">Close</button></div><div class="track" style="margin-top:8px">'+rows.map(function(x){return '<div class="ts ok"><i></i><span><b>'+x[1]+'</b> <span class="xs mut" style="display:inline">'+x[0]+'</span><span class="xs" style="color:var(--m-sub)">'+esc(x[2])+'</span></span></div>'}).join('')+'</div></div>';
 }
-function makeStops(){var n=['Rekha','Anil','Pooja','Salma','Ravi','Kiran','Meena'],o=[];for(var i=0;i<7;i++)o.push({nm:n[i],pin:rnd(PINS)[0],smp:i%3===0,st:null});return o}
+var ROUTE={drops:36,flagged:4,pins:['273001','273004','273008','273010','273012','273014','273015']};   /* one last-mile route in Gorakhpur; 4 of 36 drops ≈ 11% flagged, as on slide 06 */
+function makeStops(){var n=['Rekha','Anil','Pooja','Salma','Ravi','Kiran','Meena','Farida'],o=[];for(var i=0;i<8;i++)o.push({nm:n[i],pin:ROUTE.pins[i%ROUTE.pins.length],smp:i===2||i===6,st:null});return o}
 function makeParcel(){var c=S.camp,inR=Math.random()<0.9,pin=inR?rnd(PINS):rnd(OUTPINS),it=rnd(ITEMS);return classify({awb:awb(),pin:pin[0],city:pin[1],item:it[0],wt:it[1]+Math.round(Math.random()*30-15),inR:inR,opt:Math.random()<0.5,seg:c?Math.random()<c.frac:false})}
-function classify(p){var c=S.camp,add=c?PRODUCTS[c.prod].w+LANES[S.hub.lane].g:0;p.add=add;
+function classify(p){var c=S.camp,add=c&&S.hub.lane!=='D'?PRODUCTS[c.prod].w+LANES[S.hub.lane].g:0;p.add=add;
   if(!c){p.res='pass';p.why='No brand campaign is live.';return p}
   if(!p.inR){p.res='pass';p.why='PIN '+p.pin+' is outside the booked clusters.';p.r='region';return p}
   if(!p.opt){p.res='pass';p.why='Buyer has not joined the Free Sample Club.';p.r='optin';return p}
@@ -1200,25 +1207,25 @@ function hqApp(){
       '<div class="k4"><div class="kp"><div class="l">Trials delivered</div><div class="v">'+num(dl)+'</div><div class="s">'+(S.camp?S.camp.id+' · day '+S.day:'no campaign live')+'</div></div><div class="kp"><div class="l">Response rate</div><div class="v">'+(dl?pct(ans/dl):'–')+'</div><div class="s">target 12% · kill < 6%</div></div><div class="kp"><div class="l">Revenue from brands</div><div class="v">'+inr(dl*pr)+'</div><div class="s">₹'+pr+' a trial</div></div><div class="kp"><div class="l">Contribution</div><div class="v">'+inr(dl*cn)+'</div><div class="s">'+rs(cn)+' a trial</div></div></div>'+
       '<div class="card"><div class="row sp"><h4>Who pays what</h4><span class="pill g">Zero commission</span></div><div class="kv" style="margin-top:6px"><span>Brand, per delivered trial</span><b>₹'+pr+'</b><span>Seller</span><b style="color:var(--m-green)">'+(S.hq.noSellers?'n/a':'₹0')+'</b><span>Buyer</span><b style="color:var(--m-green)">₹0 · gets ₹15 off</b><span>Valmo insertion work</span><b>'+rs(insCost())+'</b></div>'+
       '<div class="row sp" style="margin-top:8px"><span class="sm">Delete every seller from the model</span><button class="toggle" role="switch" aria-checked="'+S.hq.noSellers+'" data-a="nosellers" aria-label="Delete sellers"></button></div><div class="xs sub" style="margin-top:4px">'+(S.hq.noSellers?'Sellers removed. Revenue is still '+inr(dl*pr)+': every rupee comes from brands.':'Revenue comes only from brands, so removing sellers changes nothing.')+'</div></div>'+
-      '<div class="card"><h4>Counter-metrics · never traded away</h4>'+cmRow('Buyer NPS vs holdout','+0.4','≥ 0','< −2',true)+cmRow('Return-rate change','+0.05 pts','≤ +0.1','> +0.3',true)+cmRow('30-day opt-out',(S.buyer.optedOut?'4.6%':'4.2%'),'< 10%','> 25%',true)+cmRow('Cost per insert',rs(LANES[S.hub.lane].c),'≤ ₹1.20','> ₹3.00',LANES[S.hub.lane].c<=1.2)+cmRow('Hub sort SLA','no change','no change','> 1% late',true)+'<div class="xs sub" style="margin-top:4px">Values except insert cost are illustrative pilot readings.</div></div></div>';
+      '<div class="card"><h4>Counter-metrics · never traded away</h4>'+cmRow('Buyer NPS vs holdout','+0.4','≥ 0','< −2',true)+cmRow('Return-rate change','+0.05 pp','≤ +0.1 pp','> +0.3 pp',true)+cmRow('30-day opt-out',(S.buyer.optedOut?'4.6%':'4.2%'),'< 10%','> 25%',true)+cmRow('Cost per insert',rs(LANES[S.hub.lane].c),'≤ ₹1.20','> ₹3.00',LANES[S.hub.lane].c<=1.2)+cmRow('Hub sort SLA','no change','no change','> 1% late',true)+'<div class="xs sub" style="margin-top:4px">Values except insert cost are illustrative pilot readings.</div></div></div>';
   } else if(s==='econ'){
     t='Unit economics';
-    var steps=[['Brand pays',pr],['Insertion · '+(S.hq.worst?'worst case':'lane '+S.hub.lane),-insCost()],['Weight & volume',-COST.weight],['Platform & measurement',-COST.platform],['Buyer coupon',-COST.coupon],['Returns reserve',-COST.returns]];
+    var steps=[['Brand pays',pr],['Insertion · '+(S.hq.worst?'worst case':LANES[S.hub.lane].sh.toLowerCase()),-insCost()],['Weight & volume',-COST.weight],['Platform & measurement',-COST.platform],['Buyer coupon',-COST.coupon],['Returns reserve',-COST.returns]];
     var run=pr, w='';
     steps.forEach(function(x,i){var left,wd,col;if(i===0){left=0;wd=pr;col='var(--m-logo)'}else{run+=x[1];left=run;wd=-x[1];col='var(--m-orange)'}w+='<div class="wfr"><span>'+x[0]+'</span><span class="wft"><i style="left:'+(left/16*100)+'%;width:'+(wd/16*100)+'%;background:'+col+'"></i></span><b>'+(i?'−'+rs(-x[1]):rs(pr))+'</b></div>'});
     w+='<div class="wfr" style="font-weight:900"><span>Meesho keeps</span><span class="wft"><i style="left:0;width:'+(Math.max(0,cn)/16*100)+'%;background:var(--m-green)"></i></span><b style="color:var(--m-green)">'+rs(cn)+'</b></div>';
     h='<div class="pad gap"><div class="card gap"><div class="row sp"><h4>Per delivered trial</h4><span class="pill g">'+pct(cn/pr,0)+' margin</span></div><div class="wf">'+w+'</div>'+
       '<div class="row sp" style="margin-top:4px"><span class="sm">Budget insertion at the worst lane (₹3.00)</span><button class="toggle" role="switch" aria-checked="'+S.hq.worst+'" data-a="worst" aria-label="Worst case"></button></div>'+
-      '<div class="xs sub">'+(S.hq.worst?'The deck budgets the costliest lane so the case holds even if the cheap ones fail.':'Using lane '+S.hub.lane+' from Valmo Hub. If lane C or D wins at ₹13, Meesho keeps ₹8.40 to ₹8.70.')+'</div></div>'+
+      '<div class="xs sub">'+(S.hq.worst?'The deck budgets the costliest lane so the case holds even if the cheap ones fail.':'Using the '+LANES[S.hub.lane].sh.toLowerCase()+' lane from Valmo Hub. If the outer pouch or rider hand-over wins at ₹13, Meesho keeps ₹8.40 to ₹8.70.')+'</div></div>'+
       '<div class="card"><h4>By price tier</h4><table class="tbl" style="margin-top:6px"><thead><tr><th>Tier</th><th>Price</th><th>Keeps</th><th>Margin</th></tr></thead><tbody>'+TIERS.map(function(x){var k=contr(x.p);return '<tr><td>'+x.nm+'</td><td>₹'+x.p+'</td><td>'+rs(k)+'</td><td>'+pct(k/x.p,0)+'</td></tr>'}).join('')+'</tbody></table><div class="xs sub" style="margin-top:6px">Downside: if order-level matching fails and every trial sells at ₹9, Meesho still keeps ₹2.63 a trial.</div></div>'+
       '<div class="card"><h4>Coupon economics</h4><div class="sm" style="margin-top:4px">₹15 coupon × 40% redemption × 12% responders = <b>₹0.72 a trial</b>. It buys a repeat order (₹156 NMV), a retention lever Meesho already pays for.</div></div></div>';
   } else if(s==='pilot'){
     t='90-day pilot';
     var G=S.hq.g||(S.hq.g={nps:0.4,ret:0.05,resp:dl>1000?Math.round(ans/dl*1000)/10:12,ratio:1.6,err:1.2,ins:LANES[S.hub.lane].c,lift:6.1,rebook:3});
     var g1=G.nps>=-2&&G.ret<=0.3&&G.resp>=6, g2=G.ratio>=1.5&&G.err<=2&&G.ins<=3, g3=G.lift>=2&&G.rebook>=2;
-    var gates=[['Day 0–30 · ₹6 L','Buyers welcome it',g1,'1 hub · 2 brands · 40k parcels · lanes A/C/D + holdout',[['nps','NPS vs holdout',-5,3,0.1,function(v){return (v>0?'+':'')+v.toFixed(1)}],['ret','Return change (pts)',0,0.6,0.01,function(v){return '+'+v.toFixed(2)}],['resp','Verified response %',0,20,0.5,function(v){return v.toFixed(1)+'%'}]],'Kill if NPS < holdout − 2, returns > +0.3 pts, or response < 6%'],
+    var gates=[['Day 0–30 · ₹6 L','Buyers welcome it',g1,'1 hub · 2 brands · 40k parcels · 3 packing lanes + holdout',[['nps','NPS vs holdout',-5,3,0.1,function(v){return (v>0?'+':'')+v.toFixed(1)}],['ret','Return change (pp)',0,0.6,0.01,function(v){return '+'+v.toFixed(2)}],['resp','Verified response %',0,20,0.5,function(v){return v.toFixed(1)+'%'}]],'Kill if NPS < holdout − 2, returns > +0.3 pp, or response < 6%'],
       ['Day 31–60 · ₹18 L','Targeting and matching work',g2,'3 hubs · 5 brands · 3 L trials · ₹9 / ₹13 / ₹16',[['ratio','Segment vs zone response',0.5,3,0.1,function(v){return v.toFixed(1)+'×'}],['err','Matching error %',0,6,0.1,function(v){return v.toFixed(1)+'%'}],['ins','Cost per insert ₹',0.5,4,0.1,function(v){return '₹'+v.toFixed(2)}]],'Kill if segment < 1.5× zone, matching error > 2%, or insert > ₹3'],
-      ['Day 61–90 · ₹22 L','The proof sells',g3,'90-day re-survey + purchase data vs matched holdout',[['lift','Purchase lift (pts)',0,10,0.1,function(v){return '+'+v.toFixed(1)}],['rebook','Brands rebooking at ₹13',0,5,1,function(v){return v+' of 5'}]],'Kill if no significant lift or < 2 of 5 brands rebook']];
+      ['Day 61–90 · ₹22 L','The proof sells',g3,'90-day re-survey + purchase data vs matched holdout',[['lift','Purchase lift (pp)',0,10,0.1,function(v){return '+'+v.toFixed(1)}],['rebook','Brands rebooking at ₹13',0,5,1,function(v){return v+' of 5'}]],'Kill if no significant lift or < 2 of 5 brands rebook']];
     h='<div class="pad gap"><div class="note">Oct–Dec 2026 · Eastern UP & Bihar · ₹46 L gross, ₹24 L net after a 50% brand pilot rate. Set what the pilot finds.</div>'+
       gates.map(function(g,gi){return '<div class="gate '+(g[2]?'pass':'fail')+'"><div class="row sp"><span class="xs" style="font-weight:800;color:var(--m-muted)">'+g[0]+'</span><span class="pill '+(g[2]?'g':'r')+'">'+(g[2]?'Pass':'Kill')+'</span></div><h4>'+g[1]+'</h4><div class="xs sub">'+g[3]+'</div>'+g[4].map(function(f){return '<div class="rule"><label for="g_'+f[0]+'">'+f[1]+'</label><span class="rv" data-o="g_'+f[0]+'">'+f[5](G[f[0]])+'</span><input type="range" id="g_'+f[0]+'" data-g="'+f[0]+'" min="'+f[2]+'" max="'+f[3]+'" step="'+f[4]+'" value="'+G[f[0]]+'"></div>'}).join('')+'<div class="xs" style="color:var(--m-red)">'+g[5]+'</div></div>'}).join('')+
       decision(g1,g2,g3)+'</div>';
@@ -1298,20 +1305,20 @@ var DECK={
   'brand:insights':['Brand ROI per campaign','₹217 per new buyer against ₹1,080 with promoters. Year-1 ROI 1.11× against 0.22×.','Slide 07 · Brand ROI'],
   'hub:line':['Flag the order, not the sample','The handheld reads the campaign flag at the induction scan that already exists. The pairing scan ties the sachet QR to the AWB, so an unpaired sachet raises an alert.','Slide 06 · Matching'],
   'hub:stock':['Stock control','One campaign rack per hub. Daily in = inserted + damaged + returned. Variance above 1% pauses that hub. First-expiry-first-out.','Slide 06 · Samples to hubs'],
-  'hub:rider':['Lane D: rider hand-over','The rider carries a kit sized to flagged stops and asks at the door. The clearest consent moment, at about 10 s a drop.','Slide 06 · Packing options'],
-  'hub:setup':['Trial three lanes, let the data pick','A over-bag ₹2.60 (control), C outer pouch ₹0.90, D rider ₹1.20, with a holdout. 50,000 parcels a day × 11% = 1.5 operators a shift.','Slide 06 · Trial design'],
+  'hub:rider':['Rider run sheet','With rider hand-over, the rider carries a kit sized to flagged drops and asks at the door: the clearest consent moment, at about 10 s a drop. With the over-bag or pouch, the sample is already on the parcel.','Slide 06 · Packing options'],
+  'hub:setup':['Trial three lanes, let the data pick','Over-bag ₹2.60 (control), outer pouch ₹0.90 and rider hand-over ₹1.20, with a holdout. Slide 06 labels these A, C and D. 50,000 parcels a day × 11% = 1.5 operators a shift.','Slide 06 · Trial design'],
   'buyer:home':['Pehle try, phir buy','Sunita, 31, Gorakhpur: about one order a month and ₹3,200 a year, so she sits in segment S-07.','Slide 05 · Buyer journey'],
   'buyer:pdp':['The seller is never in the chain','The kurti, its price and its seller are untouched. Delete every seller and the revenue model is unchanged.','Slide 07 · Zero commission'],
   'buyer:checkout':['Opt-in at checkout','Asked once, in plain words. 79% liked the idea in our survey; the plan assumes 50% opt in.','Slide 05 · ① Opt-in'],
   'buyer:placed':['Consent first','Disclosed in advance, at most one sample a month, refusable at the door.','Slide 05 · ② Disclosed sample'],
   'buyer:orders':['Disclosed sample arrives with her order','Step through her order. Behind the scenes, the Valmo hub reads the flag on her AWB and inserts the sachet; open Valmo Hub at the end to see it. She can refuse at the door or opt out in one tap. No sample means no bill.','Slide 05 · ② Disclosed sample'],
-  'buyer:survey':['3 questions, 20 seconds','Use, rating, and the price question a promoter can’t ask: would she pay ₹99 for the full size?','Slide 05 · ③ Respond'],
+  'buyer:survey':['3 questions, 20 seconds','Use, rating, and the price question a promoter can’t ask: would she pay ₹120 for the full size?','Slide 05 · ③ Respond'],
   'buyer:reward':['₹15 off, funded by Meesho','₹15 × 40% redemption × 12% responders = ₹0.72 a trial. It buys a repeat order, a retention lever Meesho already pays for.','Slide 05 · ④ Reward + opt-out'],
   'buyer:account':['Her data stays hers','Brands see group results only. One-tap opt-out is tracked as a counter-metric (kill line 25%).','Slide 07 · Counter-metrics'],
   'buyer:cart':['A normal Meesho cart','Nothing about the cart, price or checkout changes for the sample programme. The opt-in comes at the next step.','Slide 05 · Buyer journey'],
   'buyer:cats':['Pehle try, phir buy','Shopping stays exactly the same.','Slide 05 · Buyer journey'],
   'hq:overview':['North star and counter-metrics','Verified answers delivered to brands per week, guarded by NPS, returns, opt-out, insert cost and hub SLA.','Slide 07 · KPI tree'],
-  'hq:econ':['₹13 in, ₹6.63 kept','Budgeted pessimistically at the ₹3.00 lane. If C or D wins, contribution rises to ₹8.40–8.70 a trial.','Slide 07 · How it is paid for'],
+  'hq:econ':['₹13 in, ₹6.63 kept','Budgeted pessimistically at the ₹3.00 lane. If the pouch or rider lane wins, contribution rises to ₹8.40–8.70 a trial.','Slide 07 · How it is paid for'],
   'hq:pilot':['90 days, ₹46 lakh, three kill gates','Buyer trust first, then targeting and matching, then whether brands pay again. GO, PIVOT or STOP at day 90.','Slide 10 · Roadmap'],
   'hq:scale':['About 1 in 9 parcels × ₹13 ≈ 1% of NMV','FY28 exits at a ₹650 Cr run-rate; FY29 ≈ ₹800 Cr. Peak investment ₹19 Cr, payback in month 13.','Slides 04, 08 & 10']
 };
@@ -1347,7 +1354,7 @@ var ACT={
   adv:function(v){var n=+v;if(n===90)n=Math.max(0,90-S.day);stepDays(n);toast(n?'Now day '+S.day:'Already past day 90');render()},
   retarget:function(){S.d.cat=Math.min(1500,S.d.cat+200);S.d.tier=2;S.nav.brand=['home','w3'];toast('Draft re-targets the households that bought');render()},
   hscan:function(){hubDo('scan');render()}, hins:function(){hubDo('ins');render()}, hpair:function(){hubDo('pair');render()}, hauto:function(){hubDo('auto');render()},
-  lane:function(v){S.hub.lane=v;toast('Line 3 now runs lane '+v);render()},
+  lane:function(v){S.hub.lane=v;toast('Line 3 now uses: '+LANES[v].nm);render()},
   dmg:function(){S.hub.damaged++;toast('Damaged sachet logged');render()},
   stop:function(v){var a=v.split('|'),i=+a[0];var sunStop=S.buyer.order&&S.buyer.order.st==='out'&&S.buyer.order.sampled&&S.hub.lane==='D';
     if(sunStop&&i===0){riderSun(a[1]==='g');notify('buyer','Delivered: Cotton kurti','Your order and a free sample were handed over.');}
