@@ -743,6 +743,9 @@ var LANES={
 };
 var INBOUND=[{nm:'R1 · Direct PTL to each hub',r:0.24,ft:'20+ consignments a campaign'},{nm:'R2 · One Valmo mother hub',r:0.25,ft:'One truck, one receipt, scales to any hub count',chosen:true},{nm:'R3 · Brand depots',r:0.10,show:'₹0.05–0.15',ft:'Large FMCG distributors drop on their own beat'}];
 var COST={weight:1.50,platform:0.80,coupon:0.72,returns:0.35,worst:3.00};
+/* Pilot partner rate, as on slide 10: 2 BPC brands pay 50% of ₹13 (₹6.50 a trial) during the Oct–Dec 2026 pilot.
+   ₹22 L of pilot fees ÷ 2 brands ÷ ₹6.50 ≈ 1.7 lakh trials a brand, so the discount stops there. */
+var PILOT={rate:0.5,cap:170000,slots:2,bpc:[0,1,2],window:'Oct–Dec 2026'};
 var PACK=120, PROMO=32, HUT=240000,   /* full-size pack price: same ₹120 as the deck's margin maths and the buyer interview */
     HUB_RATE=5500, SLAB=500;
 var SPEND=[[0,1e9],[1000,2500],[2500,6000],[6000,1e9]], AOV=[[0,1e9],[100,200],[200,400],[400,1e9]];
@@ -755,7 +758,7 @@ var PL=[['FY27',2,9,2,1,-12,-12,'0.00%'],['FY28',235,13,306,156,82,71,'0.47%'],[
 /* ================= state ================= */
 var S;
 function fresh(){return{
-  app:null, nav:{brand:['home'],hub:['line'],buyer:['home'],hq:['overview']},
+  app:null, pilotLeft:PILOT.slots, nav:{brand:['home'],hub:['line'],buyer:['home'],hq:['overview']},
   d:{prod:0,tier:1,geo:'eup',wallet:60,spend:2,aov:2,cat:300,freq:12,quota:500000,inbound:1,pilot:false,name:'Glowra Naturals'},
   camp:null, past:[], day:0, sim:[],
   hub:{lane:'C',scanned:0,ins:0,refused:0,skip:{region:0,optin:0,segment:0,weight:0,quota:0},paired:0,belt:[],log:[],cur:null,stage:'idle',pending:null,damaged:0,stops:null},
@@ -785,7 +788,16 @@ function segFrac(r){
   return Math.min(0.92,0.2333*f(r)/f({wallet:60,spend:2,aov:2,cat:300,freq:12}));
 }
 function matching(r){return r.tier===0?GEO[0].pool:Math.round(GEO[0].pool*segFrac(r)/1000)*1000}
-function price(r){return TIERS[r.tier].p*(r.pilot?0.5:1)}
+function price(r){return TIERS[r.tier].p}   /* list price; the pilot discount is applied per trial below */
+function pilotWhy(r){
+  if(r.tier!==1) return 'The pilot rate is for the ₹13 Segment tier only.';
+  if(PILOT.bpc.indexOf(r.prod)<0) return 'The pilot is for beauty and personal-care brands. Baby and home care come after it.';
+  if(S.pilotLeft<=0) return 'Both pilot brand slots are taken.';
+  return '';
+}
+function pilotQty(r,q){return r.pilot&&!pilotWhy(r)?Math.min(q,PILOT.cap):0}
+function bookTotal(r,q){var p=TIERS[r.tier].p,pq=pilotQty(r,q);return pq*p*PILOT.rate+(q-pq)*p}
+function spendFor(c,n){var l=c.list||c.price,pq=Math.min(n,c.pilotQ||0);return pq*l*PILOT.rate+(n-pq)*l}
 function sunChecks(r){var sb=SPEND[r.spend],ab=AOV[r.aov];return[
   ['Lives in a booked PIN cluster',SUN.city,true,0],
   ['Meesho share of her orders ≥ '+r.wallet+'%',SUN.wallet+'%',SUN.wallet>=r.wallet,1],
@@ -914,13 +926,13 @@ function brandApp(){
     foot='<button class="btn" data-a="go" data-v="w5">Review</button>';
   } else if(s==='w5'){
     t=wiz(5,'Review and pay'); tb=false;
-    var pr=price(D), m=matching(D), q=Math.min(D.quota,m), tot=q*pr, promo=q*PROMO+HUT, ans=q*TIERS[D.tier].resp;
+    var pr=price(D), m=matching(D), q=Math.min(D.quota,m), pq=pilotQty(D,q), tot=bookTotal(D,q), promo=q*PROMO+HUT, ans=q*TIERS[D.tier].resp, why=pilotWhy(D), pOn=D.pilot&&!why;
     h='<div class="pad gap"><div class="card gap"><div class="row"><div style="width:52px;height:52px;border-radius:10px;background:'+p.c[0]+';display:grid;place-items:center">'+sachet(p)+'</div><div><h3>'+esc(D.name)+' · '+p.short+'</h3><div class="xs sub">'+TIERS[D.tier].nm+' tier · S-07 Eastern UP & Bihar</div></div></div><div class="hr"></div>'+
-      '<div class="kv"><span>Trials</span><b>'+num(q)+'</b><span>Price per delivered trial</span><b>₹'+pr.toFixed(pr%1?2:0)+'</b><span>Verified answers expected</span><b>'+num(ans)+' ('+pct(TIERS[D.tier].resp,0)+')</b><span>Cost per answer</span><b>₹'+num(tot/ans)+'</b><span>Inbound freight, at cost</span><b>'+inr(q*INBOUND[D.inbound].r)+'</b></div><div class="hr"></div><div class="row sp"><b>Total for trials</b><span class="big" style="font-size:24px">'+inr(tot)+'</span></div></div>'+
+      '<div class="kv"><span>Trials</span><b>'+num(q)+'</b>'+(pq?'<span>First '+num(pq)+' at pilot rate</span><b>₹'+(pr*PILOT.rate).toFixed(2)+'</b>'+(q>pq?'<span>Remaining '+num(q-pq)+'</span><b>₹'+pr+'</b>':''):'<span>Price per delivered trial</span><b>₹'+pr.toFixed(pr%1?2:0)+'</b>')+'<span>Verified answers expected</span><b>'+num(ans)+' ('+pct(TIERS[D.tier].resp,0)+')</b><span>Cost per answer</span><b>₹'+num(tot/ans)+'</b><span>Inbound freight, at cost</span><b>'+inr(q*INBOUND[D.inbound].r)+'</b></div><div class="hr"></div><div class="row sp"><b>Total for trials</b><span class="big" style="font-size:24px">'+inr(tot)+'</span></div></div>'+
       '<div class="vs"><div><div class="l">Same launch with promoters</div><div class="v">'+inr(promo)+'</div><div class="xs sub">300 answers from a home-use test</div></div><div class="good"><div class="l">You save</div><div class="v">'+pct(1-tot/promo,0)+'</div><div class="xs sub">'+num(ans/300)+'× the answers</div></div></div>'+
-      '<div class="card row sp"><div><h4>Pilot brand rate</h4><div class="xs sub">First 2 BPC brands pay 50% in the 90-day pilot</div></div><button class="toggle" role="switch" aria-checked="'+D.pilot+'" data-a="pilot" aria-label="Pilot rate"></button></div>'+
+      '<div class="card"><div class="row sp"><div><h4>Pilot partner rate</h4><div class="xs sub">'+(why||'₹'+(13*PILOT.rate).toFixed(2)+' a trial on your first '+mn(PILOT.cap)+' trials · '+PILOT.window+' pilot · '+S.pilotLeft+' of '+PILOT.slots+' brand slots open')+'</div></div><button class="toggle" role="switch" aria-checked="'+pOn+'" data-a="pilot" aria-label="Pilot partner rate"'+(why?' disabled style="opacity:.45;cursor:not-allowed"':'')+'></button></div>'+(pOn?'<div class="xs sub" style="margin-top:8px">In return, your trials run inside the pilot test: Meesho sets the packing lane and keeps a no-sample holdout for the lift read. Bookings after the pilot are at ₹13.</div>':'')+'</div>'+
       '<div class="note">You see cohort results only, never a buyer’s name or number. Minimum cohort is 5,000 households. Undelivered or refused samples are not billed.</div></div>';
-    foot='<button class="btn" data-a="book">Pay '+inr(tot)+' and book</button>';
+    foot='<button class="btn" data-a="book">Pay '+inr(tot)+' and book</button>';   /* tot already includes any pilot discount */
   } else if(s==='booked'){
     t='Campaign booked'; tb=false;
     var c=S.camp;
@@ -959,11 +971,11 @@ function rule(k,lbl,type,a,b,c,on){
   if(type==='range') return '<div class="rule"><span class="rl"><label for="r_'+k+'">'+lbl+'</label>'+ib(k)+'</span><span class="rv" data-o="r_'+k+'"></span><input type="range" id="r_'+k+'" data-i="'+k+'" min="'+a+'" max="'+b+'" step="'+c+'" value="'+S.d[k]+'"'+(on?'':' disabled')+'>'+infoTxt(k)+'</div>';
   return '<div class="rule"><span class="rl"><label for="r_'+k+'">'+lbl+'</label>'+ib(k)+'</span><span class="rv">'+bandTxt(a[S.d[k]])+'</span><select id="r_'+k+'" data-s="'+k+'"'+(on?'':' disabled')+'>'+a.map(function(x,i){return '<option value="'+i+'"'+(i===S.d[k]?' selected':'')+'>'+bandTxt(x)+'</option>'}).join('')+'</select>'+infoTxt(k)+'</div>';
 }
-function campCard(c){var dl=delivered();return '<button class="card" style="text-align:left;width:100%" data-a="opencamp"><div class="row sp"><h3>'+esc(c.name)+'</h3><span class="pill g"><span class="dot"></span>Live</span></div><div class="xs sub">'+c.id+' · '+TIERS[c.tier].nm+' · ₹'+c.price+' a trial · day '+S.day+'</div><div class="prog"><i style="width:'+Math.min(100,dl/c.quota*100)+'%"></i></div><div class="row sp xs" style="margin-top:4px"><span>'+num(dl)+' of '+num(c.quota)+' delivered</span><b>'+num(answers())+' answers</b></div></button>'}
+function campCard(c){var dl=delivered();return '<button class="card" style="text-align:left;width:100%" data-a="opencamp"><div class="row sp"><h3>'+esc(c.name)+'</h3><span class="pill g"><span class="dot"></span>Live</span></div><div class="xs sub">'+c.id+' · '+TIERS[c.tier].nm+' · '+(c.pilotQ?'₹'+(c.list*PILOT.rate).toFixed(2)+' pilot rate':'₹'+c.list+' a trial')+' · day '+S.day+'</div><div class="prog"><i style="width:'+Math.min(100,dl/c.quota*100)+'%"></i></div><div class="row sp xs" style="margin-top:4px"><span>'+num(dl)+' of '+num(c.quota)+' delivered</span><b>'+num(answers())+' answers</b></div></button>'}
 function dashHtml(){
   var c=S.camp; if(!c) return '<div class="pad"><div class="card">Book a campaign first.</div></div>';
   S._brandSeenAns=true;
-  var dl=delivered(), ans=answers(), spend=dl*c.price, p=PRODUCTS[c.prod], sim=simAns();
+  var dl=delivered(), ans=answers(), spend=spendFor(c,dl), p=PRODUCTS[c.prod], sim=simAns();
   var st=S.real.stars.slice(), SD=[0.03,0.05,0.14,0.38,0.40]; for(var i=0;i<5;i++) st[i]+=Math.round(sim*SD[i]);
   var bu={yes:S.real.buy.yes+Math.round(sim*0.38),maybe:S.real.buy.maybe+Math.round(sim*0.34),no:S.real.buy.no+Math.round(sim*0.28)}, nb=bu.yes+bu.maybe+bu.no||1;
   var nst=st.reduce(function(a,b){return a+b},0), avg=nst?st.reduce(function(a,b,i){return a+b*(i+1)},0)/nst:0, mx=Math.max.apply(null,st.concat([1]));
@@ -1255,7 +1267,7 @@ function outputs(){
   var D=S.d, m=matching(D), q=Math.min(D.quota,m), o={};
   o.match=mn(m); o.matchsub=D.tier===0?'All opted-in households in the booked PIN clusters':(pct(m/GEO[0].pool,1)+' of 9.0 Mn opted-in households in the region');
   o.r_wallet='≥ '+D.wallet+'%'; o.r_cat='≥ ₹'+num(D.cat); o.r_freq='≥ '+D.freq;
-  o.quota=num(D.quota)+(D.quota>m?' (max '+mn(m)+')':''); o.booking=inr(q*price(D)); o.days=(Math.ceil(q/(HUB_RATE*3))+2)+' days · 3 hubs'; o.inbound=inr(q*INBOUND[D.inbound].r);
+  o.quota=num(D.quota)+(D.quota>m?' (max '+mn(m)+')':''); o.booking=inr(bookTotal(D,q)); o.days=(Math.ceil(q/(HUB_RATE*3))+2)+' days · 3 hubs'; o.inbound=inr(q*INBOUND[D.inbound].r);
   var sh=S.hq.shr/100, bp=S.hq.bpr, tr=4.5e9*sh; o.shr=S.hq.shr+'% · 1 in '+Math.round(1/sh); o.bpr='₹'+bp.toFixed(1); o.srev=inr(tr*bp); o.snmv=pct(tr*bp/6.5e11,2)+' of FY28 NMV'; o.scon=inr(tr*contr(bp)); o.strials=mn(tr)+' trials · '+rs(contr(bp))+' each';
   o._sbar=Math.min(100,tr*bp/1.3e10*100);
   if(S.hq.g){var G=S.hq.g;o.g_nps=(G.nps>0?'+':'')+G.nps.toFixed(1);o.g_ret='+'+G.ret.toFixed(2);o.g_resp=G.resp.toFixed(1)+'%';o.g_ratio=G.ratio.toFixed(1)+'×';o.g_err=G.err.toFixed(1)+'%';o.g_ins='₹'+G.ins.toFixed(2);o.g_lift='+'+G.lift.toFixed(1);o.g_rebook=G.rebook+' of 5'}
@@ -1298,7 +1310,7 @@ var DECK={
   'brand:w2':['Good, better, best pricing','₹9 Reach (25% of mix), ₹13 Segment (50%), ₹16 Closed-loop (25%). Blended ≈ ₹13, sold as a media rate per delivered trial.','Slides 05 & 08 · How it earns'],
   'brand:w3':['Segment builder: spend, not demographics','Five rules on what she spends on Meesho. S-07 "Beauty switchers · E-UP & Bihar" matches 2.1 Mn opted-in households.','Slide 05 · Segment builder'],
   'brand:w4':['Getting samples to the hubs','Brand-funded inbound to one Valmo mother hub: one truck, one receipt, about ₹0.25 a sample, ₹1.25 L for a 5-lakh campaign.','Slide 06 · Samples to hubs'],
-  'brand:w5':['60% cheaper per launch, 200× the feedback','₹65 L for 5 L trials and 60,000 answers, against ₹1.62 Cr and 300 answers with promoters and a home-use test.','Slide 07 · Outcome'],
+  'brand:w5':['60% cheaper per launch, 200× the feedback','₹65 L for 5 L trials and 60,000 answers, against ₹1.62 Cr and 300 answers with promoters and a home-use test. The pilot partner rate (slide 10) is limited to 2 BPC brands on the Segment tier, up to 1.7 L trials each: ₹22 L of fees in all. At ₹6.50, a trial still covers its ₹6.37 worst-case cost.','Slides 07 & 10'],
   'brand:booked':['Booking turns on the order flag','From now on, the targeting engine tags matching orders at checkout, so "targeted" on the slide is "targeted" in the warehouse.','Slide 06 · Service blueprint'],
   'brand:dash':['The proof goes back to the payer','Delivered, response %, rating, price acceptance and 90-day lift by segment. Cohort-only, minimum 5,000 households, never PII.','Slide 05 · Steps 4 & 5'],
   'brand:camps':['The learning loop','Each answer re-targets the next booking, so each campaign is cheaper per answer than the last.','Slide 05 · Learn & re-target'],
@@ -1339,11 +1351,13 @@ var ACT={
   toastonly:function(v){toast(v);render()},
   set:function(v,el){S.d[el.dataset.k]=+v;render()},
   newcamp:function(){S.nav.brand=['home','w1'];render()},
-  pilot:function(){S.d.pilot=!S.d.pilot;render()},
+  pilot:function(){if(pilotWhy(S.d))return;S.d.pilot=!S.d.pilot;render()},
   book:function(){
-    var D=S.d,m=matching(D),q=Math.min(D.quota,m),T=TIERS[D.tier];
+    var D=S.d,m=matching(D),q=Math.min(D.quota,m),T=TIERS[D.tier],pq=pilotQty(D,q),tot=bookTotal(D,q);
+    if(pq){S.pilotLeft--;}
+    D.pilot=false;
     if(S.camp) S.past.unshift({name:S.camp.name,id:S.camp.id,del:delivered(),ans:answers()});
-    S.camp={id:'BTN-'+T.code+'07-'+(140+Math.floor(Math.random()*60)),brand:D.name,name:D.name+' · '+PRODUCTS[D.prod].short,prod:D.prod,tier:D.tier,price:price(D),resp:T.resp,rules:JSON.parse(JSON.stringify(D)),quota:q,hubs:3,frac:D.tier===0?1:segFrac(D),inbound:D.inbound};
+    S.camp={id:'BTN-'+T.code+'07-'+(140+Math.floor(Math.random()*60)),brand:D.name,name:D.name+' · '+PRODUCTS[D.prod].short,prod:D.prod,tier:D.tier,price:tot/q,list:T.p,pilotQ:pq,resp:T.resp,rules:JSON.parse(JSON.stringify(D)),quota:q,hubs:3,frac:D.tier===0?1:segFrac(D),inbound:D.inbound};
     S.day=0;S.sim=[];S.hub.ins=0;S.hub.refused=0;S.hub.paired=0;S.hub.cur=null;S.hub.stage='idle';S.real={n:0,stars:[0,0,0,0,0],buy:{yes:0,maybe:0,no:0}};S._brandSeenAns=false;S.hq.g=null;
     if(S.buyer.order&&S.buyer.order.st==='hub') queueSun();
     S.nav.brand=['home','booked'];
